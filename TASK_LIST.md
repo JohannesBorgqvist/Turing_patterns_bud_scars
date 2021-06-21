@@ -1,4 +1,4 @@
-# TASK LIST FOR THE SYM_SYS PROJECT
+# Sammanfattning av planen
 - [x] Sätt upp en github,
 - [ ] Lägg till en README fil,
 - [x] Sätt upp grenar eller "branches" på githuben,
