@@ -37,10 +37,12 @@ cm = 1e-02
 Lc1 = 0.01
 r = 1 * cm
 # Define the theta angle
-theta_vec = np.linspace(0,2*math.pi,100)
-#theta_vec = np.linspace(0,math.pi/10,3)
+#theta_vec = np.linspace(0,2*math.pi,200)
+theta_vec = np.linspace(math.pi/5,math.pi/3,50)
 # Define the phi angle
-phi_vec = np.linspace(0,math.pi,100)
+#phi_vec = np.linspace(0,math.pi,200)
+phi_vec = np.linspace(math.pi/10,3*math.pi/4,50)
+#phi_vec = np.linspace(math.pi/10,math.pi/5,200)
 # Define all points that we want to add
 point_list = []
 # Define a point counter
@@ -158,7 +160,7 @@ for arc_index in range(len(line_list)-1):
         # Start with the even lines
         if arc_index %2 == 0:
             # Take the standard surface elements in the middle    
-            if line_index != 0 and line_index != len(line_list[arc_index])-1: # Normal case
+            if phi_vec[line_index] != 0 and phi_vec[line_index] != math.pi: # Normal case
                 # Extract the first point on curve 1
                 point_1_on_curve_1 = line_list[arc_index][line_index][0]
                 # Extract the second point on curve 1
@@ -189,7 +191,7 @@ for arc_index in range(len(line_list)-1):
                 curve_list.append(curve_counter)
                 # Increment the line_counter
                 line_counter += 1
-            elif line_index == 0:# Special case, first surface element
+            elif phi_vec[line_index] == 0:# Special case, first surface element
                 # Extract the second point on curve 1
                 point_2_on_curve_1 = line_list[arc_index][line_index][1]            
                 # Extract the first point on curve 2
@@ -210,7 +212,7 @@ for arc_index in range(len(line_list)-1):
                 curve_list.append(curve_counter)
                 # Increment the line_counter
                 line_counter += 1                
-            elif line_index == len(line_list[arc_index])-1:
+            elif phi_vec[line_index] == math.pi:
                 # Extract the second point on curve 1
                 point_1_on_curve_1 = line_list[arc_index][line_index][0]            
                 # Extract the first point on curve 2
@@ -235,7 +237,7 @@ for arc_index in range(len(line_list)-1):
             between_index += 2
         else: # Odd lines
             # Take the standard surface elements in the middle    
-            if line_index != 0 and line_index != len(line_list[arc_index])-1: # Normal case
+            if phi_vec[line_index] != 0 and phi_vec[line_index] != math.pi: # Normal case
                 # Extract the first point on curve 2
                 point_1_on_curve_2 = line_list[arc_index+1][line_index][0]
                 # Extract the second point on curve 2
@@ -266,7 +268,7 @@ for arc_index in range(len(line_list)-1):
                 curve_list.append(curve_counter)
                 # Increment the line_counter
                 line_counter += 1
-            elif line_index == 0:# Special case, first surface element
+            elif phi_vec[line_index] == 0:# Special case, first surface element
                 # Extract the second point on curve 1
                 point_1_on_curve_1 = line_list[arc_index][len(line_list[arc_index])-(line_index+1)][0]            
                 # Extract the first point on curve 2
@@ -287,7 +289,7 @@ for arc_index in range(len(line_list)-1):
                 curve_list.append(curve_counter)
                 # Increment the line_counter
                 line_counter += 1
-            elif line_index == len(line_list[arc_index])-1:
+            elif phi_vec[line_index] == math.pi:
                 # Extract the second point on curve 1
                 point_2_on_curve_1 = line_list[arc_index][len(line_list[arc_index])-(line_index+1)][1]            
                 # Extract the first point on curve 2
@@ -375,7 +377,8 @@ for curve in curve_list:
 # Synchronise everything with Gmsh
 sphere_with_holes.synchronize()
 # Set the colours of the surfaces
-gmsh.model.setColor([(2, surface) for surface in surface_list], 221, 28, 119)  # Magenta
+#gmsh.model.setColor([(2, surface) for surface in surface_list], 221, 28, 119)  # Magenta
+gmsh.model.setColor([(2, surface) for surface in surface_list], 43, 140, 190)  # Magenta
 #----------------------------------
 # Finally, we can add some comments by creating a post-processing view
 # containing some strings:
