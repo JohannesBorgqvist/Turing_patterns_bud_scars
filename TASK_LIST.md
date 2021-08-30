@@ -26,4 +26,7 @@ Jag har gjort en gren för varje deltagare i projektet:
 1. Johannes's branch,
 2. Philip's branch.
   
+En viktig tumregel är att *allt arbete görs på de individuella grenarna* och sedan så slår man ihop arbetetet ("merge") vilket sammanfattas på main-branchen. Det finns två undantag till regeln om att inget arbete görs på main-grenen:
 
+1. Filen README.md modifieras endast på main-grenen,
+2. Filen TASK_LIST.md (alltså denna fil) modifieras likaså endast på main-grenen. 
