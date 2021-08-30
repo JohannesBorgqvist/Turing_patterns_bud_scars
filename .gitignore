@@ -22,4 +22,4 @@
 .gitignore~
 # For the Python script, a folder called __pycache__ tends to be created
 # which should not be presented on the git-repositry
-Code/__pycache__/
+__pycache__/
