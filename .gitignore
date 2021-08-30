@@ -23,3 +23,6 @@
 # For the Python script, a folder called __pycache__ tends to be created
 # which should not be presented on the git-repositry
 Code/__pycache__/
+# Also, gmsh generates a folder called "auto" when you export figures
+# so let's ignore this one to
+Figures/Meshes/auto/
