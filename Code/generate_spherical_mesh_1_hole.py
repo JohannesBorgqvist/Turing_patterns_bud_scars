@@ -17,7 +17,7 @@ import gmsh  # For generating the meshes
 import math  # For using mathematical functions
 import sys  # Needed by gmsh to launch the GUI, i.e. open the window with the plot
 import numpy as np  # Needed to create linspace arrays and other nice functions
-import functions_generate_sphere_with_holes  # Home-made
+import functions_generate_spherical_mesh_with_holes  # Home-made
 
 # =================================================================================
 # =================================================================================
@@ -40,7 +40,7 @@ hole_on_sphere = gmsh.model.geo
 # -------------------------------------------------------------------
 # Define a centimetre
 cm = 1e-02
-#Lc1 = 0.01
+Lc1 = 0.01
 R = 1 # Big radius
 r = 0.1*R # Small radius
 # -------------------------------------------------------------------
@@ -53,8 +53,6 @@ x2 = 0.1
 y2 = -0.2
 z2 = math.sqrt(R**2-x2**2-y2**2)
 c2 = (x2,y2,z2) # with radius R defined above
-# Define a thickness of the point
-Lc1 = 0.01
 # Add all centres to a list
 list_of_centres = [c1, c2]
 # Define a label counter
@@ -87,7 +85,7 @@ label_counter += 1
 # Compute all holes in the mesh
 #---------------------------------------------------------------
 # Calculate holes
-new_label, list_of_lists, theta_hole, phi_hole = functions_generate_sphere_with_holes.add_circular_holes_on_sphere(list_of_centres,r,R,label_counter,main_centre)
+new_label, list_of_lists, theta_hole, phi_hole = functions_generate_spherical_mesh_with_holes.add_circular_holes_on_sphere(list_of_centres,r,R,label_counter,main_centre)
 # Update the label counter
 label_counter = new_label+1
 #---------------------------------------------------------------
@@ -120,7 +118,7 @@ phi_below = (phi_hole[1],math.pi)
 # Define theta
 theta_below = theta_hole
 # Caclulate the rest of the sphere
-new_counter, list_of_lists_sphere_below = functions_generate_sphere_with_holes.add_sphere_without_hole(R,phi_below,theta_below,label_counter,north_pole,south_pole,main_centre)
+new_counter, list_of_lists_sphere_below = functions_generate_spherical_mesh_with_holes.add_sphere_without_hole(R,phi_below,theta_below,label_counter,north_pole,south_pole,main_centre)
 # Update the label_counter
 label_counter = new_counter+1
 # SEGMENT ABOVE HOLE
@@ -129,7 +127,7 @@ phi_above = (0,phi_hole[0])
 # Define theta
 theta_above = theta_hole
 # Caclulate the rest of the sphere
-new_counter, list_of_lists_sphere_above = functions_generate_sphere_with_holes.add_sphere_without_hole(R,phi_above,theta_above,label_counter,north_pole,south_pole,main_centre)
+new_counter, list_of_lists_sphere_above = functions_generate_spherical_mesh_with_holes.add_sphere_without_hole(R,phi_above,theta_above,label_counter,north_pole,south_pole,main_centre)
 # Update the label_counter
 label_counter = new_counter+1
 # SEGMENT ON THE LEFT
@@ -138,7 +136,7 @@ phi_left = (0,math.pi)
 # Define theta
 theta_left = [-np.pi, theta_hole[0]]
 # Caclulate the rest of the sphere
-new_counter, list_of_lists_sphere_left = functions_generate_sphere_with_holes.add_sphere_without_hole(R,phi_left,theta_left,label_counter,north_pole,south_pole,main_centre)
+new_counter, list_of_lists_sphere_left = functions_generate_spherical_mesh_with_holes.add_sphere_without_hole(R,phi_left,theta_left,label_counter,north_pole,south_pole,main_centre)
 # Update the label_counter
 label_counter = new_counter+1
 # SEGMENT ON THE RIGHT
@@ -147,7 +145,7 @@ phi_right = (0,math.pi)
 # Define theta
 theta_right = [theta_hole[1],np.pi]
 # Caclulate the rest of the sphere
-new_counter, list_of_lists_sphere_right = functions_generate_sphere_with_holes.add_sphere_without_hole(R,phi_right,theta_right,label_counter,north_pole,south_pole,main_centre)
+new_counter, list_of_lists_sphere_right = functions_generate_spherical_mesh_with_holes.add_sphere_without_hole(R,phi_right,theta_right,label_counter,north_pole,south_pole,main_centre)
 # Update the label_counter
 label_counter = new_counter+1
 #---------------------------------------------------------------
