@@ -1,0 +1,25 @@
+# Ignore these formats often created
+# when tex-files are compiled with
+# pdflatex
+*.html
+*.log
+*.aux
+*.bbl
+*.blg
+*.lof
+*.lot
+*.out
+*.toc
+*.tex~
+*.bib~
+*.py~
+*.sh~
+*.md~
+*.yml~
+*.xlsx~
+*.sh~
+# We also remove the gitignore itself
+.gitignore~
+# For the Python script, a folder called __pycache__ tends to be created
+# which should not be presented on the git-repositry
+__pycache__/
