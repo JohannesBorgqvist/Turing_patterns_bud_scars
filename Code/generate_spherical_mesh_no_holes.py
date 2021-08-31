@@ -18,7 +18,6 @@ import math  # For using mathematical functions
 import sys  # Needed by gmsh to launch the GUI, i.e. open the window with the plot
 import numpy as np  # Needed to create linspace arrays and other nice functions
 import functions_generate_spherical_mesh_with_holes  # Home-made
-
 # =================================================================================
 # =================================================================================
 # Initialising Gmsh
