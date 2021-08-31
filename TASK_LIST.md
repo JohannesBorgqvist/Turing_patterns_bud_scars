@@ -7,7 +7,7 @@
 - [x] Generera ett sfärisk nät med ett sfärisk hål via python mha gmsh,
 - [x] Implementera så att meshen kan ses via paraview och python,
 - [x] Fixa så att msh-näten som genererats av Gmsh kan konverteras till xdmf-nät som kan läsas in av Dolfin och Fenics vilket görs med hjälp av meshio,
-- [ ] Skriv ett enkelt skript som läser in meshen via Fenics,
+- [ ] Skriv ett enkelt skript som läser in den konverterade xdmf-meshen via Fenics eller Dolfin,
 - [ ] Sätt upp en variationsformulering,
 - [ ] Implementera ett adaptivt tidssteg, 
 - [ ] Reproducera fig. 4.3-4.6 i Chaplain (2001),
