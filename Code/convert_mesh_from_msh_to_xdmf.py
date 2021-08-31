@@ -45,7 +45,7 @@ def create_mesh(mesh, cell_type, prune_z=False):
 # Reading in the mesh and studying its properties
 # =================================================================================
 # =================================================================================
-# Read the mesh using meshio
+# Read the mesh with one hole using meshio
 msh = meshio.read("../Meshes/sphere_with_1_hole.msh")
 # Create a curve mesh using the function "create_mesh"
 curve_mesh = create_mesh(msh, "line", prune_z=True)
@@ -55,7 +55,10 @@ triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 meshio.write("../Meshes/sphere_with_1_hole_curves.xdmf", curve_mesh)
 # Save the triangle mesh
 meshio.write("../Meshes/sphere_with_1_hole_surfaces.xdmf", triangle_mesh)
-
-
-
+# Read the mesh with no holes using meshio (i.e. just the sphere)
+msh = meshio.read("../Meshes/sphere_with_no_holes.msh")
+# Create a triangle mesh using the function "create_mesh"
+triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
+# Save the triangle mesh
+meshio.write("../Meshes/sphere_with_no_holes_surfaces.xdmf", triangle_mesh)
 
