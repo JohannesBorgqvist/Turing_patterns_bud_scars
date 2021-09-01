@@ -94,4 +94,4 @@ and to exit the environment type
 
 * conda deactivate
 
-Lastly, as these platforms are under constant development the versions of the involved packages changes often. Therefore, the versions of the packages involved in this project have been documented in the Markdown-file "VERSIONS\_OF\_PACKAGES.md" in this repositry. 
+Lastly, as these platforms are under constant development the versions of the involved packages changes often. Therefore, the versions of the packages involved in this project have been documented in the Markdown-file "*VERSIONS\_OF\_PACKAGES.md*" in this repositry. 
