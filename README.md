@@ -57,8 +57,7 @@ Some information about the *OS* of the machine is the following:
 * Operating System: Ubuntu 21.04, 
 * Kernel: Linux 5.11.0-31-generic,
 * Architecture: x86-64.
-
-	In order to make the project as reproducible as possible, the coding has been done entirely in Python and the installation of all necessary packages is made possible by *anaconda*. The scripts associated with this project is enabled by three major softwares:
+In order to make the project as reproducible as possible, the coding has been done entirely in Python and the installation of all necessary packages is made possible by *anaconda*. The scripts associated with this project is enabled by three major softwares:
 	
 1. The [*FEniCS Project*](https://fenicsproject.org/) which is a "*popular open-source (LGPLv3) computing platform for solving partial differential equations (PDEs)*",
 2. [*Gmsh*](https://gmsh.info/) which is a "*a three-dimensional finite element mesh generator with built-in pre- and post-processing facilities*",
