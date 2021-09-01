@@ -652,7 +652,7 @@ def add_parts_of_sphere(R,phi_tuple,theta_tuple,object_counter,north_pole,south_
 def add_sphere_without_hole(R,phi_tuple,theta_tuple,object_counter,north_pole,south_pole,main_centre):
     # Define a step size in the theta direction
     #theta_step = math.pi/24
-    theta_step = math.pi/75
+    theta_step = math.pi/100
     # Define the number of steps based on this step size
     num_theta_steps = int(round(((theta_tuple[1]-theta_tuple[0])/(theta_step))))
     # Define our theta vector
