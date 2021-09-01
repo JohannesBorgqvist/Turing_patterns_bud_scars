@@ -14,7 +14,8 @@
 - [x] Skriv ner instruktioner i README filen om hur man installerar all paket med hjälp av anaconda,
 - [x] Skapa en ny markdown fil, kalla den "VERSIONS\_OF\_PACKAGES.md", i main branchen som listar alla paket i omgivningen "fenicsproject",
 - [x] Bestäm täthet i näten (resultat theta_step=pi/350) genom att jämföra den numeriska arean (A=12.5661) med den analytiska ytarean för enhetssfären som är A=4*pi=12.5663...
-- [ ] I samma skript som i föregående punkt sätt domänspecifika initialvillkor,
+- [ ] I samma skript som i föregående punkt sätt domänspecifika initialvillkor som en perturbation kring steady state,
+- [ ] Spara ner initialvillkoren i en logiskt namngiven mapp i "Output" mappen och studera dem i ParaView,
 - [ ] Sätt upp en variationsformulering,
 - [ ] Implementera ett adaptivt tidssteg, 
 - [ ] Reproducera fig. 4.3-4.6 i Chaplain (2001),
