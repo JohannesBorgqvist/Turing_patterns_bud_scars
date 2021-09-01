@@ -14,7 +14,7 @@
 # =================================================================================
 # DOLFIN RELATED LIBRARIES 
 from fenics import *
-
+import numpy as np
 # =================================================================================
 # =================================================================================
 # Conduct calculations
@@ -55,3 +55,21 @@ print(assemble(area_hole))
 print("Circumference of hole (curve integral)")
 print(circumference_hole)
 # SANITY CHECK: MESH WITHOUT A HOLE
+# Allocate memory for the main mesh with surfaces
+mesh_unit = Mesh()
+mvc_subdomain_unit = MeshValueCollection("size_t", mesh_unit, 2)
+# Read in the mesh with subdomains
+with XDMFFile("../Meshes/sphere_with_no_holes_surfaces.xdmf") as infile:
+    infile.read(mesh_unit)
+    infile.read(mvc_subdomain_unit, "name_to_read")
+# Define meshfunctions for the surfaces and curves respectively
+mf_triangle_unit_sphere = cpp.mesh.MeshFunctionSizet(mesh_unit, mvc_subdomain_unit)
+# Define measures based on this as well
+dx_unit_sphere = Measure("dx", domain=mesh_unit, subdomain_data=mf_triangle_unit_sphere, subdomain_id=1)
+# Calculate the area of stuff
+area_unit_sphere = Constant(1.0)*dx_unit_sphere
+# Print as a comaprison
+print("The surface area of the numerical unit sphere:")
+print(assemble(area_unit_sphere))
+print("The analytical surface area of the unit sphere A=4*pi*1^2:")
+print(4*np.pi)
