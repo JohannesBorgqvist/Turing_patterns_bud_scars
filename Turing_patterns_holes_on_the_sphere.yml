@@ -1,7 +1,7 @@
 name: Turing_patterns_holes_on_the_sphere
-channels:
-  - defaults
-  - anaconda
+#channels:
+#  - defaults
+#  - anaconda
 dependencies:
   - _libgcc_mutex==0.1
   - _openmp_mutex==4.5
@@ -100,3 +100,19 @@ dependencies:
   - xz==5.2.5
   - zlib==1.2.11
   - zstd==1.5.0
+
+
+
+
+
+(https://fenicsproject.org/download/)
+1. conda create -n fenicsproject -c conda-forge fenics
+2. source activate fenicsproject
+3. conda install --name fenicsproject gmsh python-gmsh
+4. conda list -n fenicsproject
+
+
+
+1. conda config --add channels conda-forge
+2. conda config --set channel_priority strict
+3. conda install --name fenicsproject gmsh python-gmsh
