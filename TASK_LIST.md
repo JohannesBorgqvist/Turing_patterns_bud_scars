@@ -10,9 +10,10 @@
 - [x] Skriv ett enkelt skript som läser in den konverterade xdmf-meshen via Fenics eller Dolfin,
 - [x] Kontrollera att rätt nät har lästs in genom att jämföra med enhetssfärens area och justera nogrannheten i nätet baserat på detta,
 - [x] Skriv ett yml skript för att kunna köra projektet med alla viktiga paket i (MODIFERAD: Tog bort yml filen i slutändan ty det är lättare att modifera (mer specifikt lägga till paket) till den conda omgivning som fenicsprojektet har skapat),
-- [ ] Fixa så att installationen av alla paket (fenics, gmsh och paraview) fungerar enkelt med anaconda,
-- [ ] Skriv ner instruktioner i README filen om hur man installerar all paket med hjälp av anaconda,
-- [ ] Skapa en ny markdown fil, kalla den "VERSIONS\_OF\_PACKAGES.md", i main branchen som listar alla paket i omgivningen "fenicsproject",
+- [x] Fixa så att installationen av alla paket (fenics, gmsh och paraview) fungerar enkelt med anaconda,
+- [x] Skriv ner instruktioner i README filen om hur man installerar all paket med hjälp av anaconda,
+- [x] Skapa en ny markdown fil, kalla den "VERSIONS\_OF\_PACKAGES.md", i main branchen som listar alla paket i omgivningen "fenicsproject",
+- [x] Bestäm täthet i näten (resultat theta_step=pi/350) genom att jämföra den numeriska arean (A=12.5661) med den analytiska ytarean för enhetssfären som är A=4*pi=12.5663...
 - [ ] I samma skript som i föregående punkt sätt domänspecifika initialvillkor,
 - [ ] Sätt upp en variationsformulering,
 - [ ] Implementera ett adaptivt tidssteg, 
