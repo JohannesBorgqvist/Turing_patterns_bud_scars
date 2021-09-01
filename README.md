@@ -1,7 +1,9 @@
 # Turing patterns on a sphere with holes, cell growth and local parameter changes
+*Date:* 2021-09-01<br>
+*Written by:* Johannes Borgqvist<br>
 
 
-
+Description of the project
 
 ![Spherical mesh with one bud scar](mesh_one_bud_scar.png)
 
@@ -19,3 +21,33 @@ We have one main branch and two additional individual branches. All the work tha
 2. The TASK_LIST.md file should only be changed on the main branch as well. 
 
 Here is a good guide on *how to work with branches* ([see the following link](https://thenewstack.io/dont-mess-with-the-master-working-with-branches-in-git-and-github/)).
+
+
+
+## A note on reproducibility
+For the purpose of reproducibility, the project is entirely written in Python and the installation of all required packages has been managed through [anaconda](https://docs.anaconda.com/anaconda/install/index.html). The code has been developed and tested on a machine with the following cpu information:
+
+* Architecture:                    x86_64
+* CPU op-mode(s):                  32-bit, 64-bit
+* Byte Order:                      Little Endian                                                                                                       
+* Address sizes:                   39 bits physical, 48 bits virtual                                                                                   
+* CPU(s):                          8
+* On-line CPU(s) list:             0-7
+* Thread(s) per core:              2
+* Core(s) per socket:              4
+* Socket(s):                       1
+* NUMA node(s):                    1
+* Vendor ID:                       GenuineIntel
+* CPU family:                      6
+* Model:                           142
+* Model name:                      Intel(R) Core(TM) i7-10510U CPU @ 1.80GHz
+* Stepping:                        12
+* CPU MHz:                         800.057
+* CPU max MHz:                     4900,0000
+* CPU min MHz:                     400,0000
+* BogoMIPS:                        4599.93
+* Virtualisation:                  VT-x
+* L1d cache:                       128 KiB
+* L1i cache:                       128 KiB
+* L2 cache:                        1 MiB 
+* L3 cache:                        8 MiB
