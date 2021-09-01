@@ -116,3 +116,4 @@ dependencies:
 1. conda config --add channels conda-forge
 2. conda config --set channel_priority strict
 3. conda install --name fenicsproject gmsh python-gmsh
+4. conda install --name fenicsproject paraview
