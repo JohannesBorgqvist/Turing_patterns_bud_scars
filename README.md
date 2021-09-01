@@ -68,5 +68,7 @@ In order to make the project as reproducible as possible, the coding has been do
 2. [*Gmsh*](https://gmsh.info/) which is a "*a three-dimensional finite element mesh generator with built-in pre- and post-processing facilities*",
 3. [*ParaView*](https://www.paraview.org/) which is an "*open-source, multi-platform data analysis and visualization application*".
 
-The first two of these (i.e. FEniCS and Gmsh) has a Python interface, and thus the scripts using 
+Both of the first two of these has a Python interface. Thus the scripts for generating the meshes using Gmsh and the scripts for conducting the FEM simulations using FEniCS are written in Python. For visualising the results, the graphical interface of ParaView has been used. 
+
+Provided that anaconda has been succesfully installed, the easiest way to install all relevant packages is to use the [*conda installation of FEniCS*](https://fenicsproject.org/download/)
 
