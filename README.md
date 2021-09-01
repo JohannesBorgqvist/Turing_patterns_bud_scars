@@ -74,14 +74,16 @@ Both of the first two of these has a Python interface. Thus the scripts for gene
 
 Provided that anaconda has been succesfully installed, the easiest way to install all relevant packages is to use the [*conda installation of FEniCS*](https://fenicsproject.org/download/). It is recommended to create and activate a conda environment in order to install and access all relevant parts of FEniCS. To create and activate a conda environment by the name of "*fenicsproject*", use the following two steps:
 
-1. conda create -n fenicsproject -c conda-forge fenics,
-2. source activate fenicsproject.
+1. conda create -n fenicsproject -c conda-forge fenics
+2. source activate fenicsproject
 
 The first point installs all packages involved in the fenicsproject and stores them in a conda environment called "*fenicsproject*". The installation process will most likely take hours to complete. The second point activates the conda environment and when this environment is activated all important packages necessary to run FEM simulations using FEniCS are installed. 
 
-In order to be able to generate the meshes and to visualise the results of the FEM-simulations, Gmsh and ParaView must be added to the conda environment "*fenicsproject*". This is done by the following four commands:
+In order to be able to generate the meshes and to visualise the results of the FEM-simulations, Gmsh and ParaView must be added to the conda environment "*fenicsproject*". This is done by typing the following four commands:
 
-1. conda config --add channels conda-forge,
-2. conda config --set channel_priority strict,
-3. conda install --name fenicsproject gmsh python-gmsh,
-4. conda install --name fenicsproject paraview.
+1. conda config --add channels conda-forge
+2. conda config --set channel_priority strict
+3. conda install --name fenicsproject gmsh python-gmsh
+4. conda install --name fenicsproject paraview
+
+Lastly, as these platforms are under constant development the versions of the involved packages changes often. Therefore, the versions of the packages involved in this project have been documented in the Markdown-file "VERSIONS\_OF\_PACKAGES.md" in this repositry. 
