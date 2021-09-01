@@ -61,6 +61,8 @@ Some information about the *OS* of the machine is the following:
 * Kernel: Linux 5.11.0-31-generic,
 * Architecture: x86-64.
 
+
+
 ### Installation of the packages using anaconda
 In order to make the project as reproducible as possible, the coding has been done entirely in Python and the installation of all necessary packages is made possible by *anaconda*. The scripts associated with this project is enabled by three major platforms:
 	
@@ -70,5 +72,16 @@ In order to make the project as reproducible as possible, the coding has been do
 
 Both of the first two of these has a Python interface. Thus the scripts for generating the meshes using Gmsh and the scripts for conducting the FEM simulations using FEniCS are written in Python. For visualising the results, the graphical interface of ParaView has been used. 
 
-Provided that anaconda has been succesfully installed, the easiest way to install all relevant packages is to use the [*conda installation of FEniCS*](https://fenicsproject.org/download/)
+Provided that anaconda has been succesfully installed, the easiest way to install all relevant packages is to use the [*conda installation of FEniCS*](https://fenicsproject.org/download/). It is recommended to create and activate a conda environment in order to install and access all relevant parts of FEniCS. To create and activate a conda environment by the name of "*fenicsproject*", use the following two steps:
 
+1. conda create -n fenicsproject -c conda-forge fenics,
+2. source activate fenicsproject.
+
+The first point installs all packages involved in the fenicsproject and stores them in a conda environment called "*fenicsproject*". The installation process will most likely take hours to complete. The second point activates the conda environment and when this environment is activated all important packages necessary to run FEM simulations using FEniCS are installed. 
+
+In order to be able to generate the meshes and to visualise the results of the FEM-simulations, Gmsh and ParaView must be added to the conda environment "*fenicsproject*". This is done by the following four commands:
+
+1. conda config --add channels conda-forge,
+2. conda config --set channel_priority strict,
+3. conda install --name fenicsproject gmsh python-gmsh,
+4. conda install --name fenicsproject paraview.
