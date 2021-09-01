@@ -1,6 +1,6 @@
 # =================================================================================
 # =================================================================================
-# Script:"read_in_spherical_mesh_fenics"
+# Script:"convert_mesh_from_msh_to_xdmf"
 # Date: 2021-08-30
 # Implemented by: Johannes Borgqvist
 # Description:
