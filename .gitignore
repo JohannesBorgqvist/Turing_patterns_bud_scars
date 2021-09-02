@@ -26,3 +26,7 @@ Code/__pycache__/
 # Also, gmsh generates a folder called "auto" when you export figures
 # so let's ignore this one too
 Figures/Meshes/auto/
+# Also, we should really not include all the vtu and pvd files because they
+# are huge
+*.vtu
+*.pvd
