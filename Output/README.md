@@ -1,5 +1,5 @@
 # The output folder
-Here, all the pvd files from the FEMFD-simulations of the Schnackenberg model on the sphere with holes is stored. However, these files are way too large in terms of memory to push them to github, so therefore these are added to the gitignore file. When the script is executed all sub folder in the folder "./Output" will be named based on the parameters used in that particular simulation. The files are named as follows:<br>
+Here, all the pvd files from the FEMFD-simulations of the Schnackenberg model on the sphere with holes is stored. However, these files are way too large in terms of memory to push them to github, so therefore these are added to the gitignore file. When the script is executed all sub folder in the folder "./Output" will be named based on the parameters used in that particular simulation. The sub folders are named as follows:<br>
 
 h\_*numHoles*\_a\_*a_val*\_b\_*b_val*\_d\_*d_val*\_gamma\_*gamma_val*\_sigma\_*sigma_val*\_T\_*T_val*\_laa\_*laa_val*\_lab\_*lab_val*\_cg_*cg\_str*/<br>
 Here, follows the explanation for each part of this rather long folder name:
