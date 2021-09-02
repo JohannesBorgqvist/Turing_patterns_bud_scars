@@ -5,7 +5,7 @@ h\_*numHoles*\_a\_*a_val*\_b\_*b_val*\_d\_*d_val*\_gamma\_*gamma_val*\_sigma\_*s
 Here, follows the explanation for each part of this rather long folder name:
 * "h\_*numHoles*": h indicates the number of holes on the sphere where *numHoles* is an integer,
 * "a\_*a_val*": a is one of the two rate parameters in the Schnackenberg model where *a_val* is a string of the numerical value rounded to two digits where the point is replaced by the character "p" (e.g. if a=0.25 then a_val="0p25"),
-* "b\_*b_val*": b is one of the two rate parameters in the Schnackenberg model where *a_val* is a string of the numerical value rounded to two digits where the point is replaced by the character "p" (e.g. if b=6.33 then a_val="6p33"),
+* "b\_*b_val*": b is one of the two rate parameters in the Schnackenberg model where *b_val* is a string of the numerical value rounded to two digits where the point is replaced by the character "p" (e.g. if b=6.33 then b_val="6p33"),
 * "d\_*d_val*": d is the relative diffusion in the Schnackenberg model where *d_val* is a string of the numerical value rounded to two digits where the point is replaced by the character "p" (see the previous points for an explanation),
 * "gamma\_*gamma_val*": gamma is the relative diffusion in the Schnackenberg model where *gamma_val* is a string of the numerical value rounded to two digits where the point is replaced by the character "p",
 * "sigma\_*sigma_val*": sigma is the variance of the normally distributed perturbation that is added to the initial conditions where *sigma_val* is a string of the numerical value rounded to two digits where the point is replaced by the character "p",
