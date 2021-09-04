@@ -114,15 +114,15 @@ for adjacent_hole in list_of_lists[5]:
 #---------------------------------------------------------------    
 # SEGMENT BELOW HOLE
 # Define phi
-#phi_below = (phi_hole[1],math.pi)
-epsilon = 0.1
-phi_below = (0,math.pi)
+phi_below = (phi_hole[1],math.pi)
+#epsilon = 0.1
+#phi_below = (0,math.pi)
 #phi_below = (epsilon,math.pi)
 #phi_below = (0,math.pi-epsilon)
 #phi_below = (epsilon,math.pi-epsilon)
 # Define theta
-#theta_below = theta_hole
-theta_below = [theta_hole[0], theta_hole[0]+math.pi/24]
+theta_below = theta_hole
+#theta_below = [theta_hole[0], theta_hole[0]+math.pi/24]
 # Caclulate the rest of the sphere
 new_counter, list_of_lists_sphere_below = functions_generate_spherical_mesh_with_holes.add_sphere_without_hole(R,phi_below,theta_below,label_counter,north_pole,south_pole,main_centre)
 # Update the label_counter
@@ -173,8 +173,8 @@ curve_loops_rest_of_sphere = []
 surfaces_rest_of_sphere = []
 # Loop over our four sides and add all objects into the
 # respective lists
-for side in range(0,0):
-#for side in range(number_of_sides):
+#for side in range(0,0):
+for side in range(number_of_sides):
 #for side in range(0,1):#Above
 #for side in range(1,2):#Below
 #for side in range(2,3):# Left
