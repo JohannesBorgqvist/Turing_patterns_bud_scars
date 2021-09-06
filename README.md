@@ -86,6 +86,7 @@ In order to be able to generate the meshes and to visualise the results of the F
 3. conda install --name fenicsproject gmsh python-gmsh
 4. conda install --name fenicsproject paraview
 
+
 When everythin works properly, it should be possible to run all scripts inside the conda environment "*fenicsproject*". This environment is activated using the command
 
 * conda activate fenicsproject
@@ -95,3 +96,10 @@ and to exit the environment type
 * conda deactivate
 
 Lastly, as these platforms are under constant development the versions of the involved packages changes often. Therefore, the versions of the packages involved in this project have been documented in the Markdown-file "*VERSIONS\_OF\_PACKAGES.md*" in this repositry. 
+
+
+Unfortunately, this approach does not install the latest version of Gmsh which is needed. So type the following command to create *another* environment in which the latest version of Gmsh is installed:
+
+conda create -n gmsh\_latest\_version python=3.9 gmsh=4.8 python-gmsh
+
+Now, the environment "gmsh\_latest\_version" is entered when the meshes are created and "fenicsproject" is entered when we want to simulate the PDE system. 
