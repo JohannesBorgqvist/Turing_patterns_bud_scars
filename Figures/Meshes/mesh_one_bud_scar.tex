@@ -13,13 +13,13 @@
 \begin{document}
 \begin{tikzpicture}
 \node[inner sep=0pt] (mesh) at (0,0)
-{\includegraphics[scale=0.5]{test.png}};
+{\includegraphics[scale=0.5]{test_2.png}};
 % \fill[blue!40!white] (0,0) rectangle (4,4);
-\node[rectangle,draw,fill=boundary_hole,minimum size=2cm] (r) at (15.2,8) {\huge \color{white}The boundary of the hole $\Gamma$};
+%\node[rectangle,draw,fill=boundary_hole,minimum size=2cm] (r) at (15.2,8) {\huge \color{white}The boundary of the hole $\Gamma$};
 \node[rectangle,draw,fill=hole,minimum size=2cm] (r) at (15.2,6) {\huge \color{black}Hole\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\,};
-\node[rectangle,draw,fill=adjacent,minimum size=2cm] (r) at (15.2,4)
-{\huge \color{white}Adjacent region\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\,};
-\node[rectangle,draw,fill=rest,,minimum size=2cm] (r) at (15.2,2) {\huge \color{white}The sphere $\Omega$\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;};
+\node[rectangle,draw,fill=adjacent,minimum size=2cm] (r) at (15.2,2)
+{\huge \color{white}Adjacent region $\Omega_2$\;\;\;\;\;\;\;\;\;\;\;\;\;\,};
+\node[rectangle,draw,fill=rest,,minimum size=2cm] (r) at (15.2,4) {\huge \color{white}The sphere $\Omega_1$\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;};
 \end{tikzpicture}
 
 \end{document}
