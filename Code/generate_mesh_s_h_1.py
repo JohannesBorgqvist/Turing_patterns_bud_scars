@@ -65,7 +65,8 @@ gmsh.model.occ.removeAllDuplicates()
 gmsh.model.occ.synchronize()
 # set mesh size
 #gmsh.option.setNumber('Mesh.MeshSizeMax', 0.1)
-gmsh.option.setNumber('Mesh.MeshSizeMax', 0.075)
+#gmsh.option.setNumber('Mesh.MeshSizeMax', 0.075)
+gmsh.option.setNumber('Mesh.MeshSizeMax', 0.055)
 #---------------------------------------------------------------
 # Part 5: Add physical regions
 #---------------------------------------------------------------

@@ -46,9 +46,21 @@ gmsh.model.occ.remove([(3, v0)])
 v1 = gmsh.model.occ.addCylinder(0,0,0, 0,1,1, 0.25)
 hole_1 = gmsh.model.occ.intersect([(2, s0[0][1])], [(3, v1)], removeObject=False)
 # HOLE 2
-# Cut with a cylinder to generate first spherical patch
+# Cut with a cylinder to generate second spherical patch
 v2 = gmsh.model.occ.addCylinder(0,0,0, -0.75,-0.15,1.7, 0.25)
 hole_2 = gmsh.model.occ.intersect([(2, s0[0][1])], [(3, v2)], removeObject=False)
+# HOLE 3
+# Cut with a cylinder to generate third spherical patch
+v3 = gmsh.model.occ.addCylinder(0,0,0, 0.5,-2.75,2.0, 0.25)
+hole_3 = gmsh.model.occ.intersect([(2, s0[0][1])], [(3, v3)], removeObject=False)
+# HOLE 4
+# Cut with a cylinder to generate third spherical patch
+v4 = gmsh.model.occ.addCylinder(0,0,0, 1.0,0.5,0.75, 0.25)
+hole_4 = gmsh.model.occ.intersect([(2, s0[0][1])], [(3, v4)], removeObject=False)
+# HOLE 5
+# Cut with a cylinder to generate third spherical patch
+v5 = gmsh.model.occ.addCylinder(0,0,0, 1.0,-0.5,0.75, 0.25)
+hole_5 = gmsh.model.occ.intersect([(2, s0[0][1])], [(3, v5)], removeObject=False)
 #---------------------------------------------------------------
 # Part 4: Add the adjacent region
 #---------------------------------------------------------------
@@ -68,11 +80,38 @@ gmsh.model.occ.synchronize()
 b3_2 = gmsh.model.getBoundary([(2, rest_2)])
 w3_2 = gmsh.model.occ.addWire([p[1] for p in b3_2])
 adjacent_2 = gmsh.model.occ.addTrimmedSurface(s0[0][1], [w3_2])
+# ADJACENT REGION 3
+# Create a wire in the parametric plane of the spherical surface
+# [-pi,pi]x[-pi/2,pi/2] to create the other spherical patch
+rest_3 = gmsh.model.occ.addRectangle(-3*math.pi/4+1.35,0.3,0.3, -0.75,0.6)
+gmsh.model.occ.synchronize()
+b3_3 = gmsh.model.getBoundary([(2, rest_3)])
+w3_3 = gmsh.model.occ.addWire([p[1] for p in b3_3])
+adjacent_3 = gmsh.model.occ.addTrimmedSurface(s0[0][1], [w3_3])
+# ADJACENT REGION 4
+# Create a wire in the parametric plane of the spherical surface
+# [-pi,pi]x[-pi/2,pi/2] to create the other spherical patch
+rest_4 = gmsh.model.occ.addRectangle(-math.pi/4+1.6,0.3,0.3, -0.75,0.6)
+gmsh.model.occ.synchronize()
+b3_4 = gmsh.model.getBoundary([(2, rest_4)])
+w3_4 = gmsh.model.occ.addWire([p[1] for p in b3_4])
+adjacent_4 = gmsh.model.occ.addTrimmedSurface(s0[0][1], [w3_4])
+# ADJACENT REGION 5
+# Create a wire in the parametric plane of the spherical surface
+# [-pi,pi]x[-pi/2,pi/2] to create the other spherical patch
+rest_5 = gmsh.model.occ.addRectangle(-math.pi/4+0.68,0.3,0.3, -0.75,0.6)
+gmsh.model.occ.synchronize()
+b3_5 = gmsh.model.getBoundary([(2, rest_5)])
+w3_5 = gmsh.model.occ.addWire([p[1] for p in b3_5])
+adjacent_5 = gmsh.model.occ.addTrimmedSurface(s0[0][1], [w3_5])
 # Update the adjacent region
 #adjacent_1 = rest_2
 # Remove the squares that are projected onto the circle
 gmsh.model.occ.remove([(2, rest_1)], recursive=True)
 gmsh.model.occ.remove([(2, rest_2)], recursive=True)
+gmsh.model.occ.remove([(2, rest_3)], recursive=True)
+gmsh.model.occ.remove([(2, rest_4)], recursive=True)
+gmsh.model.occ.remove([(2, rest_5)], recursive=True)
 #---------------------------------------------------------------
 # Part 4: Finalise the mesh
 #---------------------------------------------------------------
@@ -91,10 +130,10 @@ gmsh.option.setNumber('Mesh.MeshSizeMax', 0.055)
 rest_of_sphere = gmsh.model.addPhysicalGroup(2,[rest_1],1)
 gmsh.model.setPhysicalName(2,rest_of_sphere,"Rest of the sphere")
 # Add the adjacent region
-adjacent_region = gmsh.model.addPhysicalGroup(2,[rest_2, adjacent_2],2)
+adjacent_region = gmsh.model.addPhysicalGroup(2,[rest_2, adjacent_2, adjacent_1,rest_3,adjacent_3],2)
 gmsh.model.setPhysicalName(2,adjacent_region,"Adjacent regions")
 # Add the hole
-hole = gmsh.model.addPhysicalGroup(hole_1[0][0][0],[hole_1[0][0][1], hole_2[0][0][1]],3)
+hole = gmsh.model.addPhysicalGroup(hole_1[0][0][0],[hole_1[0][0][1], hole_2[0][0][1],hole_3[0][0][1],hole_4[0][0][1],hole_5[0][0][1]],3)
 gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Holes")
 # -------------------------------------------------------------------
 # Part 6: Add colours to the mesh
@@ -104,19 +143,17 @@ gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Holes")
 # THE REST OF THE SPEHRE
 gmsh.model.setColor([(2,rest_1)], 2, 56, 88)  # Darkest blue
 # THE HOLE
-gmsh.model.setColor([(2,hole_1[0][0][1]),(2,hole_2[0][0][1])], 255, 247, 251)  # Light blue
+gmsh.model.setColor([(2,hole_1[0][0][1]),(2,hole_2[0][0][1]),(2,hole_3[0][0][1]),(2,hole_4[0][0][1]),(2,hole_5[0][0][1])], 255, 247, 251)  # Light blue
 # THE ADJACENT REGION
-gmsh.model.setColor([(2,adjacent_1),(2,rest_2)], 116, 169, 207)  # In between blue
+gmsh.model.setColor([(2,adjacent_1),(2,rest_2), (2,adjacent_2),(2,rest_3),(2,adjacent_3)], 116, 169, 207)  # In between blue
 #---------------------------------------------------------------
 # Part 6: Generate the mesh
 #---------------------------------------------------------------
 # Generate the two dimensional mesh (as we work with surfaces) 
 gmsh.model.mesh.generate(2)
 # Write the mesh to our file
-gmsh.write("../Meshes/s_h_2.msh")
+gmsh.write("../Meshes/s_h_5.msh")
 # Launch the GUI to see the results:
 if '-nopopup' not in sys.argv:
     gmsh.fltk.run()
 gmsh.finalize()
-
-
