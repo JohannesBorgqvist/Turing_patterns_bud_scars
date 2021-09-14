@@ -37,6 +37,7 @@
 - [x] Baserat på Christophes kod, skapa en mesh med fem hål,
 - [x] Uppdatera koverteringsskriptet så att näten med 0, 1, 2 och 5 hål respektive konverteras från msh format till xdmf format,
 - [x] Importera xdmf näten med 0, 1, 2 och 5 hål i FEniCS och beräkna arean av alla ytor samt summan av ytorna. Kontrollera så att den totala arean blir ungefär 4*pi vilket är den analytiska ytarean av enhetssfären,
+- [x] Kontakta och svara Anders Logg om FEniCS samt Carls kontaktuppgifter. Anders sa mycket riktigt att implementera PDEer på mångfalder med kurvatur kräver lite extra eftertanke och vidare sa han att den artikel som jag bifogade "[Automating the solution of PDEs on the sphere and other manifolds in FEniCS 1.2 ](https://gmd.copernicus.org/articles/6/2099/2013/)" av Marie Rognes från 2013 är perfekt att använda som källa. Det som är bra med denna artikel är att det finns massa exempelskript där vi antagligen kan låna kod för att ta hänsyn till den utåtriktade normalen på sfären, och Anders sa till och med att jag alltid kunde kontakta Marie om det behövdes (hon hade tydligen varit Anders gamla doktorand), 
 - [ ] Skriv en funktion i toolboxen som sätter upp variationsformuleringen,
 - [ ] Skriv en funktion i toolboxen som löser PDE problemet med FEM i rummet och FD i tiden,
 - [ ] Implementera ett adaptivt tidssteg i den sistnämnda funktionen, 
