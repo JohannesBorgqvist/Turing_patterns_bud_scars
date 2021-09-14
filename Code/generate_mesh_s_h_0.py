@@ -46,7 +46,7 @@ gmsh.option.setNumber('Mesh.MeshSizeMax', 0.055)
 # Part 5: Add physical regions
 #---------------------------------------------------------------
 # Add the rest of the sphere
-rest_of_sphere = gmsh.model.addPhysicalGroup(2,[rest],888)
+rest_of_sphere = gmsh.model.addPhysicalGroup(2,[rest],1)
 gmsh.model.setPhysicalName(2,rest_of_sphere,"Rest of the sphere")
 # -------------------------------------------------------------------
 # Part 6: Add colours to the mesh

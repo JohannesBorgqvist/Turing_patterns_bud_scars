@@ -91,7 +91,7 @@ gmsh.option.setNumber('Mesh.MeshSizeMax', 0.055)
 rest_of_sphere = gmsh.model.addPhysicalGroup(2,[rest_1],1)
 gmsh.model.setPhysicalName(2,rest_of_sphere,"Rest of the sphere")
 # Add the adjacent region
-adjacent_region = gmsh.model.addPhysicalGroup(2,[rest_2, adjacent_2],2)
+adjacent_region = gmsh.model.addPhysicalGroup(2,[adjacent_1, rest_2],2)
 gmsh.model.setPhysicalName(2,adjacent_region,"Adjacent regions")
 # Add the hole
 hole = gmsh.model.addPhysicalGroup(hole_1[0][0][0],[hole_1[0][0][1], hole_2[0][0][1]],3)
