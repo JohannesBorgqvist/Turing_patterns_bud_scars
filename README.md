@@ -100,6 +100,6 @@ Lastly, as these platforms are under constant development the versions of the in
 
 Unfortunately, this approach does not install the latest version of Gmsh which is needed. So type the following command to create *another* environment in which the latest version of Gmsh is installed:
 
-conda create -n gmsh\_latest\_version python=3.9 gmsh=4.8 python-gmsh
+conda create -n gmsh\_latest\_version -c conda-forge python=3.9 gmsh=4.8 python-gmsh
 
 Now, the environment "gmsh\_latest\_version" is entered when the meshes are created and "fenicsproject" is entered when we want to simulate the PDE system. 
