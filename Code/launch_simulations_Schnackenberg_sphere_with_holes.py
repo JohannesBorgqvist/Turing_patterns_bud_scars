@@ -53,5 +53,6 @@ activation_parameters = [1, 1]
 # We do not have any cell growth here so we set this to false
 cell_growth = False
 # Solve the FEM system with the given parameters
-FEM_toolbox.FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,activation_parameters,cell_growth)
+#FEM_toolbox.FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,activation_parameters,cell_growth)
+FEM_toolbox.FEM_FD_simulation_pure_diffusion_sphere_with_holes()
 

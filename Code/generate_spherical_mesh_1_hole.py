@@ -174,9 +174,9 @@ surfaces_rest_of_sphere = []
 # Loop over our four sides and add all objects into the
 # respective lists
 #for side in range(0,0):
-for side in range(number_of_sides):
+#for side in range(number_of_sides):
 #for side in range(0,1):#Above
-#for side in range(1,2):#Below
+for side in range(1,2):#Below
 #for side in range(2,3):# Left
 #for side in range(3,4):#Right    
     # Allocate memory for a data list
