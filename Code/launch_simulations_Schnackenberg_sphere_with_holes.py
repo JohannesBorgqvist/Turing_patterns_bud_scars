@@ -41,9 +41,9 @@ gamma = gamma_c
 # Collect all parameters in a list
 parameters = [a, b, d, gamma]
 # For this experiment we have no hole in the mesh
-num_holes = 1
+num_holes = 0
 # Define the perturbation in the initial conditions
-sigma = 0.00
+sigma = 0.05
 # Define the end time for the simulations
 T = 50
 # Collect these latter two parameters in a list as well
@@ -53,6 +53,6 @@ activation_parameters = [1, 1]
 # We do not have any cell growth here so we set this to false
 cell_growth = False
 # Solve the FEM system with the given parameters
-#FEM_toolbox.FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,activation_parameters,cell_growth)
-FEM_toolbox.FEM_FD_simulation_pure_diffusion_sphere_with_holes()
+FEM_toolbox.FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,activation_parameters,cell_growth)
+#FEM_toolbox.FEM_FD_simulation_pure_diffusion_sphere_with_holes()
 
