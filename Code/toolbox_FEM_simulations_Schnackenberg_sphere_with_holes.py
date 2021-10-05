@@ -238,12 +238,26 @@ def VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev
     u_prev,v_prev = U_prev.split()
     # DEFINE THE REACTION TERMS IN THE SCHNACKENBERG MODEL IN A MIXED IMPLICIT EXPLICIT FASHION
     # (here we exclude the gamma factor as we include it later in the time stepping)
-    f = a - u + ((u_prev**2)*v_prev)
-    g = b - ((u_prev**2)*v_prev)
+    #-----------------------------------------------------
+    # FIRST ATTEMPT
+    #f = a - u + ((u_prev**2)*v_prev)
+    #g = b - ((u_prev**2)*v_prev)
+    #-----------------------------------------------------
+    # SECOND ATTEMPT
+    f = a - u + ((u_prev**2)*v)
+    g = b - ((u_prev**2)*v)
+    #-----------------------------------------------------
     # Define the modified reaction terms if we have a hole
     if len(dx_list)>1:
-       f_adjacent =  (a*activation_parameters[0]) - u + ((u_prev**2)*v_prev)
-       g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v_prev)       
+        #-----------------------------------------------------
+        # FIRST ATTEMPT
+        #f_adjacent =  (a*activation_parameters[0]) - u + ((u_prev**2)*v_prev)
+        #g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v_prev)
+        #-----------------------------------------------------
+        # SECOND ATTEMPT
+        f_adjacent =  (a*activation_parameters[0]) - u + ((u_prev**2)*v)
+        g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v)
+        #-----------------------------------------------------        
     # DEFINE OUR THREE TYPE OF TERMS IN THE VARIATIONAL FORMULATION (VF):
     # 1. Mass_form: originating from the time derivatives in the PDEs
     # 2. Stiffness form: originating from the Laplacian in the PDEs
@@ -467,7 +481,7 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
     # how many iterations that has passed
     t_it = 1
     # Define two tolerances for the adaptive time stepping
-    TOL_tadapt = 1e-2 # Used for choosing the adaptive step
+    TOL_tadapt = 1e-3 # Used for choosing the adaptive step
     dt_max = T/200 # An upper limit on the maximum time step
     # We solve the time stepping adaptively until the end time is reached 
     while t < T:
