@@ -240,23 +240,23 @@ def VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev
     # (here we exclude the gamma factor as we include it later in the time stepping)
     #-----------------------------------------------------
     # FIRST ATTEMPT
-    #f = a - u + ((u_prev**2)*v_prev)
-    #g = b - ((u_prev**2)*v_prev)
+    f = a - u + ((u_prev**2)*v_prev)
+    g = b - ((u_prev**2)*v_prev)
     #-----------------------------------------------------
     # SECOND ATTEMPT
-    f = a - u + ((u_prev**2)*v)
-    g = b - ((u_prev**2)*v)
+    #f = a - u + ((u_prev**2)*v)
+    #g = b - ((u_prev**2)*v)
     #-----------------------------------------------------
     # Define the modified reaction terms if we have a hole
     if len(dx_list)>1:
         #-----------------------------------------------------
         # FIRST ATTEMPT
-        #f_adjacent =  (a*activation_parameters[0]) - u + ((u_prev**2)*v_prev)
-        #g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v_prev)
+        f_adjacent =  (a*activation_parameters[0]) - u + ((u_prev**2)*v_prev)
+        g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v_prev)
         #-----------------------------------------------------
         # SECOND ATTEMPT
-        f_adjacent =  (a*activation_parameters[0]) - u + ((u_prev**2)*v)
-        g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v)
+        #f_adjacent =  (a*activation_parameters[0]) - u + ((u_prev**2)*v)
+        #g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v)
         #-----------------------------------------------------        
     # DEFINE OUR THREE TYPE OF TERMS IN THE VARIATIONAL FORMULATION (VF):
     # 1. Mass_form: originating from the time derivatives in the PDEs
@@ -502,7 +502,7 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
         # Solve linear variational problem for time step
         solve(A,  U_curr.vector(), b)
         # Save the solution (every tenth iteration)
-        if t_it %3 == 0:
+        if t_it %30 == 0:
             print("\t\tIteration %d, t\t=\t%0.15f out of %0.3f"%(t_it,t,T))
             # Split the current solution into its component parts
             u_curr, v_curr = U_curr.split()
@@ -511,7 +511,7 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
             vtkfile_u << (u_curr, t)
             v_curr.rename("Concentration profile, $v(\mathbf{x},t)$","v")
             vtkfile_v << (v_curr, t)                
-        if t_it > 10000: # Just in case we never finish, we break
+        if t_it > 100000: # Just in case we never finish, we break
             break
         # Compute next timestep adaptively with residual
         dt_old = dt
