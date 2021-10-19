@@ -376,6 +376,36 @@ def residual_Schnackenberg_sphere_with_holes(parameters,phi_1,phi_2,U_prev,U_cur
     residual_form = mass_form + gamma*reaction_form
     # Return the residual form
     return residual_form
+def plot_LaTeX_2D(t,y,file_str,plot_str,legend_str):
+    # Open a file with the append option
+    # so that we can write to the same
+    # file multiple times
+    f = open(file_str, "a")
+    # Create a temporary string which
+    # is the one that does the plotting.
+    # Here we incorporate the input plot_str
+    # which contains the color, and the markers
+    # of the plot at hand
+    if len(legend_str)==0:
+        temp_str = "\\addplot[\nforget plot,\n" + plot_str+ "\n]\n"
+    else:
+        temp_str = "\\addplot[\n" + plot_str+ "\n]\n"
+    # Add the coordinates
+    temp_str += "coordinates {%\n"
+    # Loop over the input files and add
+    # them to the file
+    for i in range(len(t)):
+        temp_str += "(" + str(t[i]) + "," + str(y[i]) + ")\n"
+    # The plotting is done, let's close the shop    
+    temp_str += "};\n"
+    # Add a legend if one is provided
+    if len(legend_str) > 0:
+        temp_str += "\\addlegendentry{" + legend_str + "}\n"
+    # Finally, we write the huge string
+    # we have created
+    f.write("%s"%(temp_str))
+    # Close the file
+    f.close()
 #------------------------------------------------------------------
 # Function 9: "FEMFD_simulation_Schnackenberg_sphere_with_holes"
 # 
@@ -421,7 +451,14 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
     u, v = TrialFunctions(H) # Current time step in the FD time stepping scheme
     # Define the previous time step as a function of the function space H
     U_prev = Function(H) # Previous time step in the FD time stepping scheme
-    U_curr = Function(H) # Current time step in the FD time stepping scheme    
+    U_curr = Function(H) # Current time step in the FD time stepping scheme
+    # Calculate the mass of the system
+    u_prev,v_prev = U_prev.split()
+    mass = 0
+    for dx in dx_list:
+        mass += u_prev*dx + v_prev*dx
+    time_list = []
+    mass_list = []
     #--------------------------------------------------------------
     # STEP 4 OUT OF : SET THE INITIAL CONDITIONS OF THE SYSTEM,
     # CREATE AN OUTPUT FOLDER WHERE THE RESULTS ARE STORED
@@ -458,6 +495,9 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
     vtkfile_u << (u_prev, t)
     v_prev.rename("Concentration profile, $v(\mathbf{x},t)$","v")    
     vtkfile_v << (v_prev, t)
+    M = assemble(mass)
+    mass_list.append(M)
+    time_list.append(t)
     #--------------------------------------------------------------
     # STEP 5 OUT OF : DEFINE THE MATRICES RESULTING FROM THE
     # VF AND THE FEM
@@ -481,7 +521,8 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
     # how many iterations that has passed
     t_it = 1
     # Define two tolerances for the adaptive time stepping
-    TOL_tadapt = 1e-3 # Used for choosing the adaptive step
+    TOL_tadapt = 1e-2 # Used for choosing the adaptive step
+    #TOL_tadapt = 1e-3 # Used for choosing the adaptive step
     dt_max = T/200 # An upper limit on the maximum time step
     # We solve the time stepping adaptively until the end time is reached 
     while t < T:
@@ -497,12 +538,17 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
             gamma_time_dependent = gamma
             gamma_time_dependent_const = gamma_const                    
         # Assemble system matrix and vector
-        A = mass_matrix + dt*(stiffness_matrix + (gamma_time_dependent*reaction_matrix))
-        b = assemble(mass_load_vector_rhs + k*(stiffness_load_vector_rhs + (gamma_time_dependent_const*reaction_load_vector_rhs)))        #
+        #A = mass_matrix + dt*(stiffness_matrix + (gamma_time_dependent*reaction_matrix))
+        #b = assemble(mass_load_vector_rhs + k*(stiffness_load_vector_rhs + (gamma_time_dependent_const*reaction_load_vector_rhs)))        #
+        A = mass_matrix + dt*(stiffness_matrix)
+        b = assemble(mass_load_vector_rhs + k*(stiffness_load_vector_rhs))  
         # Solve linear variational problem for time step
         solve(A,  U_curr.vector(), b)
+        M = assemble(mass)
+        mass_list.append(M)
+        time_list.append(t)
         # Save the solution (every tenth iteration)
-        if t_it %30 == 0:
+        if t_it %4 == 0:
             print("\t\tIteration %d, t\t=\t%0.15f out of %0.3f"%(t_it,t,T))
             # Split the current solution into its component parts
             u_curr, v_curr = U_curr.split()
@@ -511,7 +557,7 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
             vtkfile_u << (u_curr, t)
             v_curr.rename("Concentration profile, $v(\mathbf{x},t)$","v")
             vtkfile_v << (v_curr, t)                
-        if t_it > 100000: # Just in case we never finish, we break
+        if t_it > 10000: # Just in case we never finish, we break
             break
         # Compute next timestep adaptively with residual
         dt_old = dt
@@ -520,6 +566,15 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
         dt = min(2.0*dt_old*dt/(dt_old + dt), dt_max)
         # Update old solution
         U_prev.assign(U_curr)                
-            
+
+
+    # Define the string were the plot will be stored
+    file_str = "../Figures/FigS3/Input/mass_1.tex"
+    # Define the string defining the settings for the plot
+    plot_str = "color=mass_2,line width=2pt,"
+    # Define the string with the legend
+    legend_str = "Sphere with five holes"
+    # Define the plot
+    plot_LaTeX_2D(time_list,mass_list,file_str,plot_str,legend_str)
     print("\n\n\t\tALL IS FINE AND DANDY HERE!\n\n")
     print("Iterations are finished!")
