@@ -43,12 +43,12 @@ gamma = gamma_c
 parameters = [a, b, d, gamma]
 # For this experiment we have no hole in the mesh
 #num_holes = 0
-num_holes = 5
+num_holes = 0
 # Define the perturbation in the initial conditions
-sigma = 0.10
+sigma = 0.01
 # Define the end time for the simulations
-#T = 50
-T = 0.05
+T = 50
+#T = 0.05
 # Collect these latter two parameters in a list as well
 numerical_parameters = [sigma, T]
 # Since, we have no hole we have no adjacent region and therefore it is not meaningful to talk about local activation in this region. So we set the activation parameters to 1 meaning that we have no extra activation in the region adjacent to the hole
