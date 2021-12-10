@@ -37,8 +37,8 @@ print("\n\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,g
 # Set the value of the relative diffusion
 #d=5
 #d=10
-#d = 100000000000000
-d = 18
+#d = 1500
+#d = 18
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Collect all parameters in a list

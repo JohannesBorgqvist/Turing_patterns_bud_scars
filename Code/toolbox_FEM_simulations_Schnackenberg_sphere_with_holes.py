@@ -64,6 +64,7 @@ def calculate_steady_states_and_critical_parameters_Schnackenberg(a,b,k_squared)
 def read_mesh_Schnackenberg_sphere_with_holes(num_holes):
     # Allocate memory for the mesh and the mesh value collection
     mesh = Mesh()
+    #mvc_subdomains = MeshValueCollection("size_t", mesh, 2)
     mvc_subdomains = MeshValueCollection("size_t", mesh, 2)
     # Define a mesh function taking the subdomains into account
     mf_subdomains = 0
@@ -119,11 +120,14 @@ def define_Hilbert_space_Schnackenberg_sphere_with_holes(mesh):
     # Define the basis finite elements and their order. We pick linear bases functions. 
     # IMPORTANT WITH FEM: should be ''tetrahedron'' in three dimensions,     ''triangle'' in two and ''line'' in one
     #P1 = FiniteElement('P', tetrahedron, 1)
-    #P1 = FiniteElement('P', triangle, 1)
+    P1 = FiniteElement('P', triangle, 1)
     # For some reason there is an error message with using triangle here so we replaced it by "mesh.ufl_cell()" which seems to work
-    P1 = FiniteElement('P', mesh.ufl_cell(), 1)    
+    #P1 = FiniteElement("P", mesh.ufl_cell(), 1)
+    #P1 = FiniteElement('Lagrange', mesh.ufl_cell(), 1)
+    #P1 = FiniteElement("CG", mesh.ufl_cell(), 1)    
     # Define a mixed element since we have a coupled system of two PDEs
     element = MixedElement([P1, P1])
+    #element = VectorElement('P',tetrahedron, 1, dim=2)
     # Collect everything in the function space (name it H for a Hilbert space)
     H = FunctionSpace(mesh, element)
     # Return all of these elements
@@ -178,7 +182,7 @@ def initial_conditions_Schnackenberg_sphere_with_holes(H,mesh,mf_subdomains,num_
     u0 = steady_states[0]
     v0 = steady_states[1]    
     # Define an expression for the initial conditions based on the steady states
-    ic = Expression(('ic_u','ic_v'),ic_u=u0, ic_v=v0,degree=1)
+    ic = Expression(("ic_u","ic_v"),ic_u=u0, ic_v=v0,degree=1)
     # Interpolate onto the function space
     ss = interpolate(ic,H)
     # Define a function for the random perturbations
@@ -193,16 +197,7 @@ def initial_conditions_Schnackenberg_sphere_with_holes(H,mesh,mf_subdomains,num_
         U.vector()[hole_dofs]=0*(ss.vector()[hole_dofs]+epsilon.vector()[hole_dofs])
         
 #------------------------------------------------------------------
-# Function 6: "gradient_sphere"
-# The function is a help function for the Function 8 called "" and it defines the normal direction on the sphere. Now, given a state w (that is the concentration profile of either u or v in the Schnackenberg model) and the mesh the function return the normal direction. This is necessary in order to calculate the integrals giving rise the elements in the stiffness matrix (i.e. the terms associated with diffusion in the VF). 
-#------------------------------------------------------------------
-def gradient_sphere(w,mesh):
-    n = FacetNormal(mesh)
-    #return n
-    return grad(w) - dot(grad(w), n)*n
-    #return ((dot(w,n) + abs(dot(w,n)))/(2.0))
-#------------------------------------------------------------------
-# Function 7: "VF_and_FEM_Schnackenberg_sphere_with_holes"
+# Function 6: "VF_and_FEM_Schnackenberg_sphere_with_holes"
 # The function calculates the matrices in the FEM formulation by
 # defining the variational formulation and projecting it onto the
 # space of continuous picewise linear bases functions over the mesh.
@@ -229,13 +224,10 @@ def VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev
     b = parameters[1]
     d = parameters[2]    
     gamma = parameters[3]
-    # Set the parameters to constants which is necessary for the FEM solver
-    a = Constant(a)
-    b = Constant(b)
-    d = Constant(d)
-    gamma = Constant(gamma)
     # SPLIT THE SOLUTION AT THE PREVIOUS TIME STEP INTO ITS COMPONENT PARTS
     u_prev,v_prev = U_prev.split()
+    # SPLIT THE SOLUTION AT THE CURRENT TIME STEP INTO ITS COMPONENT PARTS
+    #u_curr,v_curr = U_curr.split()        
     # DEFINE THE REACTION TERMS IN THE SCHNACKENBERG MODEL IN A MIXED IMPLICIT EXPLICIT FASHION
     # (here we exclude the gamma factor as we include it later in the time stepping)
     #-----------------------------------------------------
@@ -249,7 +241,7 @@ def VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev
     #-----------------------------------------------------
     # DISCRETISATION 3
     f = a - u + (u*(u_prev*v_prev))
-    g = b - (u*(u_prev*v_prev))
+    g = b - (u*(u_prev*v_prev))    
     #-----------------------------------------------------    
     # Define the modified reaction terms if we have a hole
     if len(dx_list)>1:
@@ -264,7 +256,7 @@ def VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev
         #-----------------------------------------------------
         # DISCRETISATION 3
         f_adjacent =  (a*activation_parameters[0]) - u + (u*(u_prev*v_prev))
-        g_adjacent = (b*activation_parameters[1]) - (u*(u_prev*v_prev))
+        g_adjacent = (b*activation_parameters[1]) - (u*(u_prev*v_prev))     
         #-----------------------------------------------------                
     # DEFINE OUR THREE TYPE OF TERMS IN THE VARIATIONAL FORMULATION (VF):
     # 1. Mass_form: originating from the time derivatives in the PDEs
@@ -272,28 +264,27 @@ def VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev
     # 3. Reaction form: originating from the reaction terms in the PDEs
     # So we will define these terms by looping over our beloved measures
     # in the dx_list
+    #--------------------------------------------------------
+    # THE REST OF THE SPHERE
+    # Extract our first measure for the rest of the sphere
+    dx = dx_list[0]
     # Initiate our three forms
-    mass_form = 0
-    stiffness_form = 0
-    reaction_form = 0
-    # Define a help counter needed in the case we have a hole on the sphere
-    help_counter_hole = 1
-    # Loop over measures
-    for dx in dx_list:
-        # If we have do not have holes on the sphere
-        if help_counter_hole != 3:
-            # Otherwise, let's define our terms
-            # Mass form
-            mass_form += (u-u_prev)*phi_1 *dx + (v-v_prev)*phi_2 *dx 
-            # Stiffness form
-            stiffness_form +=  dot(grad(u), grad(phi_1))*dx +  d*dot(grad(v), grad(phi_2))*dx
-            # For the reaction terms, we take care of the altered parameters in the region adjacent to the hole first
-            if help_counter_hole==2:
-                reaction_form += -(( (f_adjacent*phi_1) + (g_adjacent*phi_2) )*dx)
-            elif help_counter_hole==1: # Otherwise it is the standard reaction terms
-                reaction_form += -(( (f*phi_1) + (g*phi_2) )*dx)
-        # Increment the help_counter_hole
-        help_counter_hole += 1
+    # Time evolution
+    mass_form = ((u-u_prev)*phi_1 + (v-v_prev)*phi_2) *dx
+    # Diffusion
+    stiffness_form =  dot(grad(u), grad(phi_1))*dx +  d*dot(grad(v), grad(phi_2))*dx
+    # Reactions
+    reaction_form = (( (f*phi_1) + (g*phi_2) )*dx)
+    # THE ADJACENT REGION
+    if len(dx_list)>1:
+        # Extract our second measure for the adjacent region
+        dx = dx_list[1]
+        # Time evolution
+        mass_form += ((u-u_prev)*phi_1 + (v-v_prev)*phi_2) *dx
+        # Diffusion
+        stiffness_form +=  (dot(grad(u), grad(phi_1)) +  (d*dot(grad(v), grad(phi_2))) )*dx
+        # Reaction
+        reaction_form += (( (f_adjacent*phi_1) + (g_adjacent*phi_2) )*dx)
     # Lastly, define the matrices in the left hand side and the load vectors in the right hand side which we return. Note, here that since the hole is implemented as a sub region there are zero blocks in the overall matrix making it non-invertible.In order for the matrix system to be solvable, i.e. making the overall matrix invertible,it is necessary to change all zero blocks (the holes) to block of identity matrices. This is done by using the command "ident_zeros". 
     # MATRICES LHS
     # Mass matrix
@@ -312,7 +303,7 @@ def VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev
     # Return all the matrices in the LHS and the load vectors in the RHS
     return mass_matrix, stiffness_matrix, reaction_matrix, mass_load_vector_rhs, stiffness_load_vector_rhs, reaction_load_vector_rhs
 #------------------------------------------------------------------
-# Function 8: "residual_Schnackenberg_sphere_with_holes"
+# Function 7: "residual_Schnackenberg_sphere_with_holes"
 # The function calculates the residual form being a measure of
 # how much the states or concentration profiles change over the course
 # of one time step. This is used in order to guide the choice of the
@@ -327,18 +318,13 @@ def VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev
 # 4. dx_list being the list of all integration measures.
 # The function returns the residual form.
 #------------------------------------------------------------------
-def residual_Schnackenberg_sphere_with_holes(parameters,phi_1,phi_2,U_prev,U_curr,dx_list,activation_parameters):
+def residual_Schnackenberg_sphere_with_holes(parameters,phi_1,phi_2,U_prev,U_curr,dx_list,activation_parameters,d):
     # RE-DEFINE THE PARAMETERS AS CONSTANTS
     # Extract the parameters of the Schackenberg model
     a = parameters[0]
     b = parameters[1]
     d = parameters[2]    
     gamma = parameters[3]
-    # Set the parameters to constants which is necessary for the FEM solver
-    a = Constant(a)
-    b = Constant(b)
-    d = Constant(d)
-    gamma = Constant(gamma)
     # SPLIT THE SOLUTION AT THE PREVIOUS TIME STEP INTO ITS COMPONENT PARTS
     u_prev,v_prev = U_prev.split()
     # SPLIT THE SOLUTION AT THE CURRENT TIME STEP INTO ITS COMPONENT PARTS
@@ -357,35 +343,33 @@ def residual_Schnackenberg_sphere_with_holes(parameters,phi_1,phi_2,U_prev,U_cur
     # 3. Reaction form: originating from the reaction terms in the PDEs
     # So we will define these terms by looping over our beloved measures
     # in the dx_list
+    # THE REST OF THE SPHERE
+    # Extract our first measure for the rest of the sphere
+    dx = dx_list[0]
     # Initiate our three forms
-    mass_form = 0
-    reaction_form = 0
-    # Define a help counter needed in the case we have a hole on the sphere
-    help_counter_hole = 1
-    # Loop over measures
-    for dx in dx_list:
-        # If we have holes on the sphere
-        if len(dx_list)>1:
-            if help_counter_hole == 1:# Rest of the sphere
-                reaction_form += -(( (f*phi_1) + (g*phi_2) )*dx)            
-            elif help_counter_hole==2: # Adjacent region
-                reaction_form += -(( (f_adjacent*phi_1) + (g_adjacent*phi_2) )*dx)
-            elif help_counter_hole == 3:# The hole
-                # Move on to the next iteration being
-                # the next integration measure
-                continue
-        else:# No holes 
-            reaction_form += -(( (f*phi_1) + (g*phi_2) )*dx)            
-        # Otherwise, let's define our terms
-        mass_form += (u_curr-u_prev)*phi_1 *dx + (v_curr-v_prev)*phi_2 *dx
-        # Increment the help_counter_hole
-        help_counter_hole += 1
+    # Diffusion
+    stiffness_form =  dot(grad(u_curr), grad(phi_1))*dx +  d*dot(grad(v_curr), grad(phi_2))*dx
+    # Time evolution
+    mass_form = ((u_curr-u_prev)*phi_1 + (v_curr-v_prev)*phi_2) *dx
+    # Reactions
+    reaction_form = (( (f*phi_1) + (g*phi_2) )*dx)                
+    # THE ADJACENT REGION
+    if len(dx_list)>1:
+        # Extract our second measure for the adjacent region
+        dx = dx_list[1]
+        # Time evolution
+        mass_form += ((u_curr-u_prev)*phi_1 + (v_curr-v_prev)*phi_2) *dx
+        # Reaction
+        reaction_form += (( (f_adjacent*phi_1) + (g_adjacent*phi_2) )*dx)
+        # Diffusion
+        stiffness_form +=  (dot(grad(u_curr), grad(phi_1)) +  (d*dot(grad(v_curr), grad(phi_2))) )*dx        
+
     # Lastly define the residual as well
-    residual_form = mass_form + gamma*reaction_form
+    residual_form = mass_form + gamma*reaction_form + stiffness_form
     # Return the residual form
     return residual_form
 #------------------------------------------------------------------
-# Function 9: "FEMFD_simulation_Schnackenberg_sphere_with_holes"
+# Function 8: "FEMFD_simulation_Schnackenberg_sphere_with_holes"
 # 
 #------------------------------------------------------------------
 # The functions solves the Schnackenberg RD model on the sphere with potential holes and potentially the parameters are altered in the regions adjacent to the holes. The function does not return any output but it writes the concentration profiles of u and v respectively to vtk files which are stored in an appropriately named sub folder of the folder named "../Output". The function takes the following inputs:
@@ -404,8 +388,14 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
     b = parameters[1]
     d = parameters[2]    
     gamma = parameters[3]
-    # We define a particular constant for gamma
+    # Re-define parameters as constants
+    a = Constant(a)
+    b = Constant(b)
+    d = Constant(d)
+    gamma = gamma
     gamma_const = Constant(gamma)
+    # Save these in a new list
+    parameters_as_constants = [a, b, d, gamma]
     # We define a growth factor for gamma if needed
     gamma_growth = 0.05
     # Extract the numerical parameters
@@ -425,8 +415,9 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
     #--------------------------------------------------------------    
     # Define test functions for the variational formulation (VF) 
     phi_1, phi_2 = TestFunctions(H)
-    # Define the trial functions (i.e. solutions of the Schnackenberg model) for the VF
-    u, v = TrialFunctions(H) # Current time step in the FD time stepping scheme
+    # Define the trial functions (i.e. solutions of the Schnackenberg model) for the VF.
+    # Think of them as the "analytical solution" which we want to approximate.
+    u, v = TrialFunctions(H) 
     # Define the previous time step as a function of the function space H
     U_prev = Function(H) # Previous time step in the FD time stepping scheme
     U_curr = Function(H) # Current time step in the FD time stepping scheme
@@ -472,12 +463,13 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
     #--------------------------------------------------------------
     # Calculate all of our matrices in the left hand side stemming from the VF
     # and all 
-    mass_matrix, stiffness_matrix, reaction_matrix, mass_load_vector_rhs, stiffness_load_vector_rhs, reaction_load_vector_rhs = VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev,dx_list,mesh,activation_parameters)
+    #mass_matrix, stiffness_matrix, reaction_matrix, mass_load_vector_rhs, stiffness_load_vector_rhs, reaction_load_vector_rhs = VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev,dx_list,mesh,activation_parameters)
+    mass_matrix, stiffness_matrix, reaction_matrix, mass_load_vector_rhs, stiffness_load_vector_rhs, reaction_load_vector_rhs = VF_and_FEM_Schnackenberg_sphere_with_holes(parameters_as_constants,u,v,phi_1,phi_2,U_prev,dx_list,mesh,activation_parameters)
     #--------------------------------------------------------------
     # STEP 6 OUT OF : CALCULATE THE RESIDUAL FORMS NEEDED FOR THE
     #ADAPTIVE TIME STEPPING
     #--------------------------------------------------------------
-    residual_form = residual_Schnackenberg_sphere_with_holes(parameters,phi_1,phi_2,U_prev,U_curr,dx_list,activation_parameters)
+    residual_form = residual_Schnackenberg_sphere_with_holes(parameters_as_constants,phi_1,phi_2,U_prev,U_curr,dx_list,activation_parameters,d)
     #--------------------------------------------------------------
     # STEP 7 OUT OF : THE ADAPTIVE TIME STEPPING USING FD IN TIME
     # AND FEM IN SPACE
@@ -489,9 +481,41 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
     # how many iterations that has passed
     t_it = 1
     # Define two tolerances for the adaptive time stepping
-    TOL_tadapt = 1e-2 # Used for choosing the adaptive step
+    TOL_tadapt = 1e-5 # Used for choosing the adaptive step
     #TOL_tadapt = 1e-3 # Used for choosing the adaptive step
-    dt_max = T/200 # An upper limit on the maximum time step
+    dt_max = 1e-6 # An upper limit on the maximum time step
+    #----------------------------------------------------------------------------------
+    # CHECKING PROPERTIES OF THE RHS
+    #print("Stiffness load, hey?")
+    #print(norm(assemble(stiffness_load_vector_rhs)))
+    #print("Mass load, hey?")
+    #print(norm(assemble(mass_load_vector_rhs)))
+    #print("Reaction load, hey?")
+    #print(norm(assemble(reaction_load_vector_rhs)))
+    #----------------------------------------------------------------------------------
+    # CHECKING PROPERTIES OF OUR TWO STATES
+    #print("u_prev[0]")
+    #U_curr.assign(U_prev)
+    #u_prev_permanent, v_prev_permanent = U_prev.split(deepcopy=True)
+    #u_curr_permanent, v_curr_permanent  = U_curr.split(deepcopy=True)
+    #print(u_prev_permanent.vector()[25])
+    #print("v_prev[0]")
+    #print(v_prev_permanent.vector()[25])
+    #print("u_curr[0]")
+    #print(u_curr_permanent.vector()[25])
+    #print("v_curr[0]")
+    #print(v_curr_permanent.vector()[25])    
+    # CHECKING PROPERTIES OF THE LHS
+    #print("Stiffness matrix, hey?")
+    #print("Det\t=\t%0.19f\n"%(np.linalg.det(stiffness_matrix.array())))
+    #print(stiffness_matrix.array()[25,25])    
+    #print("Mass matrix, hey?")
+    #print("Det\t=\t%0.19f\n"%(np.linalg.det(mass_matrix.array())))
+    #print(mass_matrix.array()[25,25])        
+    #print("Reaction matrix, hey?")
+    #print("Det\t=\t%0.19f\n"%(np.linalg.det(reaction_matrix.array())))
+    #print(reaction_matrix.array()[0,0])        
+    #----------------------------------------------------------------------------------
     # We solve the time stepping adaptively until the end time is reached 
     while t < T:
         # Update current time and iteration number 
@@ -515,7 +539,7 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
         # Solve linear variational problem for time step
         solve(A,  U_curr.vector(), b)
         # Save the solution (every tenth iteration)
-        if t_it %4 == 0:
+        if t_it %5000 == 0:
             print("\t\tIteration %d, t\t=\t%0.15f out of %0.3f"%(t_it,t,T))
             # Split the current solution into its component parts
             u_curr, v_curr = U_curr.split()
@@ -524,7 +548,7 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
             vtkfile_u << (u_curr, t)
             v_curr.rename("Concentration profile, $v(\mathbf{x},t)$","v")
             vtkfile_v << (v_curr, t)                
-        if t_it > 10000: # Just in case we never finish, we break
+        if t_it > 1000000: # Just in case we never finish, we break
             break
         # Compute next timestep adaptively with residual
         dt_old = dt

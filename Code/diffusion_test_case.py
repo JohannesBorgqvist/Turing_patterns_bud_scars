@@ -122,6 +122,11 @@ def FEM_FD_simulation_pure_diffusion_sphere_with_holes(case_indicator):
     time_list.append(t)
     M = assemble(mass)
     mass_list.append(M)
+    # Test to add a scaling
+    d = 1
+    #d = 5
+    #d = 10
+    #d = 15    
     #-------------------------------------------------------------------------
     #  DEFINE MATRIX EQUATION SYSTEM FROM FINITE ELEMENT METHOD (FEM)
     #-------------------------------------------------------------------------                    
@@ -132,7 +137,7 @@ def FEM_FD_simulation_pure_diffusion_sphere_with_holes(case_indicator):
         #mass_form = (U-u_prev)*phi *dx_sphere + (U-u_prev)*phi *dx_adjacent + (U-u_prev)*phi *dx_hole        
         # Stiffness form
         #stiffness_form =  dot(gradient_sphere(u,mesh), gradient_sphere(phi,mesh))*dx_hole + dot(gradient_sphere(u,mesh), gradient_sphere(phi,mesh))*dx_adjacent + dot(gradient_sphere(u,mesh), gradient_sphere(phi,mesh))*dx_sphere
-        stiffness_form =  dot(grad(u), grad(phi))*dx_hole + dot(grad(u), grad(phi))*dx_adjacent + dot(grad(u), grad(phi))*dx_sphere
+        stiffness_form =  d*dot(grad(u), grad(phi))*dx_hole + d*dot(grad(u), grad(phi))*dx_adjacent + d*dot(grad(u), grad(phi))*dx_sphere
         #stiffness_form =  dot(grad(U), grad(phi))*dx_hole + dot(grad(U), grad(phi))*dx_adjacent + dot(grad(U), grad(phi))*dx_sphere
     elif case_indicator == 2:
         # Mass form
@@ -140,7 +145,7 @@ def FEM_FD_simulation_pure_diffusion_sphere_with_holes(case_indicator):
         #mass_form = (U-u_prev)*phi *dx_sphere + (U-u_prev)*phi *dx_adjacent + (U-u_prev)*phi *dx_hole        
         # Stiffness form
         #stiffness_form =  dot(gradient_sphere(u,mesh), gradient_sphere(phi,mesh))*dx_hole + dot(gradient_sphere(u,mesh), gradient_sphere(phi,mesh))*dx_adjacent + dot(gradient_sphere(u,mesh), gradient_sphere(phi,mesh))*dx_sphere
-        stiffness_form =  dot(grad(u), grad(phi))*dx_adjacent + dot(grad(u), grad(phi))*dx_sphere
+        stiffness_form =  d*dot(grad(u), grad(phi))*dx_adjacent + d*dot(grad(u), grad(phi))*dx_sphere
         #stiffness_form =  dot(grad(U), grad(phi))*dx_hole + dot(grad(U), grad(phi))*dx_adjacent + dot(grad(U), grad(phi))*dx_sphere        
     # LHS: MATRICES
     # Mass matrix
@@ -166,7 +171,20 @@ def FEM_FD_simulation_pure_diffusion_sphere_with_holes(case_indicator):
     dt_max = T/200 # An upper limit on the maximum time step
     # Update current time and iteration number
     t += dt
-    k = Constant(dt)    
+    k = Constant(dt)
+    # CHECKING PROPERTIES OF THE RHS
+    #print("Stiffness load, hey?")
+    #print(norm(assemble(stiffness_load_vector_rhs)))
+    print("Mass load, hey?")
+    print(norm(assemble(mass_load_vector_rhs)))
+    #----------------------------------------------------------------------------------
+    # CHECKING PROPERTIES OF THE LHS
+    print("Stiffness matrix, hey?")
+    print("Det\t=\t%0.19f\n"%(np.linalg.det(stiffness_matrix.array())))
+    print(stiffness_matrix.array()[0:10,0:10])    
+    print("Mass matrix, hey?")
+    print("Det\t=\t%0.19f\n"%(np.linalg.det(mass_matrix.array())))
+    print(mass_matrix.array()[0:10,0:10])        
     #-------------------------------------------------------------------------
     #  SOLVE THE HEAT EQUATION ADAPTIVELY USING THE FD-FEM ALGORITHM
     #-------------------------------------------------------------------------                                
@@ -178,6 +196,7 @@ def FEM_FD_simulation_pure_diffusion_sphere_with_holes(case_indicator):
         # Assemble system matrix and  the load vectorvector
         A = mass_matrix + dt*stiffness_matrix
         b = assemble(mass_load_vector_rhs + k*(stiffness_load_vector_rhs))        #
+        
         # Solve linear variational problem for time step
         solve(A,  U_curr.vector(), b)
         # Save the solution (every second iteration)
