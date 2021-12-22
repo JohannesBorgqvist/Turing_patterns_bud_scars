@@ -93,15 +93,22 @@ gmsh.model.setPhysicalName(2,rest_of_sphere,"Rest of the sphere")
 # Add the adjacent region
 adjacent_region = gmsh.model.addPhysicalGroup(2,[adjacent_1, rest_2],2)
 gmsh.model.setPhysicalName(2,adjacent_region,"Adjacent regions")
-# Add the hole
-hole = gmsh.model.addPhysicalGroup(hole_1[0][0][0],[hole_1[0][0][1], hole_2[0][0][1]],3)
-gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Holes")
+# JUST LUMP IN ALL HOLES INTO THE SAME DOMAIN
+# Add holes
+#hole = gmsh.model.addPhysicalGroup(hole_1[0][0][0],[hole_1[0][0][1], hole_2[0][0][1]],3)
+#gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Hole")
+# Add hole 1 separately
+hole = gmsh.model.addPhysicalGroup(hole_1[0][0][0],[hole_1[0][0][1]],3)
+gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Hole 1")
+# Add hole 2 separately
+hole = gmsh.model.addPhysicalGroup(hole_2[0][0][0],[hole_2[0][0][1]],4)
+gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Hole 2")
 # -------------------------------------------------------------------
 # Part 6: Add colours to the mesh
 # -------------------------------------------------------------------
 # For nice colours, please see (https://colorbrewer2.org/)...
 #-----------------------------------------------------------------------------
-# THE REST OF THE SPEHRE
+# THE REST OF THE SPHERE
 gmsh.model.setColor([(2,rest_1)], 2, 56, 88)  # Darkest blue
 # THE HOLE
 gmsh.model.setColor([(2,hole_1[0][0][1]),(2,hole_2[0][0][1])], 255, 247, 251)  # Light blue

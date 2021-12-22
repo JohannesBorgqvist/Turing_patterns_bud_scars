@@ -1,0 +1,46 @@
+%\documentclass[tikz,crop,convert={density=200,outext=.png},border=0.4cm,width=6cm,height=3cm]{standalone}
+\documentclass[tikz,border=0.3cm]{standalone}
+\usepackage[left=2.2cm,right=2.2cm,top=2.5cm,bottom=2.0cm,a4paper]{geometry}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta}
+\usepackage{physics}
+\pgfplotsset{compat=newest,
+    %width=6cm,
+    %height=3cm,
+    scale only axis=true,
+    max space between ticks=25pt,
+    try min ticks=5,
+    every axis/.style={
+        axis y line=middle,
+        axis x line=middle,
+        axis line style={thick,->,>=latex, shorten >=-.3cm}
+    },
+    every axis plot/.append style={thick},
+    tick style={black, thick},
+}
+\tikzset{
+    semithick/.style={line width=0.8pt},
+}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{dateplot}
+\usetikzlibrary{positioning}
+%\pgfplotsset{compat=1.17}
+
+\begin{document}
+\begin{tikzpicture}
+%\node[inner sep=0pt] (exponential) at (5,0)
+%    {\includegraphics[width=0.3\textwidth]{exp.pdf}};
+\node[inner sep=0pt] (power_law) at (4.2,0)
+    {\includegraphics[width=0.7\textwidth]{evolution_mass.pdf}};
+\node[inner sep=0pt] (mixed) at (-4.2,0)
+{\includegraphics[width=0.3\textwidth]{mass.pdf}};
+\node (b) at (-6.25,2.8) {(\textbf{A})};
+%\node[left=4.2cm of b] (a) {(\textbf{A})};
+%\node[right=7.57cm of b] (c) {(\textbf{B})};
+\node (b) at (-1.25,2.8) {(\textbf{B})};
+%\draw (-1.5,-4.5) -- (-1.5,4.5);
+%\draw (-6.5,-4.5) -- (-6.5,4.5);
+\end{tikzpicture}
+
+\end{document}

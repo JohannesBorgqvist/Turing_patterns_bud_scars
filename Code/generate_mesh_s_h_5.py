@@ -1,6 +1,6 @@
 # =================================================================================
 # =================================================================================
-# Script:"generate_mesh_s_h_2"
+# Script:"generate_mesh_s_h_5"
 # Date: 2021-09-09
 # Implemented by: Johannes Borgqvist
 # Description:
@@ -132,9 +132,25 @@ gmsh.model.setPhysicalName(2,rest_of_sphere,"Rest of the sphere")
 # Add the adjacent region
 adjacent_region = gmsh.model.addPhysicalGroup(2,[rest_2, adjacent_2, adjacent_1,rest_3,adjacent_3],2)
 gmsh.model.setPhysicalName(2,adjacent_region,"Adjacent regions")
-# Add the hole
-hole = gmsh.model.addPhysicalGroup(hole_1[0][0][0],[hole_1[0][0][1], hole_2[0][0][1],hole_3[0][0][1],hole_4[0][0][1],hole_5[0][0][1]],3)
-gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Holes")
+# JUST LUMP IN ALL HOLES INTO THE SAME DOMAIN
+# Add holes
+#hole = gmsh.model.addPhysicalGroup(hole_1[0][0][0],[hole_1[0][0][1], hole_2[0][0][1],hole_3[0][0][1],hole_4[0][0][1],hole_5[0][0][1]],3)
+#gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Holes")
+# Add hole 1 separately
+hole = gmsh.model.addPhysicalGroup(hole_1[0][0][0],[hole_1[0][0][1]],3)
+gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Hole 1")
+# Add hole 2 separately
+hole = gmsh.model.addPhysicalGroup(hole_2[0][0][0],[hole_2[0][0][1]],4)
+gmsh.model.setPhysicalName(hole_2[0][0][0],hole,"Hole 2")
+# Add hole 3 separately
+hole = gmsh.model.addPhysicalGroup(hole_3[0][0][0],[hole_3[0][0][1]],5)
+gmsh.model.setPhysicalName(hole_3[0][0][0],hole,"Hole 3")
+# Add hole 4 separately
+hole = gmsh.model.addPhysicalGroup(hole_4[0][0][0],[hole_4[0][0][1]],6)
+gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Hole 4")
+# Add hole 5 separately
+hole = gmsh.model.addPhysicalGroup(hole_5[0][0][0],[hole_5[0][0][1]],7)
+gmsh.model.setPhysicalName(hole_1[0][0][0],hole,"Hole 5")
 # -------------------------------------------------------------------
 # Part 6: Add colours to the mesh
 # -------------------------------------------------------------------
