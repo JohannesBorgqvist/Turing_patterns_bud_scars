@@ -1,7 +1,7 @@
 # =================================================================================
 # =================================================================================
 # Script:"toolbox_FEM_simulations_Schnackenberg_sphere_with_holes"
-# Date: 2021-09-02
+# Date: 2021-12-17
 # Implemented by: Johannes Borgqvist
 # Description:
 # This is the main script containing all important functions needed in order to
@@ -120,9 +120,9 @@ def define_Hilbert_space_Schnackenberg_sphere_with_holes(mesh):
     # Define the basis finite elements and their order. We pick linear bases functions. 
     # IMPORTANT WITH FEM: should be ''tetrahedron'' in three dimensions,     ''triangle'' in two and ''line'' in one
     #P1 = FiniteElement('P', tetrahedron, 1)
-    P1 = FiniteElement('P', triangle, 1)
+    #P1 = FiniteElement('P', triangle, 1)
     # For some reason there is an error message with using triangle here so we replaced it by "mesh.ufl_cell()" which seems to work
-    #P1 = FiniteElement("P", mesh.ufl_cell(), 1)
+    P1 = FiniteElement("P", mesh.ufl_cell(), 1)
     #P1 = FiniteElement('Lagrange', mesh.ufl_cell(), 1)
     #P1 = FiniteElement("CG", mesh.ufl_cell(), 1)    
     # Define a mixed element since we have a coupled system of two PDEs
@@ -195,7 +195,16 @@ def initial_conditions_Schnackenberg_sphere_with_holes(H,mesh,mf_subdomains,num_
     # Assign the value zero to the holes if a hole exists
     if len(hole_dofs)>0:
         U.vector()[hole_dofs]=0*(ss.vector()[hole_dofs]+epsilon.vector()[hole_dofs])
-        
+
+#------------------------------------------------------------------
+# Function 5.5: "gradient_sphere"
+# The function is a help function for the Function 8 called "" and it defines the normal direction on the sphere. Now, given a state w (that is the concentration profile of either u or v in the Schnackenberg model) and the mesh the function return the normal direction. This is necessary in order to calculate the integrals giving rise the elements in the stiffness matrix (i.e. the terms associated with diffusion in the VF). 
+#------------------------------------------------------------------
+#def gradient_sphere(w,mesh):
+    #n = FacetNormal(mesh)
+    #return n
+    #return grad(w) - dot(grad(w), n)*n
+    #return ((dot(w,n) + abs(dot(w,n)))/(2.0))        
 #------------------------------------------------------------------
 # Function 6: "VF_and_FEM_Schnackenberg_sphere_with_holes"
 # The function calculates the matrices in the FEM formulation by
@@ -232,31 +241,31 @@ def VF_and_FEM_Schnackenberg_sphere_with_holes(parameters,u,v,phi_1,phi_2,U_prev
     # (here we exclude the gamma factor as we include it later in the time stepping)
     #-----------------------------------------------------
     # DISCRETISATION 1
-    #f = a - u + ((u_prev**2)*v_prev)
-    #g = b - ((u_prev**2)*v_prev)
+    f = a - u + ((u_prev**2)*v_prev)
+    g = b - ((u_prev**2)*v_prev)
     #-----------------------------------------------------
     # DISCRETISATION 2
     #f = a - u + ((u_prev**2)*v)
     #g = b - ((u_prev**2)*v)
     #-----------------------------------------------------
     # DISCRETISATION 3
-    f = a - u + (u*(u_prev*v_prev))
-    g = b - (u*(u_prev*v_prev))    
+    #f = a - u + (u*(u_prev*v_prev))
+    #g = b - (u*(u_prev*v_prev))    
     #-----------------------------------------------------    
     # Define the modified reaction terms if we have a hole
     if len(dx_list)>1:
         #-----------------------------------------------------
         # DISCRETISATION 1
-        #f_adjacent =  (a*activation_parameters[0]) - u + ((u_prev**2)*v_prev)
-        #g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v_prev)
+        f_adjacent =  (a*activation_parameters[0]) - u + ((u_prev**2)*v_prev)
+        g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v_prev)
         #-----------------------------------------------------
         # DISCRETISATION 2
         #f_adjacent =  (a*activation_parameters[0]) - u + ((u_prev**2)*v)
         #g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v)
         #-----------------------------------------------------
         # DISCRETISATION 3
-        f_adjacent =  (a*activation_parameters[0]) - u + (u*(u_prev*v_prev))
-        g_adjacent = (b*activation_parameters[1]) - (u*(u_prev*v_prev))     
+        #f_adjacent =  (a*activation_parameters[0]) - u + (u*(u_prev*v_prev))
+        #g_adjacent = (b*activation_parameters[1]) - (u*(u_prev*v_prev))     
         #-----------------------------------------------------                
     # DEFINE OUR THREE TYPE OF TERMS IN THE VARIATIONAL FORMULATION (VF):
     # 1. Mass_form: originating from the time derivatives in the PDEs
@@ -334,7 +343,7 @@ def residual_Schnackenberg_sphere_with_holes(parameters,phi_1,phi_2,U_prev,U_cur
     f = a - u_curr + ((u_prev**2)*v_prev)
     g = b - ((u_prev**2)*v_prev)
     # Define the modified reaction terms if we have a hole
-    if len(dx_list)>1:
+    if len(dx_list)>1:         # Discretesation 1  
        f_adjacent =  (a*activation_parameters[0]) - u_curr + ((u_prev**2)*v_prev)
        g_adjacent = (b*activation_parameters[1]) - ((u_prev**2)*v_prev)       
     # DEFINE OUR THREE TYPE OF TERMS IN THE VARIATIONAL FORMULATION (VF):
@@ -481,9 +490,9 @@ def FEMFD_simulation_Schnackenberg_sphere_with_holes(num_holes,parameters,steady
     # how many iterations that has passed
     t_it = 1
     # Define two tolerances for the adaptive time stepping
-    TOL_tadapt = 1e-5 # Used for choosing the adaptive step
+    TOL_tadapt = 1e-4 # Used for choosing the adaptive step
     #TOL_tadapt = 1e-3 # Used for choosing the adaptive step
-    dt_max = 1e-6 # An upper limit on the maximum time step
+    dt_max = 1e-5 # An upper limit on the maximum time step
     #----------------------------------------------------------------------------------
     # CHECKING PROPERTIES OF THE RHS
     #print("Stiffness load, hey?")
