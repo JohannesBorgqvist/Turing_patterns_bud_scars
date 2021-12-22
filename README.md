@@ -72,7 +72,17 @@ In order to make the project as reproducible as possible, the coding has been do
 
 Both of the first two of these has a Python interface. Thus the scripts for generating the meshes using Gmsh and the scripts for conducting the FEM simulations using FEniCS are written in Python. For visualising the results, the graphical interface of ParaView has been used. 
 
-Provided that anaconda has been succesfully installed, the easiest way to install all relevant packages is to use the [*conda installation of FEniCS*](https://fenicsproject.org/download/). It is recommended to create and activate a conda environment in order to install and access all relevant parts of FEniCS. To create and activate a conda environment by the name of "*fenicsproject*", use the following two steps:
+
+Provided that anaconda has been succesfully installed, the easiest way to install all relevant packages is to install two different conda environments. These can be accessed through the provided yml-files called *gmsh\_latest\_version.yml* and *fenicsproject.yml*. These two environments are installed using the command<br>
+
+*conda env create -f gmsh\_latest\_version.yml*<br>
+
+and<br>
+*conda env create -f fenicsproject.yml*<br>
+
+respectively. The first environment must be activated in order to generate the meshes using the relevant Python scripts via Gmsh. The second environment must be activated in order to run the FEM based simulations using FEniCS. 
+
+If you cannot install these to environments from the provided yml files, you can try to do it manually using the [*conda installation of FEniCS*](https://fenicsproject.org/download/). It is recommended to create and activate a conda environment in order to install and access all relevant parts of FEniCS. To create and activate a conda environment by the name of "*fenicsproject*", use the following two steps:
 
 1. conda create -n fenicsproject -c conda-forge fenics
 2. source activate fenicsproject
