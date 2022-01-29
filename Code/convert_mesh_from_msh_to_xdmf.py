@@ -38,6 +38,7 @@ def create_mesh(mesh, cell_type, prune_z=False):
                            cell_type: cells}, cell_data={"name_to_read": [cell_data]})
     if prune_z:
         out_mesh.prune_z_0()
+        
     return out_mesh
 
 # =================================================================================
@@ -48,7 +49,7 @@ def create_mesh(mesh, cell_type, prune_z=False):
 #------------------------------------------------------------
 # NO HOLES
 #------------------------------------------------------------
-# Read the mesh with one hole using meshio
+# Read the mesh without holes using meshio
 msh = meshio.read("../Meshes/s_h_0.msh")
 # Create a triangle mesh using the function "create_mesh"
 triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
@@ -66,7 +67,7 @@ meshio.write("../Meshes/s_h_1.xdmf", triangle_mesh)
 #------------------------------------------------------------
 # 2 HOLES
 #------------------------------------------------------------
-# Read the mesh with one hole using meshio
+# Read the mesh with two holes using meshio
 msh = meshio.read("../Meshes/s_h_2.msh")
 # Create a triangle mesh using the function "create_mesh"
 triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
@@ -75,7 +76,7 @@ meshio.write("../Meshes/s_h_2.xdmf", triangle_mesh)
 #------------------------------------------------------------
 # 5 HOLES
 #------------------------------------------------------------
-# Read the mesh with one hole using meshio
+# Read the mesh with five holes using meshio
 msh = meshio.read("../Meshes/s_h_5.msh")
 # Create a triangle mesh using the function "create_mesh"
 triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
