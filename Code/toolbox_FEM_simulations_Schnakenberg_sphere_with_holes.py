@@ -21,6 +21,8 @@
 from fenics import *
 # Import numpy as well
 import numpy as np
+# Write less trick
+np.fac = np.math.factorial
 # =================================================================================
 # =================================================================================
 # Functions for conducting the FEM simulations
@@ -65,7 +67,108 @@ def calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared):
     return u_0, v_0, d_c, gamma_c
 
 #------------------------------------------------------------------
-# Function 2: "read_mesh_Schnakenberg_sphere_with_holes"
+# Function 2: "compute_minimal_holeradius_for_pattern_disturbance"
+# The function takes the Schnakenberg model parameters a, b, d, and
+# gamma, as well as the wavenumber k_squared. It computes and
+# returns the minimal radius epsilon of a geodesic disk-shaped hole
+# that is needed to affect the Turing patterns. The function also
+# returns the spectral parameters n_eps and m_eps that corresponds
+# to the eigenfunction(s) causing the disturbance
+#------------------------------------------------------------------
+
+def compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n_ref,n_largest):
+
+    # Compute the lower and upper excited wavenumber bounds
+    # OBS! There should be only one eigenvalue in the excitation
+    # interval (gL, gM), namely n_ref*(n_ref+1)
+    lm = d*(b-a) - (a+b)**3
+    gL = gamma*(lm - np.sqrt(lm**2 -4*d*(a+b)**4))/(2*d*(a+b))
+    gM = gamma*(lm + np.sqrt(lm**2 -4*d*(a+b)**4))/(2*d*(a+b))
+
+    # Initialize list for epsilon, n, m
+    eps_list = [] 
+    
+    # Go through LOWER unperturbed eigenvalue parameters to compute
+    # the minimal epsilon needed to enter the excitation interval
+    # For LOWER n's we enter from below, i.e., hit gL
+    for n in range(1,n_ref):
+
+        eigv_n = n*(n+1)          # The unperturbed eigenvalue
+        m = 0                     # Corresponding and relevant m-value
+        Cnm = 4*(2*n+1)/(n*(n+1)) # Coefficient of leading perturbation term     
+
+        epsilon = sqrt((gL - eigv_n)/Cnm)
+        eps_list.append([n, m, epsilon])
+        #print(n, m, epsilon)
+
+
+        
+    # Go through the given unperturbed eigenvalue parameter n_ref to compute
+    # the minimal epsilon needed to exit the excitation interval
+    # For n_ref we can exit both below and above, i.e., hit gL and gM
+    #print("----")
+
+    n = n_ref  
+    eigv_n = n*(n+1)          # The unperturbed eigenvalue
+
+    # m = 0, we can only exit above, i.e., hit gM
+    m = 0                     # Corresponding and relevant m-value
+    Cnm = 4*(2*n+1)/(n*(n+1)) # Coefficient of leading perturbation term       
+
+    epsilon = sqrt((gM - eigv_n)/Cnm)
+    eps_list.append([n, m, epsilon])
+    #print(n, m, epsilon)
+
+    # m > 0, we can only exit below, i.e., hit gL
+    # Loop over the corresponding and relevant m-values
+    for m in range(1,n+1):
+
+            Cnm_nom = (2*n+1)*np.fac(m+n)
+            Cnm_den = (4**m)*np.fac(n-m)*np.fac(m)*np.fac(m-1)
+            Cnm = -Cnm_nom/Cnm_den # Coefficient of leading perturbation term
+
+            epsilon = ((gL - eigv_n)/Cnm)**(1/(2*m))
+            eps_list.append([n, m, epsilon])
+            #print(n, m, epsilon)
+            
+    #print("----")
+
+
+    
+    # Go through some HIGHER unperturbed eigenvalue parameters to compute
+    # the minimal epsilon needed to enter the excitation interval
+    # For HIGHER n's we enter from above, i.e., hit gM
+    for n in range(n_ref+1,n_largest+1):
+        eigv_n = n*(n+1)          # The unperturbed eigenvalue      
+        # Loop over the corresponding and relevant m-values
+        # (m = 1, ..., n for HIGHER n's)
+        for m in range(1,n+1):
+            Cnm_nom = (2*n+1)*np.fac(m+n)
+            Cnm_den = (4**m)*np.fac(n-m)*np.fac(m)*np.fac(m-1)
+            Cnm = -Cnm_nom/Cnm_den # Coefficient of leading perturbation term
+            epsilon = ((gM - eigv_n)/Cnm)**(1/(2*m))
+            eps_list.append([n, m, epsilon])
+            #print(n, m, epsilon)
+
+
+
+    # Compute the minimal epsilon and corresponding spectral parameters        
+    #print(eps_list)
+    eps_min = 3.14 # Initialize with something large.
+    for i in range(0, len(eps_list)):
+        #print(eps_list[i])
+        if eps_list[i][2] < eps_min:
+            eps_min = eps_list[i][2]
+            n_min = eps_list[i][0]
+            m_min = eps_list[i][1]
+
+    #print(eps_min, n_min, m_min)
+    
+    # Return the parameters 
+    return eps_min, n_min, m_min
+
+#------------------------------------------------------------------
+# Function 3: "read_mesh_Schnakenberg_sphere_with_holes"
 # The function takes the number of holes as inputs and
 # returns the following four outputs:
 # 1. The mesh "mesh",
@@ -130,7 +233,7 @@ def read_mesh_Schnakenberg_sphere_with_holes(num_holes):
     return mesh, mvc_subdomains, mf_subdomains, dx_list
 
 #------------------------------------------------------------------
-# Function 3: "set_up_FEM_Schnakenberg_sphere_with_holes"
+# Function 4: "set_up_FEM_Schnakenberg_sphere_with_holes"
 # The function sets up the FEM framework for the Schnakenberg
 # model on the sphere with holes. It takes a mesh as input
 # and then it returns the function space H.
@@ -151,7 +254,7 @@ def define_Hilbert_space_Schnakenberg_sphere_with_holes(mesh):
     return H
 
 #------------------------------------------------------------------
-# Function 4: "perturbations_ic__Schnakenberg_sphere_with_holes"
+# Function 5: "perturbations_ic__Schnakenberg_sphere_with_holes"
 # The function is a help function for the Function 5 called "initial_conditions_Schnakenberg_sphere_with_holes" which sets the initial conditions of the system. It generates a vector where each element corresponds to a node in the mesh of interest, and each element in this vector corresponds to a perturbation error drawn from a standard normal distribution. The inputs are the vector itself called epsilon and the parameter sigma determining the variance of the standard normal distribution from which the perturbations of the steady states in the initial conditions are drawn.
 #------------------------------------------------------------------
 
@@ -161,7 +264,7 @@ def perturbations_ic__Schnakenberg_sphere_with_holes(epsilon,sigma):
     return epsilon
 
 #------------------------------------------------------------------
-# Function 5: "initial_conditions_Schnakenberg_sphere_with_holes"
+# Function 6: "initial_conditions_Schnakenberg_sphere_with_holes"
 # The function sets the initial conditions for the system and writes these two the function u_prev which is given as an input. The initial conditions for the two states in the Schnakenberg are set to a small perturbation around the steady state. The perturbation is given by a normal distribution with zero mean and where the variance is determined by the input sigma. Hence, no output is returned and the following input must be provided:
 # 1. The Hilbert space H,
 # 2. The mesh stored in the variable mesh,
@@ -237,7 +340,7 @@ def initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_h
   
 
 #------------------------------------------------------------------
-# Function 6: "VF_and_FEM_Schnakenberg_sphere_with_holes"
+# Function 7: "VF_and_FEM_Schnakenberg_sphere_with_holes"
 # The function calculates the matrices in the FEM formulation by
 # defining the variational formulation and projecting it onto the
 # space of continuous picewise linear bases functions over the mesh.
@@ -345,7 +448,7 @@ def VF_and_FEM_Schnakenberg_sphere_with_holes(parameters, u, v, phi_1, phi_2, u_
     return mass_form_u, mass_form_v, stiffness_form_u, stiffness_form_v, reaction_form_u, reaction_form_v 
 
 #------------------------------------------------------------------
-# Function 7: "residual_Schnakenberg_sphere_with_holes"
+# Function 8: "residual_Schnakenberg_sphere_with_holes"
 # The function calculates the residual forms being a measure of
 # how much the states or concentration profiles change over the course
 # of one time step. This is used in order to guide the choice of the
@@ -438,7 +541,7 @@ def residual_Schnakenberg_sphere_with_holes(parameters,phi_1,phi_2,u_prev,v_prev
     return residual_form_u + residual_form_v
 
 #------------------------------------------------------------------
-# Function 8: "FEMFD_simulation_Schnakenberg_sphere_with_holes"
+# Function 9: "FEMFD_simulation_Schnakenberg_sphere_with_holes"
 # 
 #------------------------------------------------------------------
 # The functions solves the Schnakenberg RD model on the sphere with potential holes and potentially the parameters are altered in the regions adjacent to the holes. The function does not return any output but it writes the concentration profiles of u and v respectively to vtk files which are stored in an appropriately named sub folder of the folder named "../Output". The function takes the following inputs:
