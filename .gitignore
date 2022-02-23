@@ -30,3 +30,5 @@ Figures/Meshes/auto/
 # are huge
 *.vtu
 *.pvd
+# Also, we do not include the figures online
+/Figures/
