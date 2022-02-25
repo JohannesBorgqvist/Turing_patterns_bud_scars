@@ -1,8 +1,8 @@
 # =================================================================================
 # =================================================================================
 # Script:"launch_simulations_Schnakenberg_sphere_with_holes"
-# Date: 2021-09-02
-# Implemented by: Johannes Borgqvist
+# Date: 2022-02-22
+# Implemented by: Johannes Borgqvist and Carl Lundholm
 # Description:
 # This is the script which launches the FEM simulations, and
 # it uses all functions that are stored in the script
@@ -56,8 +56,8 @@ print("\t\tThe critical spectral parameters:\t\t(n,m)\t=\t(%0.4f,%0.4f)"%(n_min,
 # Collect all parameters in a list
 parameters = [a, b, d, gamma]
 # For this experiment we have no hole in the mesh
-#num_holes = 0
-num_holes = 1
+num_holes = 0
+#num_holes = 1
 #num_holes = 2
 #num_holes = 5
 # Define the perturbation in the initial conditions
