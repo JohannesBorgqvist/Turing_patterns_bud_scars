@@ -168,12 +168,45 @@ def perturbed_eigenvalue_Schnakenberg(n,m,epsilon):
     eigen_value = n*(n+1)
     # Calculate the linear term depending on the value of m
     if m == 0:
-        linear_coefficient = ((4*(2*n+1))/(n*(n+1)))
+        next_term = ((4*(2*n+1))/(n*(n+1)))*(epsilon**2)
     elif:
         denom = (4**m)*np.fac(m)*np.fac(m-1)*np.fac(n-m)
         c = ((np.fac(m+n))/(denom))
-        linear_coefficient+= -(2*n+1)*c*epsilon 
-    # Add the linear coefficient    
-    eigen_value += linear_coefficient*epsilon
+        next_term+= -(2*n+1)*c**(epsilon**(2*m))
+    # Add the next term in the asymptotic expansion
+    eigen_value += next_term
     # Return the eigenvalue at hand
     return eigen_value
+#------------------------------------------------------------------
+# Function 4: "check_Turing_conditions_Scnakenberg"
+# This function checks whether the provided parameters (a,b,gamma,d)
+# satisfies the Turing conditions and in this case it returns the
+# upper bound M and the lower bound L in the Turing analysis. 
+#------------------------------------------------------------------
+def check_Turing_conditions_Scnakenberg(a,b,d):
+    # Calculate the four partial derivatives of
+    # the Jacobian matrix used in the linear
+    # stability analysis evaluated at the steady state
+    f_u = ( (b - a) / (b + a) )
+    f_v = ( (a + b)**2 )
+    g_u = ( (-2*b) / (a+b) )
+    g_v = -f_v
+    # Calculate the determinant of the Jacobian matrix evaluated at the steady state
+    det_A = (f_u*g_v) - (f_v*g_u)
+    # Now calculate our four conditions
+    cond_1 = (f_u+g_v<0)
+    cond_2 = (det_A>0)
+    cond_3 = ((d*f_u+g_v)>0)
+    cond_4 = (((d*f_u+gv)**2-(4*d*det_A))>0)
+    # Now we define the output depending on whether these conditions are met or not
+    if cond_1 and cond_2 and cond_3 and cond_4:
+        Turing_conditions = True
+        discriminant = np.sqrt((d*f_u+g_v)**2-(4*d*det_A))
+        L = ((d*f_u+g_v-discriminant)/(2*d))
+        M = ((d*f_u+g_v+discriminant)/(2*d))        
+    else:
+        Turing_conditions = False
+        L = 0
+        M = 0
+    # Finally, return these outputs
+    return Turing_conditions,L,M
