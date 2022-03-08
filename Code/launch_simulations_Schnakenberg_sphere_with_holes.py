@@ -14,6 +14,7 @@
 # =================================================================================
 import numpy as np
 import toolbox_FEM_simulations_Schnakenberg_sphere_with_holes as FEM_toolbox  # Home-made
+import Schnakenberg_properties # Home-made
 # =================================================================================
 # =================================================================================
 # The experiments
@@ -30,7 +31,7 @@ b = 1
 n = 2
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
-u_0, v_0, d_c, gamma_c = FEM_toolbox.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
+u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Print the results
@@ -47,7 +48,7 @@ gamma = gamma_c
 #n_largest = 731 # Largest eigenvalue parameter to test for.
 #n_largest = 6
 n_largest = 6
-eps_min, n_min, m_min = FEM_toolbox.compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n,n_largest)
+eps_min, n_min, m_min = Schnakenberg_properties.compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n,n_largest)
 hole_cylinder_radius = np.sin(eps_min)
 # Print the results
 print("\n\t\tTheoretical parameter values for pattern disturbances") 
