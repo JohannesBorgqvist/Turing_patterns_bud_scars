@@ -157,4 +157,23 @@ def compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n_ref,n_large
     
     # Return the parameters 
     return eps_min, n_min, m_min
-
+#------------------------------------------------------------------
+# Function 3: "perturbed_eigenvalues_Schnakenberg"
+# This function calculates the perturbed eigenvalues of the
+# Schnackenberg model. It takes the eigen value pair (n,m)  as well
+# as the hole radius epsilon and return the eigenvalue. 
+#------------------------------------------------------------------
+def perturbed_eigenvalue_Schnakenberg(n,m,epsilon):
+    # Allocate memory for the eigenvalue that will be returned
+    eigen_value = n*(n+1)
+    # Calculate the linear term depending on the value of m
+    if m == 0:
+        linear_coefficient = ((4*(2*n+1))/(n*(n+1)))
+    elif:
+        denom = (4**m)*np.fac(m)*np.fac(m-1)*np.fac(n-m)
+        c = ((np.fac(m+n))/(denom))
+        linear_coefficient+= -(2*n+1)*c*epsilon 
+    # Add the linear coefficient    
+    eigen_value += linear_coefficient*epsilon
+    # Return the eigenvalue at hand
+    return eigen_value
