@@ -97,7 +97,7 @@ else:
 eigen_value_list = [(n,m) for n in [2,3,4] for m in range(n+1)]
 print(eigen_value_list)
 # Find some really nice colours for the curves based on the colour maps on https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9
-colour_list_for_plotting = [(77/256,0/256,75/256), (129/256,15/256,124/256), (136/256,65/256,157/256),(0/256,68/256,27/256),(0/256,109/256,44/256),(35/256,139/256,69/256),(65/256,174/256,118/256),(2/256,56/256,18/256),(4/256,90/256,141/256),(5/256,112/256,176/256),(54/256,144/256,192/256),(116/256,169/256,207/256)]
+colour_list_for_plotting = [(77/256,0/256,75/256), (129/256,15/256,124/256), (136/256,65/256,157/256),(0/256,68/256,27/256),(0/256,109/256,44/256),(35/256,139/256,69/256),(65/256,174/256,118/256),(2/256,56/256,88/256),(4/256,90/256,141/256),(5/256,112/256,176/256),(54/256,144/256,192/256),(116/256,169/256,207/256)]
 # Create a list of all labels as well
 label_strings = ["$\\lambda_{" + str(eigen_value_list[index][0]) + "," + str(eigen_value_list[index][1]) + "}$" for index in range(len(eigen_value_list))]
 # Create an np array called epsilon vector with hole radii
