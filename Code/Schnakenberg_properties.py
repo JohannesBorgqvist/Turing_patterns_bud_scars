@@ -68,7 +68,6 @@ def calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared):
 #------------------------------------------------------------------
 
 def compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n_ref,n_largest):
-
     # Compute the lower and upper excited wavenumber bounds
     # OBS! There should be only one eigenvalue in the excitation
     # interval (gL, gM), namely n_ref*(n_ref+1)
@@ -169,10 +168,10 @@ def perturbed_eigenvalue_Schnakenberg(n,m,epsilon):
     # Calculate the linear term depending on the value of m
     if m == 0:
         next_term = ((4*(2*n+1))/(n*(n+1)))*(epsilon**2)
-    elif:
-        denom = (4**m)*np.fac(m)*np.fac(m-1)*np.fac(n-m)
-        c = ((np.fac(m+n))/(denom))
-        next_term+= -(2*n+1)*c**(epsilon**(2*m))
+    elif m>0:
+        denom = (4**m)*np.math.factorial(m)*np.math.factorial(m-1)*np.math.factorial(n-m)
+        c = ((np.math.factorial(m+n))/(denom))
+        next_term = -(2*n+1)*c*(epsilon**(2*m))
     # Add the next term in the asymptotic expansion
     eigen_value += next_term
     # Return the eigenvalue at hand
@@ -197,7 +196,7 @@ def check_Turing_conditions_Scnakenberg(a,b,d):
     cond_1 = (f_u+g_v<0)
     cond_2 = (det_A>0)
     cond_3 = ((d*f_u+g_v)>0)
-    cond_4 = (((d*f_u+gv)**2-(4*d*det_A))>0)
+    cond_4 = (((d*f_u+g_v)**2-(4*d*det_A))>0)
     # Now we define the output depending on whether these conditions are met or not
     if cond_1 and cond_2 and cond_3 and cond_4:
         Turing_conditions = True
