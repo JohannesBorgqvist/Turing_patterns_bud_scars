@@ -14,8 +14,41 @@
 import Schnakenberg_properties # Home made
 import numpy as np # For numerical calculations
 from matplotlib import pyplot as plt # For plotting
-
-
+# =================================================================================
+# =================================================================================
+# Functions
+# =================================================================================
+# =================================================================================
+def plot_LaTeX_2D(t,y,file_str,plot_str,legend_str):
+    # Open a file with the append option
+    # so that we can write to the same
+    # file multiple times
+    f = open(file_str, "a")
+    # Create a temporary string which
+    # is the one that does the plotting.
+    # Here we incorporate the input plot_str
+    # which contains the color, and the markers
+    # of the plot at hand
+    if len(legend_str)==0:
+        temp_str = "\\addplot[\nforget plot,\n" + plot_str+ "\n]\n"
+    else:
+        temp_str = "\\addplot[\n" + plot_str+ "\n]\n"
+    # Add the coordinates
+    temp_str += "coordinates {%\n"
+    # Loop over the input files and add
+    # them to the file
+    for i in range(len(t)):
+        temp_str += "(" + str(t[i]) + "," + str(y[i]) + ")\n"
+    # The plotting is done, let's close the shop    
+    temp_str += "};\n"
+    # Add a legend if one is provided
+    if len(legend_str) > 0:
+        temp_str += "\\addlegendentry{" + legend_str + "}\n"
+    # Finally, we write the huge string
+    # we have created
+    f.write("%s"%(temp_str))
+    # Close the file
+    f.close()
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
@@ -74,7 +107,10 @@ lambda_vec = [np.array([Schnakenberg_properties.perturbed_eigenvalue_Schnakenber
 # Create vector for the lower and upper bounds as well
 upper_bound = np.ones(len(epsilon_vector))*gamma*M
 lower_bound = np.ones(len(epsilon_vector))*gamma*L
-
+# Create an index list which we will loop over subsequently
+index_list = list(range(len(eigen_value_list)))
+# Reverse this list so that the legend looks nice
+index_list.sort(reverse=True)
 
 print("\n\n==============================================================================================================================")
 
@@ -92,7 +128,7 @@ plt.rc('ytick', labelsize=20)    # fontsize of the tick labels
 # add a big axis, hide frame
 fig.add_subplot(111, frameon=False)
 # Plot the eigenvalues
-for index in range(len(eigen_value_list)):
+for index in index_list:
     axes.plot(epsilon_vector,lambda_vec[index],'-',color=colour_list_for_plotting[index],label=label_strings[index])
 # Plot the upper bound
 axes.plot(epsilon_vector,upper_bound,'--sk',label="$\\gamma\\;M$")
@@ -107,4 +143,14 @@ plt.title("Perturbed eigenvalues $\\lambda_{n,m}(\\varepsilon)$ as a function of
 plt.show()
 #plt.savefig("../Figures/perturbed_eigenvalues.png")
 
+
+
+#----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------
+# ILLUSTRATE THE EIGENVALUES IN LATEX
+#----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------
+# Plot the eigenvalues
+for index in index_list:
+    plot_LaTeX_2D(epsilon_vector,lambda_vec[index],"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=2pt,",label_strings[index])
 
