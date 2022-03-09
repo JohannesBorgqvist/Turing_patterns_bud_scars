@@ -209,3 +209,36 @@ def check_Turing_conditions_Scnakenberg(a,b,d):
         M = 0
     # Finally, return these outputs
     return Turing_conditions,L,M
+#------------------------------------------------------------------
+# Function 5: "calculate_distance_between_bounds"
+# This function takes the following inputs
+# 1. The parameter a,
+# 2. The parameter b,
+# 3. The parameter d,
+# and it returns the distance M-L where M is the upper bound for
+# Turing instability and L is the lower bound. 
+#------------------------------------------------------------------
+def calculate_distance_between_bounds(a,b,d):
+    # Calculate the critical diffusion
+    # Calculate the four partial derivatives of
+    # the Jacobian matrix used in the linear
+    # stability analysis
+    f_u = ( (b - a) / (b + a) )
+    f_v = ( (a + b)**2 )
+    g_u = ( (-2*b) / (a+b) )
+    g_v = -f_v
+
+    # Calculate the critical diffusion value reported
+    # in Chaplain 2001. Since the expression is quite
+    # messy, we divide it into three parts.
+    d_c = ( (f_u*g_v) - (2*f_v*g_u) )
+    d_c +=  np.sqrt( d_c**2 - ((f_u**2)*(g_v**2)) )
+    d_c = ( (d_c) / (f_u**2) )
+    # Now, we return the output
+    if d <= d_c:
+        dist = 0
+    else:
+        dist = np.sqrt(((d*(b-a) - (a+b)**3)**2) - (4*d*((a+b)**4)))
+        dist = dist/(d*(a+b))
+    # Return distance 
+    return dist

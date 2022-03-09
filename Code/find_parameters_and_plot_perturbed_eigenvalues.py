@@ -49,6 +49,49 @@ def plot_LaTeX_2D(t,y,file_str,plot_str,legend_str):
     f.write("%s"%(temp_str))
     # Close the file
     f.close()
+def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
+    # Open a file with the append option
+    # so that we can write to the same
+    # file multiple times
+    f = open(file_str, "a")
+    # Create a temporary string which
+    # is the one that does the plotting.
+    # Here we incorporate the input plot_str
+    # which contains the color, and the markers
+    # of the plot at hand
+    if surfaceNotCurve:
+        if len(legend_str)==0:
+            temp_str = "\\addplot3[forget plot," + plot_str+ "]\n"
+        else:
+            temp_str = "\\addplot3[" + plot_str+ "]\n"
+    else:
+        if len(legend_str)==0:
+            temp_str = "\\addplot3+[forget plot," + plot_str+ "]\n"
+        else:
+            temp_str = "\\addplot3+[" + plot_str+ "]\n"        
+    # Add the coordinates
+    temp_str += "coordinates {%\n"
+    # Loop over the input files and add
+    # them to the file
+    for index in range(len(data)):
+        temp_str += "("+str(data[index][0]) + "," + str(data[index][1]) + "," + str(data[index][2]) + ")"
+        if index>0:
+            if index < len(data)-1 and data[index][1] < data[index+1][1]:
+                temp_str += "\n"
+            elif index == len(data)-1:
+                temp_str += "\n"
+            else:
+                temp_str += "  "
+    # The plotting is done, let's close the shop    
+    temp_str += "};\n"
+    # Add a legend if one is provided
+    if len(legend_str) > 0:
+        temp_str += "\\addlegendentry{" + legend_str + "}\n"
+    # Finally, we write the huge string
+    # we have created
+    f.write("%s"%(temp_str))
+    # Close the file
+    f.close()    
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
@@ -73,7 +116,8 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-d = 18
+d = 17.02
+#d = 18
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Prompt to the user
@@ -101,7 +145,7 @@ colour_list_for_plotting = [(77/256,0/256,75/256), (129/256,15/256,124/256), (13
 # Create a list of all labels as well
 label_strings = ["$\\lambda_{" + str(eigen_value_list[index][0]) + "," + str(eigen_value_list[index][1]) + "}$" for index in range(len(eigen_value_list))]
 # Create an np array called epsilon vector with hole radii
-epsilon_vector = np.linspace(0,0.50,100,endpoint=True)
+epsilon_vector = np.linspace(0,0.60,100,endpoint=True)
 # Create a list of np arrays with the corresponding eigenvalues
 lambda_vec = [np.array([Schnakenberg_properties.perturbed_eigenvalue_Schnakenberg(nm_tuple[0],nm_tuple[1],epsilon) for epsilon in list(epsilon_vector)]) for nm_tuple in eigen_value_list]
 # Create vector for the lower and upper bounds as well
@@ -154,3 +198,28 @@ plt.savefig("../Figures/perturbed_eigenvalues.png")
 for index in index_list:
     plot_LaTeX_2D(epsilon_vector,lambda_vec[index],"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=2pt,",label_strings[index])
 
+# Plot the thresholds
+plot_LaTeX_2D(epsilon_vector,upper_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=halfcircle*,mark size=0.5pt,color=black,","$M(a,b,d)$")
+plot_LaTeX_2D(epsilon_vector,lower_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=square*,mark size=0.5pt,color=black,","$L(a,b,d)$")    
+print("\n\n==============================================================================================================================\n")
+print("\t Looking at the parameter space\n")
+print("==============================================================================================================================\n")
+
+
+num_cols = 77
+a_vec = np.linspace(0.01,0.25,num_cols,endpoint=True)
+d_vec = np.linspace(5,25,num_cols,endpoint=True)
+
+dist_vec = [(a_temp,d_temp,Schnakenberg_properties.calculate_distance_between_bounds(a_temp,b,d_temp)) for d_temp in list(d_vec) for a_temp in list(a_vec)]
+
+
+
+plot_LaTeX_3D(dist_vec,"../Figures/parameter_plot_Schnakenberg/Input/parameter_surface.tex","surf","Turing region",True)
+
+d_vec = np.array([Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a_temp,b,k_squared)[2] for a_temp in list(a_vec)])
+
+
+dist_vec_crit = [(a_vec[index],d_vec[index],0) for index in range(len(a_vec))]
+
+
+plot_LaTeX_3D(dist_vec_crit,"../Figures/parameter_plot_Schnakenberg/Input/critical_diffusion.tex","color=black,line width=2pt,mark=none,","Critical diffusion $d_c$",False)
