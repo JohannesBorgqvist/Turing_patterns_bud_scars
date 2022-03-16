@@ -145,7 +145,7 @@ colour_list_for_plotting = [(77/256,0/256,75/256), (129/256,15/256,124/256), (13
 # Create a list of all labels as well
 label_strings = ["$\\lambda_{" + str(eigen_value_list[index][0]) + "," + str(eigen_value_list[index][1]) + "}$" for index in range(len(eigen_value_list))]
 # Create an np array called epsilon vector with hole radii
-epsilon_vector = np.linspace(0,0.60,100,endpoint=True)
+epsilon_vector = np.linspace(0,np.sin(0.60),100,endpoint=True)
 # Create a list of np arrays with the corresponding eigenvalues
 lambda_vec = [np.array([Schnakenberg_properties.perturbed_eigenvalue_Schnakenberg(nm_tuple[0],nm_tuple[1],epsilon) for epsilon in list(epsilon_vector)]) for nm_tuple in eigen_value_list]
 # Create vector for the lower and upper bounds as well
@@ -180,7 +180,8 @@ axes.plot(epsilon_vector,lower_bound,'--pk',label="$\\gamma\\;L$")
 axes.legend()
 #hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
-plt.xlabel("Geodesic hole radius, $\\varepsilon$")
+#plt.xlabel("Geodesic hole radius, $\\varepsilon$")
+plt.xlabel("Cylindrical hole radius, $\\varepsilon$")
 plt.ylabel("Eigenvalues, $\\lambda_{n,m}(\\varepsilon)$")
 # displaying the title
 plt.title("Perturbed eigenvalues $\\lambda_{n,m}(\\varepsilon)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
