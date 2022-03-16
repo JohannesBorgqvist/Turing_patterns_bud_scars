@@ -104,7 +104,7 @@ gmsh.model.setPhysicalName(2,adjacent_region,"Adjacent region")
 # -------------------------------------------------------------------
 # For nice colours, please see (https://colorbrewer2.org/)...
 #-----------------------------------------------------------------------------
-# THE REST OF THE SPEHRE
+# THE REST OF THE SPHERE
 gmsh.model.setColor([(2,rest_weird)], 2, 56, 88)  # Darkest blue
 # THE HOLE
 #gmsh.model.setColor([(2,the_hole[0][0][1])], 255, 247, 251)  # Light blue
