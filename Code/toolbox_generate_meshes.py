@@ -54,12 +54,13 @@ def generate_spherical_mesh_with_holes(c0_list,c1_list,hole_radii):
         c1 = c1_list[hole_index]
         # Extract the hole radius
         hole_radius = hole_radii[hole_index]
-        # Create the cylinder
-        v1 = gmsh.model.occ.addCylinder(c0[0],c0[1],c0[2], c1[0],c1[1],c1[2], hole_radius)
-        # Create the hole being the intersection between the unit sphere and the cylinder
-        the_hole = gmsh.model.occ.intersect(rest[0], [(3, v1)], removeObject=False)
-        # Remove the hole
-        rest = gmsh.model.occ.cut(rest[0], the_hole[0], removeObject=True)    
+        if hole_radius > 0:
+            # Create the cylinder
+            v1 = gmsh.model.occ.addCylinder(c0[0],c0[1],c0[2], c1[0],c1[1],c1[2], hole_radius)
+            # Create the hole being the intersection between the unit sphere and the cylinder
+            the_hole = gmsh.model.occ.intersect(rest[0], [(3, v1)], removeObject=False)
+            # Remove the hole
+            rest = gmsh.model.occ.cut(rest[0], the_hole[0], removeObject=True)    
     #---------------------------------------------------------------
     # Part 4 out of 7: Finalise the mesh
     #---------------------------------------------------------------
@@ -94,3 +95,5 @@ def generate_spherical_mesh_with_holes(c0_list,c1_list,hole_radii):
     mesh_name += ".msh"
     # Write the mesh to our file
     gmsh.write(mesh_name.replace("_.msh",".msh"))    
+    # Shut down gmsh
+    gmsh.finalize()
