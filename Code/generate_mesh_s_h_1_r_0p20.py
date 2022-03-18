@@ -45,7 +45,7 @@ gmsh.model.occ.remove([(3, v0)])
 c0 = (0,0,0) # Cylinder starting point
 #c1 = (0,1,1) # Original first cylinder end point
 c1 = (-1,1,0) # First cylinder end point
-hole_radius = 0.25
+hole_radius = 0.60
 v1 = gmsh.model.occ.addCylinder(c0[0],c0[1],c0[2], c1[0],c1[1],c1[2], hole_radius)
 #the_hole = gmsh.model.occ.intersect([(2, s0[0][1])], [(3, v1)], removeObject=False)
 the_hole = gmsh.model.occ.intersect(s0, [(3, v1)], removeObject=False)
