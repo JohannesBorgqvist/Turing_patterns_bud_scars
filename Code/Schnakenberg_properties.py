@@ -144,18 +144,23 @@ def compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n_ref,n_large
 
     # Compute the minimal epsilon and corresponding spectral parameters        
     #print(eps_list)
-    eps_min = 3.14 # Initialize with something large.
+    eps_min = 3.14 # Initialise with something large.
+    eps_max = 0.000000000000000000001 # Initialise with something small
     for i in range(0, len(eps_list)):
         #print(eps_list[i])
         if eps_list[i][2] < eps_min:
             eps_min = eps_list[i][2]
             n_min = eps_list[i][0]
             m_min = eps_list[i][1]
+        elif eps_list[i][2] > eps_max:
+            eps_max = eps_list[i][2]
+            n_max = eps_list[i][0]
+            m_max = eps_list[i][1]            
 
     #print(eps_min, n_min, m_min)
     
     # Return the parameters 
-    return eps_min, n_min, m_min
+    return (eps_min,eps_max), (n_min,n_max), (m_min,m_max)
 #------------------------------------------------------------------
 # Function 3: "perturbed_eigenvalues_Schnakenberg"
 # This function calculates the perturbed eigenvalues of the
