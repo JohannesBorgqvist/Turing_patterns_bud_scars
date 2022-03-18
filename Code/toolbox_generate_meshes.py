@@ -87,12 +87,15 @@ def generate_spherical_mesh_with_holes(c0_list,c1_list,hole_radii):
     # Generate the two dimensional mesh (as we work with surfaces) 
     gmsh.model.mesh.generate(2)
     # Allocate a file name for the mesh
-    mesh_name = "../Meshes/s_h_" + str(len(hole_radii)) + "_"
-    # Loop over the hole radii and add these to the file names
-    for hole_radius in hole_radii:
-        mesh_name += "r_" + str(round(hole_radius,2)).replace(".","p") + "_"
-    # Add the suffix
-    mesh_name += ".msh"
+    if len(hole_radii) == 1 and hole_radii[0]== 0:
+        mesh_name = "../Meshes/s_h_0.msh"
+    else:
+        mesh_name = "../Meshes/s_h_" + str(len(hole_radii)) + "_"
+        # Loop over the hole radii and add these to the file names
+        for hole_radius in hole_radii:
+            mesh_name += "r_" + str(round(hole_radius,2)).replace(".","p") + "_"
+        # Add the suffix
+        mesh_name += ".msh"
     # Write the mesh to our file
     gmsh.write(mesh_name.replace("_.msh",".msh"))    
     # Shut down gmsh
