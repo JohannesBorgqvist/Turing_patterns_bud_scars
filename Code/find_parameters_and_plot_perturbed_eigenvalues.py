@@ -120,6 +120,20 @@ d = 17.02
 #d = 18
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
+# Calculate the critical hole radius for all eigenvalues between n=2 and n=4
+#n_largest = 6
+n_largest = 2
+eps_tuple, n_tuple, m_tuple = Schnakenberg_properties.compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n,n_largest)
+# Extract the minimal radii
+eps_min = eps_tuple[0]
+n_min = n_tuple[0]
+m_min = m_tuple[0]
+# Extract the maximal radii
+eps_max = eps_tuple[1]
+n_max = n_tuple[1]
+m_max = m_tuple[1]
+# Calculate the critical radius
+hole_cylinder_radius = np.sin(eps_max)
 # Prompt to the user
 print("\n\n==============================================================================================================================\n")
 print("\t Testing parameters and plotting perturbed eigenvalues\n")
@@ -155,7 +169,11 @@ lower_bound = np.ones(len(epsilon_vector))*gamma*L
 index_list = list(range(len(eigen_value_list)))
 # Reverse this list so that the legend looks nice
 index_list.sort(reverse=True)
-
+# Generate a plottable vertical line for the eigenvalues as well
+#print("\t\tThe critical radius:\t(n,m,r)\t=\t(%d,%d,%0.3f)"%(n_min,m_min,hole_cylinder_radius))
+print("\t\tThe critical radius:\t(n,m,r)\t=\t(%d,%d,%0.3f)"%(n_max,m_max,hole_cylinder_radius))
+vertical_line = np.linspace(0,21,50)
+crit_radius = hole_cylinder_radius*np.ones(len(vertical_line))
 print("\n\n==============================================================================================================================")
 
 #----------------------------------------------------------------------------------
@@ -177,6 +195,7 @@ for index in index_list:
 # Plot the upper bound
 axes.plot(epsilon_vector,upper_bound,'--sk',label="$\\gamma\\;M$")
 axes.plot(epsilon_vector,lower_bound,'--pk',label="$\\gamma\\;L$")
+axes.plot(crit_radius,vertical_line,'+k',label="$\\varepsilon_{\\mathrm{crit}}$")
 axes.legend()
 #hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
@@ -201,7 +220,9 @@ for index in index_list:
 
 # Plot the thresholds
 plot_LaTeX_2D(epsilon_vector,upper_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=halfcircle*,mark size=0.5pt,color=black,","$M(a,b,d)$")
-plot_LaTeX_2D(epsilon_vector,lower_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=square*,mark size=0.5pt,color=black,","$L(a,b,d)$")    
+plot_LaTeX_2D(epsilon_vector,lower_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=square*,mark size=0.5pt,color=black,","$L(a,b,d)$")
+# Plot the vertical line as well
+plot_LaTeX_2D(crit_radius,vertical_line,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=square*,mark size=0.5pt,color=black,","$\varepsilon_{\mathrm{crit}}$")
 print("\n\n==============================================================================================================================\n")
 print("\t Looking at the parameter space\n")
 print("==============================================================================================================================\n")
