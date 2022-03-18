@@ -222,7 +222,7 @@ for index in index_list:
 plot_LaTeX_2D(epsilon_vector,upper_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=halfcircle*,mark size=0.5pt,color=black,","$M(a,b,d)$")
 plot_LaTeX_2D(epsilon_vector,lower_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=square*,mark size=0.5pt,color=black,","$L(a,b,d)$")
 # Plot the vertical line as well
-plot_LaTeX_2D(crit_radius,vertical_line,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=square*,mark size=0.5pt,color=black,","$\varepsilon_{\mathrm{crit}}$")
+plot_LaTeX_2D(crit_radius,vertical_line,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=diamond*,mark size=0.5pt,color=black,","$\\varepsilon_{\\mathrm{crit}}$")
 print("\n\n==============================================================================================================================\n")
 print("\t Looking at the parameter space\n")
 print("==============================================================================================================================\n")
