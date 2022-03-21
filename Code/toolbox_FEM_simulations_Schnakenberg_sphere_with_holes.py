@@ -32,63 +32,42 @@ np.fac = np.math.factorial
 # Function 1: "read_mesh_Schnakenberg_sphere_with_holes"
 # The function takes the number of holes as inputs and
 # returns the following four outputs:
-# 1. The mesh "mesh",
-# 2. A mesh value collection "mvc_subdomains" containing
-# the subdomains,
+# 1. The number of holes in a variable called "num_holes",
+# 2. A list of all the radii of the holes called "radii_holes",
 # 3. A mesh_function "mf_subdomain",
 # 4. A list of integration measures "dx_list" used in the
 # variational formulation.
 #------------------------------------------------------------------
 
-def read_mesh_Schnakenberg_sphere_with_holes(num_holes):
-
+def read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes):
     # Allocate memory for the mesh and the mesh value collection
     mesh = Mesh()
     mvc_subdomains = MeshValueCollection("size_t", mesh, 2)
-
     # Define a mesh function taking the subdomains into account
     mf_subdomains = 0
-
     # Allocate memory for a list containing all the integration
     # measures involved in the variational formulation
     dx_list = []    
-
+    # Define the string of the mesh that we want to read
+    mesh_str = "../Meshes/s_h_" + str(num_holes)
     # Define the string in which we read the mesh
     # depending on the number of holes
-    if num_holes == 0 or num_holes==1 or num_holes==2 or num_holes==5: # No holes on the sphere
-        mesh_str = "../Meshes/s_h_" + str(num_holes) +".xdmf"
-    else:
-        print("ERROR: No such mesh exists!")
-        return mesh, mvc_subdomains, mf_subdomains, dx_list        
-
+    if num_holes > 0:
+        # Loop over the radii and add these to the string name of the mesh
+        for radius in radii_holes:
+            mesh_str += "r_" + str(round(radius,3)).replace(".","p") + "_"
+    # Now, we add the file format to the string as well
+    mesh_str += ".xdmf"
+    # And tidy the file name up in necessary
+    mesh_str.replace("_.xdmf",".xdmf")
     # Read in the mesh and the subdomains into these two variables
     with XDMFFile(mesh_str) as infile:
         infile.read(mesh)
         infile.read(mvc_subdomains, "name_to_read")
-
     # Define a mesh function taking the subdomains into account
     mf_subdomains = cpp.mesh.MeshFunctionSizet(mesh, mvc_subdomains)
-
-    # Add measures to this list depending on if we have holes
-    # or not
-    if num_holes == 0:
-        # In this case, we only have one subdomain and thus only one
-        # integration measure
-        dx_sphere = Measure("dx", domain=mesh, subdomain_data=mf_subdomains, subdomain_id=1)            
-        # Append this measure to the list
-        dx_list.append(dx_sphere)
-    else:
-        # In the case of holes, three subdomains are marked in the mesh.
-        # These are the holes with subdomain_id=3, the adjacent region
-        # with subdomain_id=2 and the sphere with subdomain_id=1.
-        dx_sphere = Measure("dx", domain=mesh, subdomain_data=mf_subdomains, subdomain_id=1)
-        dx_adjacent = Measure("dx", domain=mesh, subdomain_data=mf_subdomains, subdomain_id=2)
-        dx_hole = Measure("dx", domain=mesh, subdomain_data=mf_subdomains, subdomain_id=3)            
-        # Append these measures to the list in the order sphere, adjacent and hole:
-        dx_list.append(dx_sphere)
-        dx_list.append(dx_adjacent)
-        dx_list.append(dx_hole)
-
+    # Add our integration measure to the list of integration measure
+    dx_list.append(Measure("dx", domain=mesh, subdomain_data=mf_subdomains, subdomain_id=1))
     # Lastly, return our mesh, the mesh value collection, the mesh
     # function and the integration measures.
     return mesh, mvc_subdomains, mf_subdomains, dx_list
