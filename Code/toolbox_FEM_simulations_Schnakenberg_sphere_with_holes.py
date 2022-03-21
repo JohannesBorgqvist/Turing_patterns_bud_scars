@@ -391,10 +391,10 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
         mass_vector_v = assemble(mass_form_v_rhs)            
         # Assemble system matrices and rhs vector
         # SYSTEM WITH REACTIONS
-        A_u = mass_matrix_u + k*(stiffness_matrix_u + gamma_time_dependent_const*reaction_matrix_u)
-        A_v = mass_matrix_v + k*(stiffness_matrix_v + gamma_time_dependent_const*reaction_matrix_v)
-        b_u = mass_vector_u + k*gamma_time_dependent_const*reaction_vector_u
-        b_v = mass_vector_v + k*gamma_time_dependent_const*reaction_vector_v
+        A_u = mass_matrix_u + k*(stiffness_matrix_u + gamma*reaction_matrix_u)
+        A_v = mass_matrix_v + k*(stiffness_matrix_v + gamma*reaction_matrix_v)
+        b_u = mass_vector_u + k*gamma*reaction_vector_u
+        b_v = mass_vector_v + k*gamma*reaction_vector_v
         # Solve linear variational problems for time step
         solve(A_u, u_curr.vector(), b_u)
         solve(A_v, v_curr.vector(), b_v)
