@@ -133,7 +133,7 @@ def initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_h
         # Add all the dofs in the sphere
         sphere_dofs.extend(dofmap.cell_dofs(cell.index()))            
     # Find the unique dofs
-    hole_dofs = list(set(hole_dofs))
+    sphere_dofs = list(set(sphere_dofs))
     # Access the component steady states as well
     u0 = steady_states[0]
     v0 = steady_states[1]    
