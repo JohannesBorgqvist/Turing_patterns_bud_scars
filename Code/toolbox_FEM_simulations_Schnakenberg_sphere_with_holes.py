@@ -127,7 +127,7 @@ def initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_h
     # Create a dofmap
     dofmap = H.dofmap()
     # Classify the dofs as either in the hole or on the rest of the sphere
-    hole_dofs = []
+    sphere_dofs = []
     # Loop over the cells in the mesh and add the dofs in the respective list
     for cell in cells(mesh):
         # Add all the dofs in the sphere
