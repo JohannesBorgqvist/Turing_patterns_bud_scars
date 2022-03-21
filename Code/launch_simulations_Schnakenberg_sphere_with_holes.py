@@ -62,7 +62,7 @@ T = 50
 # Collect these latter two parameters in a list as well
 numerical_parameters = [sigma, T]
 # Surpress all the output from FEniCS
-set_log_active(False)
+set_log_level(LogLevel.ERROR)
 # Solve the FEM system with the given parameters
 FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes)
 
