@@ -322,12 +322,12 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     # We wish to have the most explanatory name of our output folder explaining the chosen parameters. So we create a series of strings which gives us all the information we need in the very name of the folder
     folder_str = "../Output/"
     hole_str = "h_" + str(num_holes) + "_"    
-    a_str = "a_" + str(round(a,2)).replace(".","p") + "_"
-    b_str = "b_" + str(round(b,2)).replace(".","p") + "_"
-    d_str = "d_" + str(round(d,2)).replace(".","p") + "_"
-    gamma_str = "gamma_" + str(round(gamma,2)).replace(".","p") + "_"
-    sigma_str = "sigma_" + str(round(sigma,2)).replace(".","p") + "_"
-    T_str = "T_" + str(round(T,2)).replace(".","p") + "_"
+    a_str = "a_" + str(round(a,3)).replace(".","p") + "_"
+    b_str = "b_" + str(round(b,3)).replace(".","p") + "_"
+    d_str = "d_" + str(round(d,3)).replace(".","p") + "_"
+    gamma_str = "gamma_" + str(round(gamma,3)).replace(".","p") + "_"
+    sigma_str = "sigma_" + str(round(sigma,3)).replace(".","p") + "_"
+    T_str = "T_" + str(round(T,3)).replace(".","p") + "/"
     # Gather all these substrings into one giant string where we will save the output files
     output_folder_str = folder_str + hole_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str
     # Define two output files based on this giant result folder where we have one output file for each of the two states
