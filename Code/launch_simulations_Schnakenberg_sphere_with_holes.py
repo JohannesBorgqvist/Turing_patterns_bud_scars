@@ -34,6 +34,10 @@ k_squared = n*(n+1)
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
 # Save the steady states in a list
 steady_states = [u_0,v_0]
+# Prompt to the user
+print("---------------------------------------------------------------------------------------------------------\n")
+print("\tREPLICATING CHAPLAINS SIMULATIONS")
+print("---------------------------------------------------------------------------------------------------------\n")
 # Print the results
 print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
 print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))
@@ -63,4 +67,15 @@ T = 50
 numerical_parameters = [sigma, T]
 # Solve the FEM system with the given parameters
 FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes)
+# Looping over the varius radii and run all simulations there!
+# Define the experimental design of holes with increasing radii
+experimental_design = [(1,[0.3]), (1,[0.35]), (1,[0.4]), (1,[0.45]), (1,[0.5]), (1,[0.55])]
+# Loop over the experiments in the experimental design and run them all
+for experiment in experimental_design:
+    # Prompt to the user
+    print("---------------------------------------------------------------------------------------------------------\n")
+    print("\tNUM_HOLES\t=\t%d,\tRADII\t=\t%s"%(int(experiment[0]),str(experiment[1])))
+    print("---------------------------------------------------------------------------------------------------------\n")    
+    # Solve the FEM system with the given parameters
+    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],[a, b, 17.02, gamma],steady_states,numerical_parameters,experiment[1])    
 
