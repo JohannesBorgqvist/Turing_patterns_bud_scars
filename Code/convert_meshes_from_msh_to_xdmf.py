@@ -49,8 +49,6 @@ def create_mesh(mesh, cell_type, prune_z=False):
 print("-----------------------------------------------------------")
 print("\tCONVERT MSH MESHES TO XDMF")
 print("-----------------------------------------------------------")
-# Surpress all the output from FEniCS
-set_log_level(LogLevel.ERROR)
 #------------------------------------------------------------
 # NO HOLES
 #------------------------------------------------------------
