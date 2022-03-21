@@ -55,11 +55,12 @@ def read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes):
     if num_holes > 0:
         # Loop over the radii and add these to the string name of the mesh
         for radius in radii_holes:
-            mesh_str += "r_" + str(round(radius,3)).replace(".","p") + "_"
+            mesh_str += "_r_" + str(round(radius,3)).replace(".","p") + "_"
     # Now, we add the file format to the string as well
     mesh_str += ".xdmf"
     # And tidy the file name up in necessary
-    mesh_str.replace("_.xdmf",".xdmf")
+    mesh_str = mesh_str.replace("_.xdmf",".xdmf")
+    print(mesh_str)
     # Read in the mesh and the subdomains into these two variables
     with XDMFFile(mesh_str) as infile:
         infile.read(mesh)
