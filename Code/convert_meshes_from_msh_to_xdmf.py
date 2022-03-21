@@ -74,6 +74,17 @@ triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 meshio.write("../Meshes/s_h_1_r_0p3.xdmf", triangle_mesh)
 print("\t\t\tDone!")
 #------------------------------------------------------------
+# 1 HOLE RADIUS 0.35
+#------------------------------------------------------------
+print("\t\tConvert mesh with 1 hole r=0.35")
+# Read the mesh with one hole using meshio
+msh = meshio.read("../Meshes/s_h_1_r_0p35.msh")
+# Create a triangle mesh using the function "create_mesh"
+triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
+# Save the triangle mesh
+meshio.write("../Meshes/s_h_1_r_0p35.xdmf", triangle_mesh)
+print("\t\t\tDone!")
+#------------------------------------------------------------
 # 1 HOLE RADIUS 0.4
 #------------------------------------------------------------
 print("\t\tConvert mesh with 1 hole r=0.4")
@@ -83,6 +94,17 @@ msh = meshio.read("../Meshes/s_h_1_r_0p4.msh")
 triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 # Save the triangle mesh
 meshio.write("../Meshes/s_h_1_r_0p4.xdmf", triangle_mesh)
+print("\t\t\tDone!")
+#------------------------------------------------------------
+# 1 HOLE RADIUS 0.45
+#------------------------------------------------------------
+print("\t\tConvert mesh with 1 hole r=0.45")
+# Read the mesh with one hole using meshio
+msh = meshio.read("../Meshes/s_h_1_r_0p45.msh")
+# Create a triangle mesh using the function "create_mesh"
+triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
+# Save the triangle mesh
+meshio.write("../Meshes/s_h_1_r_0p45.xdmf", triangle_mesh)
 print("\t\t\tDone!")
 #------------------------------------------------------------
 # 1 HOLE RADIUS 0.5
@@ -96,13 +118,13 @@ triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 meshio.write("../Meshes/s_h_1_r_0p5.xdmf", triangle_mesh)
 print("\t\t\tDone!")
 #------------------------------------------------------------
-# 1 HOLE RADIUS 0.6
+# 1 HOLE RADIUS 0.55
 #------------------------------------------------------------
-print("\t\tConvert mesh with 1 hole r=0.6")
+print("\t\tConvert mesh with 1 hole r=0.55")
 # Read the mesh with one hole using meshio
-msh = meshio.read("../Meshes/s_h_1_r_0p6.msh")
+msh = meshio.read("../Meshes/s_h_1_r_0p55.msh")
 # Create a triangle mesh using the function "create_mesh"
 triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 # Save the triangle mesh
-meshio.write("../Meshes/s_h_1_r_0p6.xdmf", triangle_mesh)
+meshio.write("../Meshes/s_h_1_r_0p55.xdmf", triangle_mesh)
 print("\t\t\tDone!")
