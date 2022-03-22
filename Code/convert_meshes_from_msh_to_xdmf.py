@@ -61,68 +61,58 @@ triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 meshio.write("../Meshes/s_h_0.xdmf", triangle_mesh)
 print("\t\t\tDone!")
 #------------------------------------------------------------
-# 1 HOLE RADIUS 0.3
+# 1 HOLE RADIUS 0.05
 #------------------------------------------------------------
-print("\t\tConvert mesh with 1 hole r=0.3")
+print("\t\tConvert mesh with 1 hole r=0.05")
 # Read the mesh with one hole using meshio
-msh = meshio.read("../Meshes/s_h_1_r_0p3.msh")
+msh = meshio.read("../Meshes/s_h_1_r_0p05.msh")
 # Create a triangle mesh using the function "create_mesh"
 triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 # Save the triangle mesh
-meshio.write("../Meshes/s_h_1_r_0p3.xdmf", triangle_mesh)
+meshio.write("../Meshes/s_h_1_r_0p05.xdmf", triangle_mesh)
 print("\t\t\tDone!")
 #------------------------------------------------------------
-# 1 HOLE RADIUS 0.35
+# 1 HOLE RADIUS 0.10
 #------------------------------------------------------------
-print("\t\tConvert mesh with 1 hole r=0.35")
+print("\t\tConvert mesh with 1 hole r=0.10")
 # Read the mesh with one hole using meshio
-msh = meshio.read("../Meshes/s_h_1_r_0p35.msh")
+msh = meshio.read("../Meshes/s_h_1_r_0p10.msh")
 # Create a triangle mesh using the function "create_mesh"
 triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 # Save the triangle mesh
-meshio.write("../Meshes/s_h_1_r_0p35.xdmf", triangle_mesh)
+meshio.write("../Meshes/s_h_1_r_0p10.xdmf", triangle_mesh)
 print("\t\t\tDone!")
 #------------------------------------------------------------
-# 1 HOLE RADIUS 0.4
+# 1 HOLE RADIUS 0.15
 #------------------------------------------------------------
-print("\t\tConvert mesh with 1 hole r=0.4")
+print("\t\tConvert mesh with 1 hole r=0.15")
 # Read the mesh with one hole using meshio
-msh = meshio.read("../Meshes/s_h_1_r_0p4.msh")
+msh = meshio.read("../Meshes/s_h_1_r_0p15.msh")
 # Create a triangle mesh using the function "create_mesh"
 triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 # Save the triangle mesh
-meshio.write("../Meshes/s_h_1_r_0p4.xdmf", triangle_mesh)
+meshio.write("../Meshes/s_h_1_r_0p15.xdmf", triangle_mesh)
 print("\t\t\tDone!")
 #------------------------------------------------------------
-# 1 HOLE RADIUS 0.45
+# 1 HOLE RADIUS 0.20
 #------------------------------------------------------------
-print("\t\tConvert mesh with 1 hole r=0.45")
+print("\t\tConvert mesh with 1 hole r=0.20")
 # Read the mesh with one hole using meshio
-msh = meshio.read("../Meshes/s_h_1_r_0p45.msh")
+msh = meshio.read("../Meshes/s_h_1_r_0p20.msh")
 # Create a triangle mesh using the function "create_mesh"
 triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 # Save the triangle mesh
-meshio.write("../Meshes/s_h_1_r_0p45.xdmf", triangle_mesh)
+meshio.write("../Meshes/s_h_1_r_0p20.xdmf", triangle_mesh)
 print("\t\t\tDone!")
 #------------------------------------------------------------
-# 1 HOLE RADIUS 0.5
+# 1 HOLE RADIUS 0.25
 #------------------------------------------------------------
-print("\t\tConvert mesh with 1 hole r=0.5")
+print("\t\tConvert mesh with 1 hole r=0.25")
 # Read the mesh with one hole using meshio
-msh = meshio.read("../Meshes/s_h_1_r_0p5.msh")
+msh = meshio.read("../Meshes/s_h_1_r_0p25.msh")
 # Create a triangle mesh using the function "create_mesh"
 triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
 # Save the triangle mesh
-meshio.write("../Meshes/s_h_1_r_0p5.xdmf", triangle_mesh)
+meshio.write("../Meshes/s_h_1_r_0p25.xdmf", triangle_mesh)
 print("\t\t\tDone!")
-#------------------------------------------------------------
-# 1 HOLE RADIUS 0.55
-#------------------------------------------------------------
-print("\t\tConvert mesh with 1 hole r=0.55")
-# Read the mesh with one hole using meshio
-msh = meshio.read("../Meshes/s_h_1_r_0p55.msh")
-# Create a triangle mesh using the function "create_mesh"
-triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
-# Save the triangle mesh
-meshio.write("../Meshes/s_h_1_r_0p55.xdmf", triangle_mesh)
-print("\t\t\tDone!")
+
