@@ -19,10 +19,10 @@ import toolbox_generate_meshes # Home-made
 # =================================================================================
 # =================================================================================
 # Generate a list of points defining the points on the sphere
-c0_lists = [[(0,0,0)], [(0,0,0)], [(0,0,0)], [(0,0,0)], [(0,0,0)], [(0,0,0)], [(0,0,0)]]
-c1_lists = [[(-1,1,0)], [(-1,1,0)], [(-1,1,0)], [(-1,1,0)], [(-1,1,0)], [(-1,1,0)], [(-1,1,0)]]
+c0_lists = [[(0,0,0)], [(0,0,0)], [(0,0,0)], [(0,0,0)], [(0,0,0)], [(0,0,0)]]
+c1_lists = [[(-1,1,0)], [(-1,1,0)], [(-1,1,0)], [(-1,1,0)], [(-1,1,0)], [(-1,1,0)]]
 # Generate a list of hole radii
-hole_radii_list = [[0.0],[0.3],[0.35],[0.4],[0.45], [0.50], [0.55]]
+hole_radii_list = [[0.0],[0.05],[0.10],[0.15],[0.20], [0.25]] # Hole radii 2022-03-22
 # Loop over all points and radii to generate the corresponding meshes
 for list_index in range(len(hole_radii_list)):
     toolbox_generate_meshes.generate_spherical_mesh_with_holes(c0_lists[list_index],c1_lists[list_index],hole_radii_list[list_index])
