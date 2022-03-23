@@ -1,7 +1,7 @@
 # =================================================================================
 # =================================================================================
 # Script:"launch_simulations_Schnakenberg_sphere_with_holes"
-# Date: 2022-02-22
+# Date: 2022-03-23
 # Implemented by: Johannes Borgqvist and Carl Lundholm
 # Description:
 # This is the script which launches the FEM simulations, and
@@ -70,7 +70,7 @@ numerical_parameters = [sigma, T]
 # Looping over the varius radii and run all simulations there!
 # Define the experimental design of holes with increasing radii
 #experimental_design = [(0,[]), (1,[0.05]), (1,[0.1]), (1,[0.15]), (1,[0.2]), (1,[0.25])] 
-experimental_design = [(0,[])] 
+experimental_design = [(0,[a, b, 17.02, gamma],[sigma, 100],[]),(0,[a, b, 17.05, gamma],[sigma, 100],[])] 
 # Loop over the experiments in the experimental design and run them all
 for experiment in experimental_design:
     # Prompt to the user
@@ -78,5 +78,5 @@ for experiment in experimental_design:
     print("\tNUM_HOLES\t=\t%d,\tRADII\t=\t%s"%(int(experiment[0]),str(experiment[1])))
     print("---------------------------------------------------------------------------------------------------------\n")    
     # Solve the FEM system with the given parameters
-    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],[a, b, 17.05, gamma],steady_states,numerical_parameters,experiment[1])    
+    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],steady_states,experiment[2],experiment[3])    
 
