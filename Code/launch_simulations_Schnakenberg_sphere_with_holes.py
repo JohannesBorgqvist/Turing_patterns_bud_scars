@@ -66,7 +66,7 @@ T = 50
 # Collect these latter two parameters in a list as well
 numerical_parameters = [sigma, T]
 # Solve the FEM system with the given parameters
-FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes)
+#FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes)
 # Looping over the varius radii and run all simulations there!
 # Define the experimental design of holes with increasing radii
 #experimental_design = [(0,[]), (1,[0.05]), (1,[0.1]), (1,[0.15]), (1,[0.2]), (1,[0.25])] 
