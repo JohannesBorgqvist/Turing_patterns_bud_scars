@@ -285,8 +285,6 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     gamma_const = Constant(gamma)
     # Save these in a new list
     parameters_as_constants = [a, b, d, gamma]
-    # We define a growth factor for gamma if needed
-    gamma_growth = 0.05
     # Extract the numerical parameters
     sigma = numerical_parameters[0] # Determining the perturbation in the initial conditions
     T = numerical_parameters[1] # Determining the end time for the FD time stepping scheme
