@@ -410,7 +410,7 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
         solve(A_u, u_curr.vector(), b_u)
         solve(A_v, v_curr.vector(), b_v)
         # Save and check the solution (every whatever iteration)
-        if  (t_prev < save_iteration) && (t > save_iteration):
+        if  (t_prev < save_iteration) and (t > save_iteration):
             # Increase the iterations
             save_iteration += 0.5
             # Save the components in the data files
