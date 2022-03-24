@@ -69,8 +69,7 @@ numerical_parameters = [sigma, T]
 #FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes)
 # Looping over the varius radii and run all simulations there!
 # Define the experimental design of holes with increasing radii
-#experimental_design = [(0,[]), (1,[0.05]), (1,[0.1]), (1,[0.15]), (1,[0.2]), (1,[0.25])] 
-experimental_design = [(0,[a, b, 17.02, gamma],[sigma, 200],[]),(0,[a, b, 17.05, gamma],[sigma, 200],[])] 
+experimental_design = [(0,[a, b, 17.50, gamma],[sigma, 200],[]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.05]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.1]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.15]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.2]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.25]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.3]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.35]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.4]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.45]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.5]),(1,[a, b, 17.50, gamma],[sigma, 200],[0.55])] 
 # Loop over the experiments in the experimental design and run them all
 for experiment in experimental_design:
     # Prompt to the user
