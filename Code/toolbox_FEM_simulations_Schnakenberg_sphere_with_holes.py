@@ -378,6 +378,10 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     # Also, define the current time outside the loop, so that we can save
     # the final concentration profile after the looping is done.
     t = 0
+    # Previous time step
+    t_prev = 0
+    # Save time every time with value 0.5
+    save_iteration = 0.5
     #--------------------------------------------------------------
     # STEP 6 OUT OF : CALCULATE THE RESIDUAL FORMS NEEDED FOR THE
     #ADAPTIVE TIME STEPPING
@@ -386,6 +390,8 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     #----------------------------------------------------------------------------------
     # We solve the time stepping adaptively until the end time is reached 
     while t < T:
+        # Save the previous time step
+        t_prev = t
         # Update current time and iteration number 
         t_it += 1
         t += dt
@@ -406,7 +412,9 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
         solve(A_u, u_curr.vector(), b_u)
         solve(A_v, v_curr.vector(), b_v)
         # Save and check the solution (every whatever iteration)
-        if t_it % 200 == 0:
+        if  (t_prev < save_iteration) && (t > save_iteration):
+            # Increase the iterations
+            save_iteration += 0.5
             # Save the components in the data files
             u_curr.rename("Concentration profile, $u(\mathbf{x},t)$","u")
             vtkfile_u << (u_curr, t)
