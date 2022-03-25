@@ -133,7 +133,8 @@ eps_max = eps_tuple[1]
 n_max = n_tuple[1]
 m_max = m_tuple[1]
 # Calculate the critical radius
-hole_cylinder_radius = np.sin(eps_max)
+#hole_cylinder_radius = np.sin(eps_max)
+hole_cylinder_radius = np.sin(eps_min)
 # Prompt to the user
 print("\n\n==============================================================================================================================\n")
 print("\t Testing parameters and plotting perturbed eigenvalues\n")
