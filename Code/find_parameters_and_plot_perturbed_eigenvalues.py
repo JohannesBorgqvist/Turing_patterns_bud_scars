@@ -109,20 +109,20 @@ def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
 a = 0.2
 b = 1
 # The wavenumber k^2
-n = 2
+n = 1
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-d = 17.02
-#d = 18
+#d = d_c + 0.2
+d = 20
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Calculate the critical hole radius for all eigenvalues between n=2 and n=4
 #n_largest = 6
-n_largest = 2
+n_largest = 1
 eps_tuple, n_tuple, m_tuple = Schnakenberg_properties.compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n,n_largest)
 # Extract the minimal radii
 eps_min = eps_tuple[0]
@@ -133,8 +133,8 @@ eps_max = eps_tuple[1]
 n_max = n_tuple[1]
 m_max = m_tuple[1]
 # Calculate the critical radius
-#hole_cylinder_radius = np.sin(eps_max)
-hole_cylinder_radius = np.sin(eps_min)
+hole_cylinder_radius = np.sin(eps_max)
+#hole_cylinder_radius = np.sin(eps_min)
 # Prompt to the user
 print("\n\n==============================================================================================================================\n")
 print("\t Testing parameters and plotting perturbed eigenvalues\n")
@@ -153,14 +153,14 @@ if Turing_conditions:
 else:
     print("\n\t\tThe Turing conditions were not satisfied.\n\n")
 # Create a list of all tuples of m and n values
-eigen_value_list = [(n,m) for n in [2,3,4] for m in range(n+1)]
+eigen_value_list = [(n,m) for n in [1,2,3] for m in range(n+1)]
 print(eigen_value_list)
 # Find some really nice colours for the curves based on the colour maps on https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9
 colour_list_for_plotting = [(77/256,0/256,75/256), (129/256,15/256,124/256), (136/256,65/256,157/256),(0/256,68/256,27/256),(0/256,109/256,44/256),(35/256,139/256,69/256),(65/256,174/256,118/256),(2/256,56/256,88/256),(4/256,90/256,141/256),(5/256,112/256,176/256),(54/256,144/256,192/256),(116/256,169/256,207/256)]
 # Create a list of all labels as well
 label_strings = ["$\\lambda_{" + str(eigen_value_list[index][0]) + "," + str(eigen_value_list[index][1]) + "}$" for index in range(len(eigen_value_list))]
 # Create an np array called epsilon vector with hole radii
-epsilon_vector = np.linspace(0,np.sin(0.60),100,endpoint=True)
+epsilon_vector = np.linspace(0,np.sin(0.80),100,endpoint=True)
 # Create a list of np arrays with the corresponding eigenvalues
 lambda_vec = [np.array([Schnakenberg_properties.perturbed_eigenvalue_Schnakenberg(nm_tuple[0],nm_tuple[1],epsilon) for epsilon in list(epsilon_vector)]) for nm_tuple in eigen_value_list]
 # Create vector for the lower and upper bounds as well
@@ -220,8 +220,8 @@ for index in index_list:
     plot_LaTeX_2D(epsilon_vector,lambda_vec[index],"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=2pt,",label_strings[index])
 
 # Plot the thresholds
-plot_LaTeX_2D(epsilon_vector,upper_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=halfcircle*,mark size=0.5pt,color=black,","$M(a,b,d)$")
-plot_LaTeX_2D(epsilon_vector,lower_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=square*,mark size=0.5pt,color=black,","$L(a,b,d)$")
+plot_LaTeX_2D(epsilon_vector,upper_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=halfcircle*,mark size=0.5pt,color=black,","$\gamma M(a,b,d)$")
+plot_LaTeX_2D(epsilon_vector,lower_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=square*,mark size=0.5pt,color=black,","$\gamma L(a,b,d)$")
 # Plot the vertical line as well
 plot_LaTeX_2D(crit_radius,vertical_line,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=diamond*,mark size=0.5pt,color=black,","$\\varepsilon_{\\mathrm{crit}}$")
 print("\n\n==============================================================================================================================\n")
