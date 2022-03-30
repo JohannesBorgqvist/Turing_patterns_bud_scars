@@ -117,7 +117,7 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
 #d = d_c + 0.2
-d = 20
+d = 17.5
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Calculate the critical hole radius for all eigenvalues between n=2 and n=4
@@ -156,11 +156,12 @@ else:
 eigen_value_list = [(n,m) for n in [1,2,3] for m in range(n+1)]
 print(eigen_value_list)
 # Find some really nice colours for the curves based on the colour maps on https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9
-colour_list_for_plotting = [(77/256,0/256,75/256), (129/256,15/256,124/256), (136/256,65/256,157/256),(0/256,68/256,27/256),(0/256,109/256,44/256),(35/256,139/256,69/256),(65/256,174/256,118/256),(2/256,56/256,88/256),(4/256,90/256,141/256),(5/256,112/256,176/256),(54/256,144/256,192/256),(116/256,169/256,207/256)]
+#colour_list_for_plotting = [(77/256,0/256,75/256), (129/256,15/256,124/256), (136/256,65/256,157/256),(0/256,68/256,27/256),(0/256,109/256,44/256),(35/256,139/256,69/256),(65/256,174/256,118/256),(2/256,56/256,88/256),(4/256,90/256,141/256),(5/256,112/256,176/256),(54/256,144/256,192/256),(116/256,169/256,207/256)]
+colour_list_for_plotting = [(77/256,0/256,75/256), (129/256,15/256,124/256), (0/256,68/256,27/256),(0/256,109/256,44/256),(35/256,139/256,69/256), (4/256,90/256,141/256),(5/256,112/256,176/256),(54/256,144/256,192/256),(116/256,169/256,207/256)]
 # Create a list of all labels as well
 label_strings = ["$\\lambda_{" + str(eigen_value_list[index][0]) + "," + str(eigen_value_list[index][1]) + "}$" for index in range(len(eigen_value_list))]
 # Create an np array called epsilon vector with hole radii
-epsilon_vector = np.linspace(0,np.sin(0.80),100,endpoint=True)
+epsilon_vector = np.linspace(0,np.sin(0.75),100,endpoint=True)
 # Create a list of np arrays with the corresponding eigenvalues
 lambda_vec = [np.array([Schnakenberg_properties.perturbed_eigenvalue_Schnakenberg(nm_tuple[0],nm_tuple[1],epsilon) for epsilon in list(epsilon_vector)]) for nm_tuple in eigen_value_list]
 # Create vector for the lower and upper bounds as well
