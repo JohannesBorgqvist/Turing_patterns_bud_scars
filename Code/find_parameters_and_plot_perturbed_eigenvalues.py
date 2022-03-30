@@ -1,7 +1,7 @@
 # =================================================================================
 # =================================================================================
 # Script:"find_parameters_and_plot_perturbed_eigenvalues"
-# Date: 2021-03-08
+# Date: 2021-03-30
 # Implemented by: Johannes Borgqvist
 # Description:
 # This script checks whether certain parameters satisfy the Turing conditions and
@@ -117,7 +117,7 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
 #d = d_c + 0.2
-d = 17.5
+d = 18.0
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Calculate the critical hole radius for all eigenvalues between n=2 and n=4
