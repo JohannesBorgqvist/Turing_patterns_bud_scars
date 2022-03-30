@@ -28,7 +28,7 @@ import Schnakenberg_properties # Home-made
 a = 0.2
 b = 1
 # The wavenumber k^2
-n = 2
+n = 1
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
@@ -42,11 +42,11 @@ print("-------------------------------------------------------------------------
 print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
 print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))
 # Set the value of the relative diffusion
-d = 18
+d = 17.5
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Compute minimal critical hole radius for pattern disturbance
-n_largest = 6
+n_largest = 1
 eps_tuple, n_tuple, m_tuple = Schnakenberg_properties.compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n,n_largest)
 hole_cylinder_radius = np.sin(eps_tuple[1])
 # Print the results
@@ -65,11 +65,16 @@ sigma = 1e-4
 T = 50
 # Collect these latter two parameters in a list as well
 numerical_parameters = [sigma, T]
-# Solve the FEM system with the given parameters
-#FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes)
 # Looping over the varius radii and run all simulations there!
 # Define the experimental design of holes with increasing radii
-experimental_design = [(0,[a, b, 17.50, gamma],[sigma, 50],[]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.05]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.1]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.15]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.2]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.25]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.3]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.35]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.4]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.45]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.5]),(1,[a, b, 17.50, gamma],[sigma, 50],[0.55])] 
+experimental_design = []
+# Loop over the hole_radii and add the experiments
+for hole_radius in np.arange(0,6.5,0.5):
+    # Special case for the mesh with no hole
+    if hole_radius == 0:
+        experimental_design.append((0,parameters,numerical_parameters,[]))
+    else:
+        experimental_design.append((1,parameters,numerical_parameters,[hole_radius]))
 # Loop over the experiments in the experimental design and run them all
 for experiment in experimental_design:
     # Prompt to the user
