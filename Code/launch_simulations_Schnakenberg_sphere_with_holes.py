@@ -79,7 +79,7 @@ for hole_radius in np.arange(0,6.5,0.5):
 for experiment in experimental_design:
     # Prompt to the user
     print("---------------------------------------------------------------------------------------------------------\n")
-    print("\tNUM_HOLES\t=\t%d,\tRADII\t=\t%s"%(int(experiment[0]),str(experiment[1])))
+    print("\tNUM_HOLES\t=\t%d,\tRADII\t=\t%s"%(int(experiment[0]),str(experiment[3])))
     print("---------------------------------------------------------------------------------------------------------\n")    
     # Solve the FEM system with the given parameters
     FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],steady_states,experiment[2],experiment[3])    
