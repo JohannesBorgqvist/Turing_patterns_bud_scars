@@ -1,7 +1,7 @@
 # =================================================================================
 # =================================================================================
 # Script:"launch_simulations_Schnakenberg_sphere_with_holes"
-# Date: 2022-03-23
+# Date: 2022-03-30
 # Implemented by: Johannes Borgqvist and Carl Lundholm
 # Description:
 # This is the script which launches the FEM simulations, and
@@ -42,7 +42,7 @@ print("-------------------------------------------------------------------------
 print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
 print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))
 # Set the value of the relative diffusion
-d = 17.5
+d = 18.0
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Compute minimal critical hole radius for pattern disturbance
