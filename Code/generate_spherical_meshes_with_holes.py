@@ -25,7 +25,7 @@ hole_radii_list = [[r] for r in np.arange(0,6.5,0.5)]
 c0_lists = []
 c1_lists = []
 # Generate a list of points defining the points on the sphere
-for index in range(hole_radii_list):
+for index in range(len(hole_radii_list)):
     c0_lists.append([(0,0,0)])
     c1_lists.append([(-1,1,0)])
 # Loop over all points and radii to generate the corresponding meshes
