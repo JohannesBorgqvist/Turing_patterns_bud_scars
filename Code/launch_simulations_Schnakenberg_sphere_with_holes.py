@@ -25,7 +25,7 @@ import Schnakenberg_properties # Home-made
 # No cell growth, no holes and no local activation
 #----------------------------------------------------------------------------------
 # The parameters in the Schnakenberg model
-a = 0.2
+a = 0.5
 b = 1
 # The wavenumber k^2
 n = 1
@@ -42,7 +42,8 @@ print("-------------------------------------------------------------------------
 print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
 print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))
 # Set the value of the relative diffusion
-d = 18.0
+d = d_c + 1.0
+#d = 18.0
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Compute minimal critical hole radius for pattern disturbance
@@ -69,7 +70,7 @@ numerical_parameters = [sigma, T]
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Loop over the hole_radii and add the experiments
-for hole_radius in np.arange(0,6.5,0.5):
+for hole_radius in np.arange(0,0.75,0.05):
     # Special case for the mesh with no hole
     if hole_radius == 0:
         experimental_design.append((0,parameters,numerical_parameters,[]))
