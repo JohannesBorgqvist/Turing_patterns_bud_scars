@@ -20,7 +20,7 @@ import numpy as np # For numpy functionalities
 # =================================================================================
 # =================================================================================
 # Create the hole radii in an automated fashion
-hole_radii_list = [[r] for r in np.arange(0,6.5,0.5)]
+hole_radii_list = [[r] for r in np.arange(0,0.75,0.05)]
 # Allocate the lists of points defining the points on the sphere
 c0_lists = []
 c1_lists = []

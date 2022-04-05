@@ -49,7 +49,7 @@ print("-------------------------------------------------------------------------
 print("\tCONVERT MSH MESHES TO XDMF")
 print("---------------------------------------------------------------------------------------------------")
 # Loop over all radii and convert the meshes
-for hole_radius in np.arange(0,6.5,0.5):
+for hole_radius in np.arange(0,0.75,0.05):
     # Define the mesh name
     if hole_radius == 0:
         print("\tConvert mesh with zero holes")
