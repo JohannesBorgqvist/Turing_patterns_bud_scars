@@ -106,7 +106,7 @@ def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
 # gamma = 20.62
 #----------------------------------------------------------------------------------
 # The parameters in the Schnakenberg model
-a = 0.2
+a = 0.5
 b = 1
 # The wavenumber k^2
 n = 1
@@ -116,8 +116,8 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-#d = d_c + 0.2
-d = 18.0
+d = d_c + 1.0
+#d = 17.5
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Calculate the critical hole radius for all eigenvalues between n=2 and n=4
@@ -133,8 +133,8 @@ eps_max = eps_tuple[1]
 n_max = n_tuple[1]
 m_max = m_tuple[1]
 # Calculate the critical radius
-hole_cylinder_radius = np.sin(eps_max)
 #hole_cylinder_radius = np.sin(eps_min)
+hole_cylinder_radius = np.sin(eps_max)
 # Prompt to the user
 print("\n\n==============================================================================================================================\n")
 print("\t Testing parameters and plotting perturbed eigenvalues\n")
