@@ -20,12 +20,8 @@ import Schnakenberg_properties # Home-made
 # The experiments
 # =================================================================================
 # =================================================================================
-#----------------------------------------------------------------------------------
-# Experiment 1 in Chaplain:
-# No cell growth, no holes and no local activation
-#----------------------------------------------------------------------------------
 # The parameters in the Schnakenberg model
-a = 0.5
+a = 0.8
 b = 1
 # The wavenumber k^2
 n = 1
@@ -42,8 +38,7 @@ print("-------------------------------------------------------------------------
 print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
 print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))
 # Set the value of the relative diffusion
-d = d_c + 1.0
-#d = 18.0
+d = d_c + 20.0
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Compute minimal critical hole radius for pattern disturbance
