@@ -21,7 +21,7 @@ import Schnakenberg_properties # Home-made
 # =================================================================================
 # =================================================================================
 # The parameters in the Schnakenberg model
-a = 0.8
+a = 0.5
 b = 1
 # The wavenumber k^2
 n = 1
@@ -38,7 +38,7 @@ print("-------------------------------------------------------------------------
 print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
 print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))
 # Set the value of the relative diffusion
-d = d_c + 20.0
+d = d_c + 1.0
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Compute minimal critical hole radius for pattern disturbance
@@ -79,5 +79,5 @@ for experiment in experimental_design:
     print("\tNUM_HOLES\t=\t%d,\tRADII\t=\t%s"%(int(experiment[0]),str(experiment[3])))
     print("---------------------------------------------------------------------------------------------------------\n")    
     # Solve the FEM system with the given parameters
-    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],steady_states,experiment[2],experiment[3],experiment[3])    
+    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],steady_states,experiment[2],experiment[3],experiment[4])    
 
