@@ -65,12 +65,13 @@ numerical_parameters = [sigma, T]
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Loop over the hole_radii and add the experiments
-for hole_radius in np.arange(0,0.75,0.05):
+#for hole_radius in np.arange(0,0.75,0.05):
     # Special case for the mesh with no hole
-    if hole_radius == 0:
-        experimental_design.append((0,parameters,numerical_parameters,[]))
-    else:
-        experimental_design.append((1,parameters,numerical_parameters,[hole_radius]))
+    #if hole_radius == 0:
+        #experimental_design.append((0,parameters,numerical_parameters,[]))
+    #else:
+        #experimental_design.append((1,parameters,numerical_parameters,[hole_radius]))
+experimental_design = [(0,parameters,numerical_parameters,[],True), (0,parameters,[0, T],[],False)]
 # Loop over the experiments in the experimental design and run them all
 for experiment in experimental_design:
     # Prompt to the user
@@ -78,5 +79,5 @@ for experiment in experimental_design:
     print("\tNUM_HOLES\t=\t%d,\tRADII\t=\t%s"%(int(experiment[0]),str(experiment[3])))
     print("---------------------------------------------------------------------------------------------------------\n")    
     # Solve the FEM system with the given parameters
-    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],steady_states,experiment[2],experiment[3])    
+    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],steady_states,experiment[2],experiment[3],experiment[3])    
 
