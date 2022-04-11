@@ -114,10 +114,11 @@ def perturbations_ic__Schnakenberg_sphere_with_holes(epsilon,sigma):
 # 4. The number of holes on the sphere stored in num_holes,
 # 5. The steady states of the Schnakenberg model stored in steady_states,
 # 6. The variance of the perturbation determined by sigma,
-# 7. The FEM function on the function space H stored in U in which we set the initial conditions. 
+# 7. The FEM functions on the function space H stored in u and v in which we set the initial conditions,
+# 8. A logical variable called ICs_around_steady_states which determines whether the initial conditions are set to the steady states values or not. 
 #------------------------------------------------------------------
 
-def initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u,v):
+def initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u,v,ICs_around_steady_states):
     #----------------------------------------------------------------
     # DETAILED DESCRIPTION OF WHAT THE FUNCTION DOES
     # We assign the following initial conditions to the sphere:
@@ -139,8 +140,12 @@ def initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_h
     u0 = steady_states[0]
     v0 = steady_states[1]    
     # Define an expression for the initial conditions based on the steady states
-    ic_u = Expression("ic_u",ic_u=u0,degree=1)
-    ic_v = Expression("ic_v",ic_v=v0,degree=1)
+    if ICs_around_steady_states:
+        ic_u = Expression("ic_u",ic_u=u0,degree=1)
+        ic_v = Expression("ic_v",ic_v=v0,degree=1)
+    else:
+        ic_u = Expression("ic_u",ic_u=0,degree=1)
+        ic_v = Expression("ic_v",ic_v=0,degree=1)        
     # Interpolate onto the function space
     ss_u = interpolate(ic_u,H)
     ss_v = interpolate(ic_v,H)
@@ -267,8 +272,9 @@ def residual_Schnakenberg_sphere_with_holes(parameters,phi_1,phi_2,u_prev,v_prev
 # 2. The list parameters=[a,b,d,gamma] containing all the parameters of the Schnakenberg model,
 # 3. The list steady_states=[u0,v0] containing the two states of the Schnakenberg model,
 # 4. The list numerical_parameters=[sigma,T] where sigma determines the perturbation in the initial condition and T determines the end time for the FD time stepping scheme,
-# 5. The list radii_holes containing the list of the radii of the holes in the mesh.
-def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes):
+# 5. The list radii_holes containing the list of the radii of the holes in the mesh,
+# 6. A logical variable called ICs_around_steady_states which determines whether the initial conditions are set to the steady states values or not.
+def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states):
     #--------------------------------------------------------------
     # STEP 1 OUT OF : EXTRACT PARAMETERS
     #--------------------------------------------------------------    
@@ -338,7 +344,7 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     # Set the time to zero as we are looking at the initial conditions
     t = 0.0
     # Calculate the initial conditions
-    initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev)
+    initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)
     # Save the two initial conditions in the output folder
     u_prev.rename("Concentration profile, $u(\mathbf{x},t)$","u")
     vtkfile_u << (u_prev, t)
