@@ -335,9 +335,13 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     d_str = "d_" + str(round(d,3)).replace(".","p") + "_"
     gamma_str = "gamma_" + str(round(gamma,3)).replace(".","p") + "_"
     sigma_str = "sigma_" + str(round(sigma,3)).replace(".","p") + "_"
-    T_str = "T_" + str(round(T,3)).replace(".","p") + "/"
+    T_str = "T_" + str(round(T,3)).replace(".","p") + "_"
+    if ICs_around_steady_states:
+        IC_str = "ICs_around_steady_states/"
+    else:
+        IC_str = "ICs_at_zero/"
     # Gather all these substrings into one giant string where we will save the output files
-    output_folder_str = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str
+    output_folder_str = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str
     # Define two output files based on this giant result folder where we have one output file for each of the two states
     vtkfile_u = File(output_folder_str+"u.pvd")
     vtkfile_v = File(output_folder_str+"v.pvd")        
