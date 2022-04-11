@@ -106,7 +106,7 @@ def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
 # gamma = 20.62
 #----------------------------------------------------------------------------------
 # The parameters in the Schnakenberg model
-a = 0.8
+a = 0.5
 b = 1
 # The wavenumber k^2
 n = 1
@@ -116,7 +116,7 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-d = d_c + 20.0
+d = d_c + 5.0
 #d = 17.5
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
