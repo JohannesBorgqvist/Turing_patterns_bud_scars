@@ -38,7 +38,7 @@ print("-------------------------------------------------------------------------
 print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
 print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))
 # Set the value of the relative diffusion
-d = d_c + 1.0
+d = d_c + 5.0
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Compute minimal critical hole radius for pattern disturbance
@@ -65,13 +65,12 @@ numerical_parameters = [sigma, T]
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Loop over the hole_radii and add the experiments
-#for hole_radius in np.arange(0,0.75,0.05):
+for hole_radius in np.arange(0,0.75,0.05):
     # Special case for the mesh with no hole
-    #if hole_radius == 0:
-        #experimental_design.append((0,parameters,numerical_parameters,[]))
-    #else:
-        #experimental_design.append((1,parameters,numerical_parameters,[hole_radius]))
-experimental_design = [(0,parameters,numerical_parameters,[],True), (0,parameters,[0, T],[],False)]
+    if hole_radius == 0:
+        experimental_design.append((0,parameters,numerical_parameters,[],True))
+    else:
+        experimental_design.append((1,parameters,numerical_parameters,[hole_radius],True))
 # Loop over the experiments in the experimental design and run them all
 for experiment in experimental_design:
     # Prompt to the user
