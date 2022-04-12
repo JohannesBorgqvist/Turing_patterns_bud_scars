@@ -431,9 +431,9 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
             # Iteration health check
             R = assemble(residual_form)
             l2_norm_R = norm(R, 'l2')
-            #print("\t\tIteration %d, t\t=\t%0.15f out of %0.3f"%(t_it,t,T))
-            #print("\t\tl2_norm_of_R = ", l2_norm_R)
-            #print("\t\tdt = ", dt)
+            print("\t\tIteration %d, t\t=\t%0.15f out of %0.3f"%(t_it,t,T))
+            print("\t\tl2_norm_of_R = ", l2_norm_R)
+            print("\t\tdt = ", dt)
             # In case we have negative concentrations, we break
             if u_curr.vector().min() < 0.0 or v_curr.vector().min() < 0.0:
                 print("\n\t\tINSTABILITY DETECTED! ### TERMINATE SIMULATION ###\n")
@@ -456,19 +456,32 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     # Parameters
     r = 1.0     # Radius of the sphere
     degree = 1  # Degree of local approximation
-    
-    # The spherical harmonics in Cartesian coordinates 
+
+    # The real part of the complex spherical harmonics in Cartesian coordinates 
     Y_00 = Expression("sqrt(1/(4*pi))", degree=degree)
 
-    Y_1m1 = Expression("sqrt(3/(4*pi))*x[1]/r", r=r, degree=degree)
+    Y_1m1 = Expression("sqrt(3/(8*pi))*x[0]/r", r=r, degree=degree)
     Y_10 = Expression("sqrt(3/(4*pi))*x[2]/r", r=r, degree=degree)
-    Y_1p1 = Expression("sqrt(3/(4*pi))*x[0]/r", r=r, degree=degree)
+    Y_1p1 = Expression("-sqrt(3/(8*pi))*x[0]/r", r=r, degree=degree)
 
-    Y_2m2 = Expression("sqrt(15/(4*pi))*x[0]*x[1]/pow(r, 2)", r=r, degree=degree)
-    Y_2m1 = Expression("sqrt(15/(4*pi))*x[1]*x[2]/pow(r, 2)", r=r, degree=degree)
+    Y_2m2 = Expression("sqrt(15/(32*pi))*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 2)", r=r, degree=degree)
+    Y_2m1 = Expression("sqrt(15/(8*pi))*x[0]*x[2]/pow(r, 2)", r=r, degree=degree)
     Y_20 = Expression("sqrt(5/(16*pi))*(3*pow(x[2], 2) - pow(r, 2))/pow(r, 2)", r=r, degree=degree)
-    Y_2p1 = Expression("sqrt(15/(4*pi))*x[0]*x[2]/pow(r, 2)", r=r, degree=degree)
-    Y_2p2 = Expression("sqrt(15/(16*pi))*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 2)", r=r, degree=degree)
+    Y_2p1 = Expression("-sqrt(15/(8*pi))*x[0]*x[2]/pow(r, 2)", r=r, degree=degree)
+    Y_2p2 = Expression("sqrt(15/(32*pi))*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 2)", r=r, degree=degree)
+    
+    ## The real spherical harmonics in Cartesian coordinates 
+    #Y_00 = Expression("sqrt(1/(4*pi))", degree=degree)
+
+    #Y_1m1 = Expression("sqrt(3/(4*pi))*x[1]/r", r=r, degree=degree)
+    #Y_10 = Expression("sqrt(3/(4*pi))*x[2]/r", r=r, degree=degree)
+    #Y_1p1 = Expression("sqrt(3/(4*pi))*x[0]/r", r=r, degree=degree)
+
+    #Y_2m2 = Expression("sqrt(15/(4*pi))*x[0]*x[1]/pow(r, 2)", r=r, degree=degree)
+    #Y_2m1 = Expression("sqrt(15/(4*pi))*x[1]*x[2]/pow(r, 2)", r=r, degree=degree)
+    #Y_20 = Expression("sqrt(5/(16*pi))*(3*pow(x[2], 2) - pow(r, 2))/pow(r, 2)", r=r, degree=degree)
+    #Y_2p1 = Expression("sqrt(15/(4*pi))*x[0]*x[2]/pow(r, 2)", r=r, degree=degree)
+    #Y_2p2 = Expression("sqrt(15/(16*pi))*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 2)", r=r, degree=degree)
 
     Y_3m3 = Expression("sqrt(35/(32*pi))*x[1]*(3*pow(x[0], 2) - pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
     Y_3m2 = Expression("sqrt(105/(4*pi))*x[0]*x[1]*x[2]/pow(r, 3)", r=r, degree=degree)
