@@ -21,9 +21,11 @@ import Schnakenberg_properties # Home-made
 # =================================================================================
 # =================================================================================
 # The parameters in the Schnakenberg model
-a = 0.5
+a = 0.2
+#a = 0.2
 b = 1
 # The wavenumber k^2
+#n = 1
 n = 1
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
@@ -38,7 +40,9 @@ print("-------------------------------------------------------------------------
 print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
 print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))
 # Set the value of the relative diffusion
-d = d_c + 5.0
+d = d_c + 1.5
+#d = d_c + 10
+#d = 18
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Compute minimal critical hole radius for pattern disturbance
@@ -52,12 +56,13 @@ print("\t\tThe critical spectral parameters:\t\t(n,m)\t=\t(%0.4f,%0.4f)"%(n_tupl
 # Collect all parameters in a list
 parameters = [a, b, d, gamma]
 # For this experiment we have no hole in the mesh
-num_holes = 0
+#num_holes = 0
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
 sigma = 1e-4
 # Define the end time for the simulations
+#T = 1
 T = 50
 # Collect these latter two parameters in a list as well
 numerical_parameters = [sigma, T]
@@ -65,7 +70,11 @@ numerical_parameters = [sigma, T]
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Loop over the hole_radii and add the experiments
-for hole_radius in np.arange(0,0.75,0.05):
+hole_radius_array = [0.0, 0.2, 0.4, 0.7]
+#for hole_radius in np.arange(0,0.75,0.05):
+#for hole_radius in np.arange(0,1):
+for hole_radius in hole_radius_array:
+
     # Special case for the mesh with no hole
     if hole_radius == 0:
         experimental_design.append((0,parameters,numerical_parameters,[],True))

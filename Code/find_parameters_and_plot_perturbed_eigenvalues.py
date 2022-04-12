@@ -106,7 +106,7 @@ def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
 # gamma = 20.62
 #----------------------------------------------------------------------------------
 # The parameters in the Schnakenberg model
-a = 0.5
+a = 0.2
 b = 1
 # The wavenumber k^2
 n = 1
@@ -116,13 +116,13 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-d = d_c + 5.0
-#d = 17.5
+d = d_c + 1.5
+#d = 18
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Calculate the critical hole radius for all eigenvalues between n=2 and n=4
 #n_largest = 6
-n_largest = 1
+n_largest = 2
 eps_tuple, n_tuple, m_tuple = Schnakenberg_properties.compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n,n_largest)
 # Extract the minimal radii
 eps_min = eps_tuple[0]
@@ -161,7 +161,7 @@ colour_list_for_plotting = [(77/256,0/256,75/256), (129/256,15/256,124/256), (0/
 # Create a list of all labels as well
 label_strings = ["$\\lambda_{" + str(eigen_value_list[index][0]) + "," + str(eigen_value_list[index][1]) + "}$" for index in range(len(eigen_value_list))]
 # Create an np array called epsilon vector with hole radii
-epsilon_vector = np.linspace(0,np.sin(0.75),100,endpoint=True)
+epsilon_vector = np.linspace(0,np.sin(1.0),100,endpoint=True)
 # Create a list of np arrays with the corresponding eigenvalues
 lambda_vec = [np.array([Schnakenberg_properties.perturbed_eigenvalue_Schnakenberg(nm_tuple[0],nm_tuple[1],epsilon) for epsilon in list(epsilon_vector)]) for nm_tuple in eigen_value_list]
 # Create vector for the lower and upper bounds as well
@@ -195,8 +195,8 @@ fig.add_subplot(111, frameon=False)
 for index in index_list:
     axes.plot(epsilon_vector,lambda_vec[index],'-',color=colour_list_for_plotting[index],label=label_strings[index])
 # Plot the upper bound
-axes.plot(epsilon_vector,upper_bound,'--sk',label="$\\gamma\\;M$")
-axes.plot(epsilon_vector,lower_bound,'--pk',label="$\\gamma\\;L$")
+axes.plot(epsilon_vector,upper_bound,'--k',label="$\\gamma\\;M$")
+axes.plot(epsilon_vector,lower_bound,'--k',label="$\\gamma\\;L$")
 axes.plot(crit_radius,vertical_line,'+k',label="$\\varepsilon_{\\mathrm{crit}}$")
 axes.legend()
 #hide tick and tick label of the big axis
