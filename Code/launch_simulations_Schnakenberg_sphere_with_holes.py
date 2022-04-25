@@ -63,14 +63,16 @@ radii_holes = []
 sigma = 1e-4
 # Define the end time for the simulations
 #T = 1
-T = 50
+#T = 50
+T = 1
 # Collect these latter two parameters in a list as well
 numerical_parameters = [sigma, T]
 # Looping over the varius radii and run all simulations there!
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Loop over the hole_radii and add the experiments
-hole_radius_array = [0.0, 0.2, 0.4, 0.7]
+#hole_radius_array = [0.0, 0.2, 0.4, 0.7]
+hole_radius_array = [0.0]
 #for hole_radius in np.arange(0,0.75,0.05):
 #for hole_radius in np.arange(0,1):
 for hole_radius in hole_radius_array:
