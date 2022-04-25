@@ -73,6 +73,7 @@ experimental_design = []
 # Loop over the hole_radii and add the experiments
 #hole_radius_array = [0.0, 0.2, 0.4, 0.7]
 hole_radius_array = [0.0]
+number_of_repititions = 1
 #for hole_radius in np.arange(0,0.75,0.05):
 #for hole_radius in np.arange(0,1):
 for hole_radius in hole_radius_array:
@@ -89,5 +90,5 @@ for experiment in experimental_design:
     print("\tNUM_HOLES\t=\t%d,\tRADII\t=\t%s"%(int(experiment[0]),str(experiment[3])))
     print("---------------------------------------------------------------------------------------------------------\n")    
     # Solve the FEM system with the given parameters
-    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],steady_states,experiment[2],experiment[3],experiment[4])    
+    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],steady_states,experiment[2],experiment[3],experiment[4],number_of_repititions)    
 

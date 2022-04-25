@@ -330,7 +330,7 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
     # Create an array with the temporary data
     temp_data = np.array([hole_radii_list,coeff_list])
     # Create a list of the column names
-    col_names = ["Hole radius in the mesh", "Spectral coefficients of the eigenfunctions"]
+    col_names = ["Hole radius in the mesh", "Spectral coefficients of the eigenfunctions at final time t=T"]
     # Create a list of the names of the eigenfunctions
     row_names = ["$\\gamma_{0,0}$", "$\\gamma_{1,0}$", "$\\gamma_{1,1}$", "$\\gamma_{2,0}$", "$\\gamma_{2,1}$", "$\\gamma_{2,2}$", "$\\gamma_{3,0}$", "$\\gamma_{3,1}$", "$\\gamma_{3,2}$", "$\\gamma_{3,3}$", "$\\gamma_{4,0}$", "$\\gamma_{4,1}$", "$\\gamma_{4,2}$", "$\\gamma_{4,3}$", "$\\gamma_{4,4}$"]
     # Create a datafrane
@@ -351,9 +351,9 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
 # 4. The list numerical_parameters=[sigma,T] where sigma determines the perturbation in the initial condition and T determines the end time for the FD time stepping scheme,
 # 5. The list radii_holes containing the list of the radii of the holes in the mesh,
 # 6. A logical variable called ICs_around_steady_states which determines whether the initial conditions are set to the steady states values or not.
-def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states):
+def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states,number_of_repititions):
     #--------------------------------------------------------------
-    # STEP 1 OUT OF : EXTRACT PARAMETERS
+    # STEP 1 OUT OF 7: EXTRACT PARAMETERS
     #--------------------------------------------------------------    
     # Extract the parameters of the Schnakenberg model
     a = parameters[0]
@@ -372,7 +372,7 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     sigma = numerical_parameters[0] # Determining the perturbation in the initial conditions
     T = numerical_parameters[1] # Determining the end time for the FD time stepping scheme
     #--------------------------------------------------------------
-    # STEP 2 OUT OF : DEFINE MESHES, INTEGRATION MEASURES AND
+    # STEP 2 OUT OF 7: DEFINE MESHES, INTEGRATION MEASURES AND
     # DEFINE THE HILBERT SPACE FOR THE FEM FORMULATION
     #--------------------------------------------------------------    
     # Read in the mesh depending on the number of holes on the sphere
@@ -381,7 +381,7 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     #H = define_Hilbert_space_Schnakenberg_sphere_with_holes(mesh)    
     H = FunctionSpace(mesh, "P", 1)
     #--------------------------------------------------------------
-    # STEP 3 OUT OF : DEFINE TEST FUNCTIONS AND TRIAL FUNCTIONS (I.E.
+    # STEP 3 OUT OF 7: DEFINE TEST FUNCTIONS AND TRIAL FUNCTIONS (I.E.
     # THE SOLUTION TO THE SCHNAKENBERG MODEL)
     #--------------------------------------------------------------    
     # Define test functions for the variational formulation (VF) 
@@ -397,7 +397,7 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     v_prev = Function(H) # Previous time step in the FD time stepping scheme
     v_curr = Function(H) # Current time step in the FD time stepping scheme
     #--------------------------------------------------------------
-    # STEP 4 OUT OF : SET THE INITIAL CONDITIONS OF THE SYSTEM,
+    # STEP 4 OUT OF 7: SET THE INITIAL CONDITIONS OF THE SYSTEM,
     # CREATE AN OUTPUT FOLDER WHERE THE RESULTS ARE STORED
     # AND SAVE THE INITIAL CONDITIONS.
     #--------------------------------------------------------------    
@@ -419,114 +419,115 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
         IC_str = "ICs_at_zero/"
     # Gather all these substrings into one giant string where we will save the output files
     output_folder_str = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str
-    # Define two output files based on this giant result folder where we have one output file for each of the two states
-    vtkfile_u = File(output_folder_str+"u.pvd")
-    vtkfile_v = File(output_folder_str+"v.pvd")        
-    # Set the time to zero as we are looking at the initial conditions
-    t = 0.0
-    # Calculate the initial conditions
-    initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)
-    # Save the two initial conditions in the output folder
-    u_prev.rename("Concentration profile, $u(\mathbf{x},t)$","u")
-    vtkfile_u << (u_prev, t)
-    v_prev.rename("Concentration profile, $v(\mathbf{x},t)$","v")    
-    vtkfile_v << (v_prev, t)
-    #--------------------------------------------------------------
-    # STEP 5 OUT OF : DEFINE THE MATRICES RESULTING FROM THE
-    # VF AND THE FEM
-    #--------------------------------------------------------------
-    # Compute the forms from the VF
-    mass_form_u, mass_form_v, stiffness_form_u, stiffness_form_v, reaction_form_u, reaction_form_v = VF_and_FEM_Schnakenberg_sphere_with_holes(parameters, u, v, phi_1, phi_2, u_prev, v_prev, dx_list, mesh)
-    # Assemble time-independent matrices for LHS
-    mass_matrix_u = assemble(lhs(mass_form_u), keep_diagonal=True)
-    mass_matrix_v = assemble(lhs(mass_form_v), keep_diagonal=True)
-    stiffness_matrix_u = assemble(lhs(stiffness_form_u), keep_diagonal=True)
-    stiffness_matrix_v = assemble(lhs(stiffness_form_v), keep_diagonal=True)
-    # Assemble time-independent vectors for RHS
-    reaction_vector_u = assemble(rhs(reaction_form_u))
-    reaction_vector_v = assemble(rhs(reaction_form_v))
-    # Compute time-dependent forms for LHS
-    reaction_form_u_lhs = lhs(reaction_form_u)
-    reaction_form_v_lhs = lhs(reaction_form_v)
-    # Compute time-dependent forms for RHS
-    mass_form_u_rhs = rhs(mass_form_u)
-    mass_form_v_rhs = rhs(mass_form_v)
-    #--------------------------------------------------------------
-    # STEP 7 OUT OF : TIME STEPPING USING FD IN TIME AND FEM IN SPACE
-    #--------------------------------------------------------------
-    # Define the constant time step
-    dt = 1e-2
-    k = Constant(dt) # For the fem solver as well
-    # Define an iterator for the time stepping keeping track of
-    # how many iterations that has passed
-    t_it = 0
-    # Also, define the current time outside the loop, so that we can save
-    # the final concentration profile after the looping is done.
-    t = 0
-    # Previous time step
-    t_prev = 0
-    # Save time every time with value 0.5
-    save_iteration = 0.5
-    #--------------------------------------------------------------
-    # STEP 6 OUT OF : CALCULATE THE RESIDUAL FORMS NEEDED FOR THE
-    #ADAPTIVE TIME STEPPING
-    #--------------------------------------------------------------
-    residual_form = residual_Schnakenberg_sphere_with_holes(parameters_as_constants, phi_1, phi_2, u_prev, v_prev, u_curr, v_curr, dx_list, mesh, k)
-    #----------------------------------------------------------------------------------
-    # We solve the time stepping adaptively until the end time is reached 
-    while t < T:
-        # Save the previous time step
-        t_prev = t
-        # Update current time and iteration number 
-        t_it += 1
-        t += dt
-        k = Constant(dt)
-        # Assemble time-dependent matrices for LHS
-        reaction_matrix_u = assemble(reaction_form_u_lhs, keep_diagonal=True)
-        reaction_matrix_v = assemble(reaction_form_v_lhs, keep_diagonal=True)
-        # Assemble time-dependent vectors for RHS
-        mass_vector_u = assemble(mass_form_u_rhs)
-        mass_vector_v = assemble(mass_form_v_rhs)            
-        # Assemble system matrices and rhs vector
-        # SYSTEM WITH REACTIONS
-        A_u = mass_matrix_u + k*(stiffness_matrix_u + gamma*reaction_matrix_u)
-        A_v = mass_matrix_v + k*(stiffness_matrix_v + gamma*reaction_matrix_v)
-        b_u = mass_vector_u + k*gamma*reaction_vector_u
-        b_v = mass_vector_v + k*gamma*reaction_vector_v
-        # Solve linear variational problems for time step
-        solve(A_u, u_curr.vector(), b_u)
-        solve(A_v, v_curr.vector(), b_v)
-        # Save and check the solution (every whatever iteration)
-        if  (t_prev < save_iteration) and (t > save_iteration):
-            # Increase the iterations
-            save_iteration += 0.5
-            # Save the components in the data files
-            u_curr.rename("Concentration profile, $u(\mathbf{x},t)$","u")
-            vtkfile_u << (u_curr, t)
-            v_curr.rename("Concentration profile, $v(\mathbf{x},t)$","v")
-            vtkfile_v << (v_curr, t)
-            # Iteration health check
-            R = assemble(residual_form)
-            l2_norm_R = norm(R, 'l2')
-            print("\t\tIteration %d, t\t=\t%0.15f out of %0.3f"%(t_it,t,T))
-            print("\t\tl2_norm_of_R = ", l2_norm_R)
-            print("\t\tdt = ", dt)
-            # In case we have negative concentrations, we break
-            if u_curr.vector().min() < 0.0 or v_curr.vector().min() < 0.0:
-                print("\n\t\tINSTABILITY DETECTED! ### TERMINATE SIMULATION ###\n")
-                break
-        # Update old solution
-        u_prev.assign(u_curr)
-        v_prev.assign(v_curr)
-    # WE ALSO SAVE THE VERY LAST ITERATION WHEN ALL THE TIME STEPPING IS DONE.
-    u_curr.rename("Concentration profile, $u(\mathbf{x},t)$","u")
-    vtkfile_u << (u_curr, t)
-    v_curr.rename("Concentration profile, $v(\mathbf{x},t)$","v")
-    vtkfile_v << (v_curr, t)        
-    print("\n\n\t\tALL IS FINE AND DANDY HERE!\n\n")
-    print("Iterations are finished!")   
-    # Compute and save the spectral coefficients as well
-    if len(radii_holes)>0:
-        compute_spectral_coefficients_nohole(u_curr, dx_list[0], radii_holes[0],output_folder_str)
-    else:
-        compute_spectral_coefficients_nohole(u_curr, dx_list[0], 0,output_folder_str)
+    for repitition_index in range(number_of_repititions):
+        # Define two output files based on this giant result folder where we have one output file for each of the two states
+        vtkfile_u = File(output_folder_str+ "iteration_" + str(repitition_index) + "/" + "u.pvd")
+        vtkfile_v = File(output_folder_str+"iteration_" + str(repitition_index) + "/" + "v.pvd")        
+        # Set the time to zero as we are looking at the initial conditions
+        t = 0.0
+        # Calculate the initial conditions
+        initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)
+        # Save the two initial conditions in the output folder
+        u_prev.rename("Concentration profile, $u(\mathbf{x},t)$","u")
+        vtkfile_u << (u_prev, t)
+        v_prev.rename("Concentration profile, $v(\mathbf{x},t)$","v")    
+        vtkfile_v << (v_prev, t)
+        #--------------------------------------------------------------
+        # STEP 5 OUT OF 7: DEFINE THE MATRICES RESULTING FROM THE
+        # VF AND THE FEM
+        #--------------------------------------------------------------
+        # Compute the forms from the VF
+        mass_form_u, mass_form_v, stiffness_form_u, stiffness_form_v, reaction_form_u, reaction_form_v = VF_and_FEM_Schnakenberg_sphere_with_holes(parameters, u, v, phi_1, phi_2, u_prev, v_prev, dx_list, mesh)
+        # Assemble time-independent matrices for LHS
+        mass_matrix_u = assemble(lhs(mass_form_u), keep_diagonal=True)
+        mass_matrix_v = assemble(lhs(mass_form_v), keep_diagonal=True)
+        stiffness_matrix_u = assemble(lhs(stiffness_form_u), keep_diagonal=True)
+        stiffness_matrix_v = assemble(lhs(stiffness_form_v), keep_diagonal=True)
+        # Assemble time-independent vectors for RHS
+        reaction_vector_u = assemble(rhs(reaction_form_u))
+        reaction_vector_v = assemble(rhs(reaction_form_v))
+        # Compute time-dependent forms for LHS
+        reaction_form_u_lhs = lhs(reaction_form_u)
+        reaction_form_v_lhs = lhs(reaction_form_v)
+        # Compute time-dependent forms for RHS
+        mass_form_u_rhs = rhs(mass_form_u)
+        mass_form_v_rhs = rhs(mass_form_v)
+        #--------------------------------------------------------------
+        # STEP 6 OUT OF 7: TIME STEPPING USING FD IN TIME AND FEM IN SPACE
+        #--------------------------------------------------------------
+        # Define the constant time step
+        dt = 1e-2
+        k = Constant(dt) # For the fem solver as well
+        # Define an iterator for the time stepping keeping track of
+        # how many iterations that has passed
+        t_it = 0
+        # Also, define the current time outside the loop, so that we can save
+        # the final concentration profile after the looping is done.
+        t = 0
+        # Previous time step
+        t_prev = 0
+        # Save time every time with value 0.5
+        save_iteration = 0.5
+        #--------------------------------------------------------------
+        # STEP 7 OUT OF 7: CALCULATE THE RESIDUAL FORMS NEEDED FOR THE
+        #ADAPTIVE TIME STEPPING
+        #--------------------------------------------------------------
+        residual_form = residual_Schnakenberg_sphere_with_holes(parameters_as_constants, phi_1, phi_2, u_prev, v_prev, u_curr, v_curr, dx_list, mesh, k)
+        #----------------------------------------------------------------------------------
+        # We solve the time stepping adaptively until the end time is reached 
+        while t < T:
+            # Save the previous time step
+            t_prev = t
+            # Update current time and iteration number 
+            t_it += 1
+            t += dt
+            k = Constant(dt)
+            # Assemble time-dependent matrices for LHS
+            reaction_matrix_u = assemble(reaction_form_u_lhs, keep_diagonal=True)
+            reaction_matrix_v = assemble(reaction_form_v_lhs, keep_diagonal=True)
+            # Assemble time-dependent vectors for RHS
+            mass_vector_u = assemble(mass_form_u_rhs)
+            mass_vector_v = assemble(mass_form_v_rhs)            
+            # Assemble system matrices and rhs vector
+            # SYSTEM WITH REACTIONS
+            A_u = mass_matrix_u + k*(stiffness_matrix_u + gamma*reaction_matrix_u)
+            A_v = mass_matrix_v + k*(stiffness_matrix_v + gamma*reaction_matrix_v)
+            b_u = mass_vector_u + k*gamma*reaction_vector_u
+            b_v = mass_vector_v + k*gamma*reaction_vector_v
+            # Solve linear variational problems for time step
+            solve(A_u, u_curr.vector(), b_u)
+            solve(A_v, v_curr.vector(), b_v)
+            # Save and check the solution (every whatever iteration)
+            if  (t_prev < save_iteration) and (t > save_iteration):
+                # Increase the iterations
+                save_iteration += 0.5
+                # Save the components in the data files
+                u_curr.rename("Concentration profile, $u(\mathbf{x},t)$","u")
+                vtkfile_u << (u_curr, t)
+                v_curr.rename("Concentration profile, $v(\mathbf{x},t)$","v")
+                vtkfile_v << (v_curr, t)
+                # Iteration health check
+                R = assemble(residual_form)
+                l2_norm_R = norm(R, 'l2')
+                print("\t\tIteration %d, t\t=\t%0.15f out of %0.3f"%(t_it,t,T))
+                print("\t\tl2_norm_of_R = ", l2_norm_R)
+                print("\t\tdt = ", dt)
+                # In case we have negative concentrations, we break
+                if u_curr.vector().min() < 0.0 or v_curr.vector().min() < 0.0:
+                    print("\n\t\tINSTABILITY DETECTED! ### TERMINATE SIMULATION ###\n")
+                    break
+            # Update old solution
+            u_prev.assign(u_curr)
+            v_prev.assign(v_curr)
+        # WE ALSO SAVE THE VERY LAST ITERATION WHEN ALL THE TIME STEPPING IS DONE.
+        u_curr.rename("Concentration profile, $u(\mathbf{x},t)$","u")
+        vtkfile_u << (u_curr, t)
+        v_curr.rename("Concentration profile, $v(\mathbf{x},t)$","v")
+        vtkfile_v << (v_curr, t)        
+        print("\n\n\t\tALL IS FINE AND DANDY HERE!\n\n")
+        print("Iterations are finished!")   
+        # Compute and save the spectral coefficients as well
+        if len(radii_holes)>0:
+            compute_spectral_coefficients_nohole(u_curr, dx_list[0], radii_holes[0],output_folder_str+ "iteration_" + str(repitition_index) + "/")
+        else:
+            compute_spectral_coefficients_nohole(u_curr, dx_list[0], 0,output_folder_str+ "iteration_" + str(repitition_index) + "/")
