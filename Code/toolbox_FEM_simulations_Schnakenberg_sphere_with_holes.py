@@ -23,6 +23,8 @@ from fenics import *
 import numpy as np
 # Write less trick
 np.fac = np.math.factorial
+# Import pandas as well
+import pandas as pd 
 # =================================================================================
 # =================================================================================
 # Functions for conducting the FEM simulations
@@ -267,9 +269,78 @@ def residual_Schnakenberg_sphere_with_holes(parameters,phi_1,phi_2,u_prev,v_prev
 #------------------------------------------------------------------
 # Function 7: "compute_spectral_coefficients_nohole"
 #------------------------------------------------------------------
-
-#def compute_spectral_coefficients_nohole(mesh, u):
-
+def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
+    # Define the radius and the degree of the local approximation
+    r = 1.0     # Radius of the sphere
+    degree = 1  # Degree of local approximation
+    # DEFINE THE BASIS FUNCTIONS FOR THE SPHERICAL HARMONICS
+    # The real spherical harmonics in Cartesian coordinates 
+    # n=0
+    Y_00 = Expression("sqrt(1/(4*pi))", degree=degree)
+    # n=1
+    Y_10 = Expression("sqrt(3/(4*pi))*x[2]/r", r=r, degree=degree)
+    Y_1p1 = Expression("sqrt(3/(4*pi))*x[0]/r", r=r, degree=degree)
+    # n=2
+    Y_20 = Expression("sqrt(5/(16*pi))*(3*pow(x[2], 2) - pow(r, 2))/pow(r, 2)", r=r, degree=degree)
+    Y_2p1 = Expression("sqrt(15/(4*pi))*x[0]*x[2]/pow(r, 2)", r=r, degree=degree)
+    Y_2p2 = Expression("sqrt(15/(16*pi))*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 2)", r=r, degree=degree)
+    # n=3
+    Y_30 = Expression("sqrt(7/(16*pi))*(5*pow(x[2], 3) - 3*x[2]*pow(r, 2))/pow(r, 3)", r=r, degree=degree)
+    Y_3p1 = Expression("sqrt(21/(32*pi))*x[0]*(5*pow(x[2], 2) - pow(r, 2))/pow(r, 3)", r=r, degree=degree)
+    Y_3p2 = Expression("sqrt(105/(16*pi))*x[2]*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
+    Y_3p3 = Expression("sqrt(35/(16*pi))*x[0]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
+    # n=4
+    Y_40 = Expression("sqrt(9/(256*pi))*(35*pow(x[2], 4) - 30*pow(x[2], 2)*pow(r, 2) + 3*pow(r, 4))/pow(r, 4)", r=r, degree=degree)
+    Y_4p1 = Expression("sqrt(45/(32*pi))*x[0]*(7*pow(x[2], 3) - 3*x[2]*pow(r, 2))/pow(r, 4)", r=r, degree=degree)
+    Y_4p2 = Expression("sqrt(45/(64*pi))*(pow(x[0], 2) - pow(x[1], 2))*(7*pow(x[2], 2) - pow(r, 2))/pow(r, 4)", r=r, degree=degree)
+    Y_4p3 = Expression("sqrt(315/(32*pi))*x[0]*x[2]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 4)", r=r, degree=degree)
+    Y_4p4 = Expression("sqrt(315/(256*pi))*(pow(x[0], 2)*(pow(x[0], 2) - 3*pow(x[1], 2)) - pow(x[1], 2)*(3*pow(x[0], 2) - pow(x[1], 2)))/pow(r, 4)", r=r, degree=degree)
+    # ASSEMBLE THE SOLUTION AS A FUNCTION OF THESE BASIS FUNCTIONS
+    # The real part of the complex spectral coefficients of
+    # the supplied function according to Chaplain,
+    # i.e., <u, Re(Y_n^m)> = 1/sqrt(2)<u, Y_(n|m|)> for m non-zero
+    # and   <u, Re(Y_n^0)> = <u, Y_(n0)> for m = 0, where
+    # Y_n^m is a complex spherical harmonic, Y_(n|m|) is a real one
+    # and the Condon-Shortley factor has been neglected  
+    # n=0
+    U_00 = assemble(u*Y_00*dx)
+    # n=1
+    U_10 = assemble(u*Y_10*dx)
+    U_1p1 = 1/sqrt(2)*assemble(u*Y_1p1*dx)
+    # n=2
+    U_20 = assemble(u*Y_20*dx)
+    U_2p1 = 1/sqrt(2)*assemble(u*Y_2p1*dx)
+    U_2p2 = 1/sqrt(2)*assemble(u*Y_2p2*dx)
+    # n=3
+    U_30 = assemble(u*Y_30*dx)
+    U_3p1 = 1/sqrt(2)*assemble(u*Y_3p1*dx)
+    U_3p2 = 1/sqrt(2)*assemble(u*Y_3p2*dx)
+    U_3p3 = 1/sqrt(2)*assemble(u*Y_3p3*dx)
+    # n=4
+    U_40 = assemble(u*Y_40*dx)
+    U_4p1 = 1/sqrt(2)*assemble(u*Y_4p1*dx)
+    U_4p2 = 1/sqrt(2)*assemble(u*Y_4p2*dx)
+    U_4p3 = 1/sqrt(2)*assemble(u*Y_4p3*dx)
+    U_4p4 = 1/sqrt(2)*assemble(u*Y_4p4*dx)
+    # Save the results
+    # Create a list of the coefficients of the basis functions
+    coeff_list = [U_00, U_10, U_1p1, U_20, U_2p1, U_2p2, U_30, U_3p1, U_3p2, U_3p3, U_40, U_4p1, U_4p2, U_4p3, U_4p4]
+    # Create a list of the corresponding hole radius
+    hole_radii_list = [hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius]
+    # Create an array with the temporary data
+    temp_data = np.array([hole_radii_list,coeff_list])
+    # Create a list of the column names
+    col_names = ["Hole radius in the mesh", "Spectral coefficients of the eigenfunctions"]
+    # Create a list of the names of the eigenfunctions
+    row_names = ["$\\gamma_{0,0}$", "$\\gamma_{1,0}$", "$\\gamma_{1,1}$", "$\\gamma_{2,0}$", "$\\gamma_{2,1}$", "$\\gamma_{2,2}$", "$\\gamma_{3,0}$", "$\\gamma_{3,1}$", "$\\gamma_{3,2}$", "$\\gamma_{3,3}$", "$\\gamma_{4,0}$", "$\\gamma_{4,1}$", "$\\gamma_{4,2}$", "$\\gamma_{4,3}$", "$\\gamma_{4,4}$"]
+    # Create a datafrane
+    data = temp_data.T
+    # Create a pandas data frame which we want to save
+    df = pd.DataFrame(data,columns=col_names)
+    # Add the row_name afterwards
+    df.insert(0,'Eigenfunctions', row_names)
+    # Finally, save the data frame to the given file name
+    df.to_csv(folder_str + "/spectral_coefficients.csv")    
 #------------------------------------------------------------------
 # Function 8: "FEMFD_simulation_Schnakenberg_sphere_with_holes"
 #------------------------------------------------------------------
@@ -454,109 +525,8 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     vtkfile_v << (v_curr, t)        
     print("\n\n\t\tALL IS FINE AND DANDY HERE!\n\n")
     print("Iterations are finished!")   
-    u = u_curr
-    
-    # Parameters
-    r = 1.0     # Radius of the sphere
-    degree = 1  # Degree of local approximation
-    
-    # The real spherical harmonics in Cartesian coordinates 
-    Y_00 = Expression("sqrt(1/(4*pi))", degree=degree)
-
-    #Y_1m1 = Expression("sqrt(3/(4*pi))*x[1]/r", r=r, degree=degree)
-    Y_10 = Expression("sqrt(3/(4*pi))*x[2]/r", r=r, degree=degree)
-    Y_1p1 = Expression("sqrt(3/(4*pi))*x[0]/r", r=r, degree=degree)
-
-    #Y_2m2 = Expression("sqrt(15/(4*pi))*x[0]*x[1]/pow(r, 2)", r=r, degree=degree)
-    #Y_2m1 = Expression("sqrt(15/(4*pi))*x[1]*x[2]/pow(r, 2)", r=r, degree=degree)
-    Y_20 = Expression("sqrt(5/(16*pi))*(3*pow(x[2], 2) - pow(r, 2))/pow(r, 2)", r=r, degree=degree)
-    Y_2p1 = Expression("sqrt(15/(4*pi))*x[0]*x[2]/pow(r, 2)", r=r, degree=degree)
-    Y_2p2 = Expression("sqrt(15/(16*pi))*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 2)", r=r, degree=degree)
-
-    #Y_3m3 = Expression("sqrt(35/(32*pi))*x[1]*(3*pow(x[0], 2) - pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
-    #Y_3m2 = Expression("sqrt(105/(4*pi))*x[0]*x[1]*x[2]/pow(r, 3)", r=r, degree=degree)
-    #Y_3m1 = Expression("sqrt(21/(32*pi))*x[1]*(5*pow(x[2], 2) - pow(r, 2))/pow(r, 3)", r=r, degree=degree)
-    Y_30 = Expression("sqrt(7/(16*pi))*(5*pow(x[2], 3) - 3*x[2]*pow(r, 2))/pow(r, 3)", r=r, degree=degree)
-    Y_3p1 = Expression("sqrt(21/(32*pi))*x[0]*(5*pow(x[2], 2) - pow(r, 2))/pow(r, 3)", r=r, degree=degree)
-    Y_3p2 = Expression("sqrt(105/(16*pi))*x[2]*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
-    Y_3p3 = Expression("sqrt(35/(16*pi))*x[0]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
-
-    #Y_4m4 = Expression("sqrt(315/(16*pi))*x[0]*x[1]*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 4)", r=r, degree=degree)
-    #Y_4m3 = Expression("sqrt(315/(32*pi))*x[1]*x[2]*(3*pow(x[0], 2) - pow(x[1], 2))/pow(r, 4)", r=r, degree=degree)
-    #Y_4m2 = Expression("sqrt(45/(16*pi))*x[0]*x[1]*(7*pow(x[2], 2) - pow(r, 2))/pow(r, 4)", r=r, degree=degree)
-    #Y_4m1 = Expression("sqrt(45/(32*pi))*x[1]*(7*pow(x[2], 3) - 3*x[2]*pow(r, 2))/pow(r, 4)", r=r, degree=degree)
-    Y_40 = Expression("sqrt(9/(256*pi))*(35*pow(x[2], 4) - 30*pow(x[2], 2)*pow(r, 2) + 3*pow(r, 4))/pow(r, 4)", r=r, degree=degree)
-    Y_4p1 = Expression("sqrt(45/(32*pi))*x[0]*(7*pow(x[2], 3) - 3*x[2]*pow(r, 2))/pow(r, 4)", r=r, degree=degree)
-    Y_4p2 = Expression("sqrt(45/(64*pi))*(pow(x[0], 2) - pow(x[1], 2))*(7*pow(x[2], 2) - pow(r, 2))/pow(r, 4)", r=r, degree=degree)
-    Y_4p3 = Expression("sqrt(315/(32*pi))*x[0]*x[2]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 4)", r=r, degree=degree)
-    Y_4p4 = Expression("sqrt(315/(256*pi))*(pow(x[0], 2)*(pow(x[0], 2) - 3*pow(x[1], 2)) - pow(x[1], 2)*(3*pow(x[0], 2) - pow(x[1], 2)))/pow(r, 4)", r=r, degree=degree)
-
-    # The real part of the complex spectral coefficients of
-    # the supplied function according to Chaplain,
-    # i.e., <u, Re(Y_n^m)> = 1/sqrt(2)<u, Y_(n|m|)> for m non-zero
-    # and   <u, Re(Y_n^0)> = <u, Y_(n0)> for m = 0, where
-    # Y_n^m is a complex spherical harmonic, Y_(n|m|) is a real one
-    # and the Condon-Shortley factor has been neglected  
-    U_00 = assemble(u*Y_00*dx)
-
-    #U_1m1 = assemble(u*Y_1m1*dx)
-    U_10 = assemble(u*Y_10*dx)
-    U_1p1 = 1/sqrt(2)*assemble(u*Y_1p1*dx)
-
-    #U_2m2 = assemble(u*Y_2m2*dx)
-    #U_2m1 = assemble(u*Y_2m1*dx)
-    U_20 = assemble(u*Y_20*dx)
-    U_2p1 = 1/sqrt(2)*assemble(u*Y_2p1*dx)
-    U_2p2 = 1/sqrt(2)*assemble(u*Y_2p2*dx)
-
-    #U_3m3 = assemble(u*Y_3m3*dx)
-    #U_3m2 = assemble(u*Y_3m2*dx)
-    #U_3m1 = assemble(u*Y_3m1*dx)
-    U_30 = assemble(u*Y_30*dx)
-    U_3p1 = 1/sqrt(2)*assemble(u*Y_3p1*dx)
-    U_3p2 = 1/sqrt(2)*assemble(u*Y_3p2*dx)
-    U_3p3 = 1/sqrt(2)*assemble(u*Y_3p3*dx)
-
-    #U_4m4 = assemble(u*Y_4m4*dx)
-    #U_4m3 = assemble(u*Y_4m3*dx)
-    #U_4m2 = assemble(u*Y_4m2*dx)
-    #U_4m1 = assemble(u*Y_4m1*dx)
-    U_40 = assemble(u*Y_40*dx)
-    U_4p1 = 1/sqrt(2)*assemble(u*Y_4p1*dx)
-    U_4p2 = 1/sqrt(2)*assemble(u*Y_4p2*dx)
-    U_4p3 = 1/sqrt(2)*assemble(u*Y_4p3*dx)
-    U_4p4 = 1/sqrt(2)*assemble(u*Y_4p4*dx)
-
-    # Print the results
-    print("\t\tThe spectral coefficients of u are:")
-    
-    print("\t\tU_1  = U_00 = %0.4f"%U_00)
-    
-    print("\t\tU_2  = U_1m1 = %0.4f"%U_1p1)
-    print("\t\tU_3  = U_10 = %0.4f"%U_10)
-    print("\t\tU_4  = U_1p1 = %0.4f"%U_1p1)
-
-    print("\t\tU_5  = U_2m2 = %0.4f"%U_2p2)
-    print("\t\tU_6  = U_2m1 = %0.4f"%U_2p1)
-    print("\t\tU_7  = U_20 = %0.4f"%U_20)
-    print("\t\tU_8  = U_2p1 = %0.4f"%U_2p1)
-    print("\t\tU_9  = U_2p2 = %0.4f"%U_2p2)
-
-    print("\t\tU_10 = U_3m3 = %0.4f"%U_3p3)
-    print("\t\tU_11 = U_3m2 = %0.4f"%U_3p2)
-    print("\t\tU_12 = U_3m1 = %0.4f"%U_3p1)
-    print("\t\tU_13 = U_30 = %0.4f"%U_30)
-    print("\t\tU_14 = U_3p1 = %0.4f"%U_3p1)
-    print("\t\tU_15 = U_3p2 = %0.4f"%U_3p2)
-    print("\t\tU_16 = U_3p3 = %0.4f"%U_3p3)
-
-    print("\t\tU_17 = U_4m4 = %0.4f"%U_4p4)
-    print("\t\tU_18 = U_4m3 = %0.4f"%U_4p3)
-    print("\t\tU_19 = U_4m2 = %0.4f"%U_4p2)
-    print("\t\tU_20 = U_4m1 = %0.4f"%U_4p1)
-    print("\t\tU_21 = U_40 = %0.4f"%U_40)
-    print("\t\tU_22 = U_4p1 = %0.4f"%U_4p1)
-    print("\t\tU_23 = U_4p2 = %0.4f"%U_4p2)
-    print("\t\tU_24 = U_4p3 = %0.4f"%U_4p3)
-    print("\t\tU_25 = U_4p4 = %0.4f"%U_4p4)
-    
+    # Compute and save the spectral coefficients as well
+    if len(radii_holes)>0:
+        compute_spectral_coefficients_nohole(u_curr, dx_list[0], radii_holes[0],output_folder_str)
+    else:
+        compute_spectral_coefficients_nohole(u_curr, dx_list[0], 0,output_folder_str)
