@@ -215,6 +215,7 @@ def VF_and_FEM_Schnakenberg_sphere_with_holes(parameters, u, v, phi_1, phi_2, u_
 
 #------------------------------------------------------------------
 # Function 6: "residual_Schnakenberg_sphere_with_holes"
+#------------------------------------------------------------------
 # The function calculates the residual forms being a measure of
 # how much the states or concentration profiles change over the course
 # of one time step. This is used in order to guide the choice of the
@@ -264,8 +265,13 @@ def residual_Schnakenberg_sphere_with_holes(parameters,phi_1,phi_2,u_prev,v_prev
     # Return the residual form
     return residual_form_u + residual_form_v
 #------------------------------------------------------------------
-# Function 7: "FEMFD_simulation_Schnakenberg_sphere_with_holes"
-# 
+# Function 7: "compute_spectral_coefficients_nohole"
+#------------------------------------------------------------------
+
+#def compute_spectral_coefficients_nohole(mesh, u):
+
+#------------------------------------------------------------------
+# Function 8: "FEMFD_simulation_Schnakenberg_sphere_with_holes"
 #------------------------------------------------------------------
 # The functions solves the Schnakenberg RD model on the sphere with potential holes and potentially the parameters are altered in the regions adjacent to the holes. The function does not return any output but it writes the concentration profiles of u and v respectively to vtk files which are stored in an appropriately named sub folder of the folder named "../Output". The function takes the following inputs:
 # 1. The parameter num_holes determining which mesh that is read as they are classified according to the number of holes that are added on the sphere,
@@ -448,9 +454,6 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     vtkfile_v << (v_curr, t)        
     print("\n\n\t\tALL IS FINE AND DANDY HERE!\n\n")
     print("Iterations are finished!")   
-
-# def compute_spectral_coefficients_nohole(mesh, u):
-
     u = u_curr
     
     # Parameters
