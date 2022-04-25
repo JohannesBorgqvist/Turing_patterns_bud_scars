@@ -22,10 +22,8 @@ import Schnakenberg_properties # Home-made
 # =================================================================================
 # The parameters in the Schnakenberg model
 a = 0.2
-#a = 0.2
 b = 1
 # The wavenumber k^2
-#n = 1
 n = 2
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
@@ -55,35 +53,29 @@ print("\t\tThe critical radii:\t\t(geodesic, cylindric)\t=\t(%0.4f,%0.4f)"%(eps_
 print("\t\tThe critical spectral parameters:\t\t(n,m)\t=\t(%0.4f,%0.4f)"%(n_tuple[1], m_tuple[1]))
 # Collect all parameters in a list
 parameters = [a, b, d, gamma]
-# For this experiment we have no hole in the mesh
-#num_holes = 0
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
 sigma = 1e-4
 # Define the end time for the simulations
-#T = 1
-#T = 50
-T = 1
+T = 50
 # Collect these latter two parameters in a list as well
 numerical_parameters = [sigma, T]
 # Looping over the varius radii and run all simulations there!
 # Define the experimental design of holes with increasing radii
 experimental_design = []
+# Define the meshes we want to loop over
+hole_radius_array = np.arange(0,0.75,0.05)
 # Loop over the hole_radii and add the experiments
-#hole_radius_array = [0.0, 0.2, 0.4, 0.7]
-hole_radius_array = [0.0]
-number_of_repititions = 1
-#for hole_radius in np.arange(0,0.75,0.05):
-#for hole_radius in np.arange(0,1):
 for hole_radius in hole_radius_array:
-
     # Special case for the mesh with no hole
     if hole_radius == 0:
         experimental_design.append((0,parameters,numerical_parameters,[],True))
     else:
         experimental_design.append((1,parameters,numerical_parameters,[hole_radius],True))
-# Loop over the experiments in the experimental design and run them all
+# We repeat the experiments a number of time due to the stochasticity in the intial conditions
+number_of_repititions = 10        
+# Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
     # Prompt to the user
     print("---------------------------------------------------------------------------------------------------------\n")
