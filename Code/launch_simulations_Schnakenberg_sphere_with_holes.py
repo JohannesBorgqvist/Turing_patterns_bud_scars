@@ -73,7 +73,7 @@ for hole_radius in hole_radius_array:
         experimental_design.append((0,parameters,numerical_parameters,[],True))
     else:
         experimental_design.append((1,parameters,numerical_parameters,[hole_radius],True))
-# We repeat the experiments a number of time due to the stochasticity in the intial conditions
+# We repeat the experiments a certain number of times due to the stochasticity in the intial conditions
 number_of_repititions = 10        
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
