@@ -32,5 +32,7 @@ Figures/Meshes/auto/
 *.pvd
 # Also, we do not include the figures online
 /Figures/
+# Also, no csv files
+*.csv
 # Also, we do not wish to include this strange citation format
 *.cff~
