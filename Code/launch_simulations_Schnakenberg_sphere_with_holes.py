@@ -58,23 +58,24 @@ radii_holes = []
 # Define the perturbation in the initial conditions
 sigma = 1e-4
 # Define the end time for the simulations
-T = 50
+T = 1
 # Collect these latter two parameters in a list as well
 numerical_parameters = [sigma, T]
 # Looping over the varius radii and run all simulations there!
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Define the meshes we want to loop over
-hole_radius_array = np.arange(0,0.75,0.05)
+#hole_radius_array = np.arange(0,0.75,0.05)
+hole_radius_array = np.array([0, 0.05])
 # Loop over the hole_radii and add the experiments
 for hole_radius in hole_radius_array:
     # Special case for the mesh with no hole
     if hole_radius == 0:
-        experimental_design.append((0,parameters,numerical_parameters,[],True))
+        experimental_design.append((0,parameters,numerical_parameters,[],True,True))
     else:
-        experimental_design.append((1,parameters,numerical_parameters,[hole_radius],True))
+        experimental_design.append((1,parameters,numerical_parameters,[hole_radius],True,True))
 # We repeat the experiments a certain number of times due to the stochasticity in the intial conditions
-number_of_repititions = 10        
+number_of_repititions = 1        
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
     # Prompt to the user
@@ -82,5 +83,5 @@ for experiment in experimental_design:
     print("\tNUM_HOLES\t=\t%d,\tRADII\t=\t%s"%(int(experiment[0]),str(experiment[3])))
     print("---------------------------------------------------------------------------------------------------------\n")    
     # Solve the FEM system with the given parameters
-    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],steady_states,experiment[2],experiment[3],experiment[4],number_of_repititions)    
+    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],steady_states,experiment[2],experiment[3],experiment[4],number_of_repititions,experiment[5])    
 
