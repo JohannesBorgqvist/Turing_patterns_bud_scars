@@ -25,6 +25,8 @@ import numpy as np
 np.fac = np.math.factorial
 # Import pandas as well
 import pandas as pd 
+# Import scipy to load the initial conditions nicely
+from scipy.io import loadmat, savemat
 # =================================================================================
 # =================================================================================
 # Functions for conducting the FEM simulations
@@ -342,7 +344,46 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
     # Finally, save the data frame to the given file name
     df.to_csv(folder_str + "/spectral_coefficients.csv")    
 #------------------------------------------------------------------
-# Function 8: "FEMFD_simulation_Schnakenberg_sphere_with_holes"
+# Function 8: "save_IC"
+#------------------------------------------------------------------
+# The function saves the initial condition for the current mesh and parameters. It takes the same input as
+# the subsequent function, so read the comments for that function if you wish to know the name of this input.
+def save_IC(num_holes,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states):
+    #--------------------------------------------------------------
+    # STEP 1 OUT OF 7: EXTRACT PARAMETERS
+    #--------------------------------------------------------------    
+    # Extract the numerical parameters
+    sigma = numerical_parameters[0] # Determining the perturbation in the initial conditions
+    T = numerical_parameters[1] # Determining the end time for the FD time stepping scheme
+    #--------------------------------------------------------------
+    # STEP 2 OUT OF 7: DEFINE MESHES, INTEGRATION MEASURES AND
+    # DEFINE THE HILBERT SPACE FOR THE FEM FORMULATION
+    #--------------------------------------------------------------    
+    # Read in the mesh depending on the number of holes on the sphere
+    mesh, mvc_subdomains, mf_subdomains, dx_list = read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes)
+    # Define the finite element space for the Schackenberg model using the mesh
+    H = FunctionSpace(mesh, "P", 1)
+    #--------------------------------------------------------------
+    # STEP 3 OUT OF 7: DEFINE TEST FUNCTIONS AND TRIAL FUNCTIONS (I.E.
+    # THE SOLUTION TO THE SCHNAKENBERG MODEL)
+    #--------------------------------------------------------------    
+    # Define the previous time step as a function of the function space H
+    u_prev = Function(H) # Previous time step in the FD time stepping scheme
+    v_prev = Function(H) # Previous time step in the FD time stepping scheme
+    #--------------------------------------------------------------
+    # STEP 4 OUT OF 7: SET THE INITIAL CONDITIONS OF THE SYSTEM,
+    # CREATE AN OUTPUT FOLDER WHERE THE RESULTS ARE STORED
+    # AND SAVE THE INITIAL CONDITIONS.
+    #--------------------------------------------------------------    
+    # Calculate the initial conditions
+    initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)
+    # conversions and scipy io functions
+    uvec = u_prev.vector().get_local().reshape(len(u_prev.vector()),1)
+    savemat('../Output/IC_u', { 'uvec': uvec }, oned_as='column')
+    vvec = v_prev.vector().get_local().reshape(len(v_prev.vector()),1)
+    savemat('../Output/IC_v', { 'vvec': vvec }, oned_as='column')        
+#------------------------------------------------------------------
+# Function 9: "FEMFD_simulation_Schnakenberg_sphere_with_holes"
 #------------------------------------------------------------------
 # The functions solves the Schnakenberg RD model on the sphere with potential holes and potentially the parameters are altered in the regions adjacent to the holes. The function does not return any output but it writes the concentration profiles of u and v respectively to vtk files which are stored in an appropriately named sub folder of the folder named "../Output". The function takes the following inputs:
 # 1. The parameter num_holes determining which mesh that is read as they are classified according to the number of holes that are added on the sphere,
@@ -350,8 +391,10 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
 # 3. The list steady_states=[u0,v0] containing the two states of the Schnakenberg model,
 # 4. The list numerical_parameters=[sigma,T] where sigma determines the perturbation in the initial condition and T determines the end time for the FD time stepping scheme,
 # 5. The list radii_holes containing the list of the radii of the holes in the mesh,
-# 6. A logical variable called ICs_around_steady_states which determines whether the initial conditions are set to the steady states values or not.
-def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states,number_of_repititions):
+# 6. A logical variable called ICs_around_steady_states which determines whether the initial conditions are set to the steady states values or not,
+# 7. A logical variable called load_IC which determines whether we generate new ICs or if load some fixed ICs,
+
+def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states,number_of_repititions,load_IC):
     #--------------------------------------------------------------
     # STEP 1 OUT OF 7: EXTRACT PARAMETERS
     #--------------------------------------------------------------    
@@ -425,8 +468,14 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
         vtkfile_v = File(output_folder_str+"iteration_" + str(repitition_index) + "/" + "v.pvd")        
         # Set the time to zero as we are looking at the initial conditions
         t = 0.0
-        # Calculate the initial conditions
-        initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)
+        if load_IC:
+            uvec_old = loadmat('../Output/IC_u')['uvec']
+            u_prev.vector().set_local(uvec_old[:,0])
+            vvec_old = loadmat('../Output/IC_v')['vvec']
+            v_prev.vector().set_local(vvec_old[:,0])
+        else:
+            # Calculate the initial conditions
+            initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)
         # Save the two initial conditions in the output folder
         u_prev.rename("Concentration profile, $u(\mathbf{x},t)$","u")
         vtkfile_u << (u_prev, t)
