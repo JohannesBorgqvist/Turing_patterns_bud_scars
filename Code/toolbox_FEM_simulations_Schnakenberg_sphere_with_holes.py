@@ -531,3 +531,107 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
             compute_spectral_coefficients_nohole(u_curr, dx_list[0], radii_holes[0],output_folder_str+ "iteration_" + str(repitition_index) + "/")
         else:
             compute_spectral_coefficients_nohole(u_curr, dx_list[0], 0,output_folder_str+ "iteration_" + str(repitition_index) + "/")
+#------------------------------------------------------------------
+# Function 7: "project_eigen_functions_onto_mesh"
+#------------------------------------------------------------------
+def project_eigen_functions_onto_mesh(num_holes,radii_holes):
+    # Read in the mesh depending on the number of holes on the sphere
+    mesh, mvc_subdomains, mf_subdomains, dx_list = read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes)
+    # Define the finite element space for the Schackenberg model using the mesh
+    H = FunctionSpace(mesh, "P", 1)
+    # Define the radius and the degree of the local approximation
+    r = 1.0     # Radius of the sphere
+    degree = 1  # Degree of local approximation
+    # DEFINE THE OUTPUT STRING
+    folder_str = "../Output/eigenfunctions/"
+    hole_str = "h_" + str(num_holes)    
+    if num_holes == 0:
+        radius_str = "/"
+    else:
+        radius_str = "_"
+        for radius in radii_holes:
+            radius_str += "r_" + str(round(radius,3)).replace(".","p") + "_/"
+    # Gather all these substrings into one giant string where we will save the output files
+    output_folder_str = folder_str + hole_str + radius_str
+    # DEFINE THE BASIS FUNCTIONS FOR THE SPHERICAL HARMONICS
+    # The real spherical harmonics in Cartesian coordinates 
+    # n=0
+    Y_00 = Expression("sqrt(1/(4*pi))", degree=degree)
+    P_Y_00 = project(Y_00, H)
+    vtkfile_00 = File(output_folder_str+ "Y_00.pvd")
+    P_Y_00.rename("$Y_{00}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_00")
+    vtkfile_00 << (P_Y_00, 0)    
+    # n=1
+    Y_10 = Expression("sqrt(3/(4*pi))*x[2]/r", r=r, degree=degree)
+    P_Y_10 = project(Y_10, H)
+    vtkfile_10 = File(output_folder_str+ "Y_10.pvd")
+    P_Y_10.rename("$Y_{10}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_10")
+    vtkfile_10 << (P_Y_10, 0)        
+    Y_1p1 = Expression("sqrt(3/(4*pi))*x[0]/r", r=r, degree=degree)
+    P_Y_11 = project(Y_1p1, H)
+    vtkfile_11 = File(output_folder_str+ "Y_11.pvd")
+    P_Y_11.rename("$Y_{11}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_1p1")
+    vtkfile_11 << (P_Y_11, 0)            
+    # n=2
+    Y_20 = Expression("sqrt(5/(16*pi))*(3*pow(x[2], 2) - pow(r, 2))/pow(r, 2)", r=r, degree=degree)
+    P_Y_20 = project(Y_20, H)
+    vtkfile_20 = File(output_folder_str+ "Y_20.pvd")
+    P_Y_20.rename("$Y_{20}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_20")
+    vtkfile_20 << (P_Y_20, 0)                
+    Y_2p1 = Expression("sqrt(15/(4*pi))*x[0]*x[2]/pow(r, 2)", r=r, degree=degree)
+    P_Y_21 = project(Y_2p1, H)
+    vtkfile_21 = File(output_folder_str+ "Y_21.pvd")
+    P_Y_21.rename("$Y_{21}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_2p1")
+    vtkfile_21 << (P_Y_21, 0)                
+    Y_2p2 = Expression("sqrt(15/(16*pi))*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 2)", r=r, degree=degree)
+    P_Y_22 = project(Y_2p2, H)
+    vtkfile_22 = File(output_folder_str+ "Y_22.pvd")
+    P_Y_22.rename("$Y_{22}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_2p2")
+    vtkfile_22 << (P_Y_22, 0)                    
+    # n=3
+    Y_30 = Expression("sqrt(7/(16*pi))*(5*pow(x[2], 3) - 3*x[2]*pow(r, 2))/pow(r, 3)", r=r, degree=degree)
+    P_Y_30 = project(Y_30, H)
+    vtkfile_30 = File(output_folder_str+ "Y_30.pvd")
+    P_Y_30.rename("$Y_{30}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_30")
+    vtkfile_30 << (P_Y_30, 0)                
+    Y_3p1 = Expression("sqrt(21/(32*pi))*x[0]*(5*pow(x[2], 2) - pow(r, 2))/pow(r, 3)", r=r, degree=degree)
+    P_Y_31 = project(Y_3p1, H)
+    vtkfile_31 = File(output_folder_str+ "Y_31.pvd")
+    P_Y_31.rename("$Y_{31}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_3p1")
+    vtkfile_31 << (P_Y_31, 0)                
+    Y_3p2 = Expression("sqrt(105/(16*pi))*x[2]*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
+    P_Y_32 = project(Y_3p2, H)
+    vtkfile_32 = File(output_folder_str+ "Y_32.pvd")
+    P_Y_32.rename("$Y_{32}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_3p2")
+    vtkfile_32 << (P_Y_32, 0)                    
+    Y_3p3 = Expression("sqrt(35/(16*pi))*x[0]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
+    P_Y_33 = project(Y_3p3, H)
+    vtkfile_33 = File(output_folder_str+ "Y_33.pvd")
+    P_Y_33.rename("$Y_{33}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_3p3")
+    vtkfile_33 << (P_Y_33, 0)                    
+    # n=4
+    Y_40 = Expression("sqrt(9/(256*pi))*(35*pow(x[2], 4) - 30*pow(x[2], 2)*pow(r, 2) + 3*pow(r, 4))/pow(r, 4)", r=r, degree=degree)
+    P_Y_40 = project(Y_40, H)
+    vtkfile_40 = File(output_folder_str+ "Y_40.pvd")
+    P_Y_40.rename("$Y_{40}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_40")
+    vtkfile_40 << (P_Y_40, 0)                    
+    Y_4p1 = Expression("sqrt(45/(32*pi))*x[0]*(7*pow(x[2], 3) - 3*x[2]*pow(r, 2))/pow(r, 4)", r=r, degree=degree)
+    P_Y_41 = project(Y_4p1, H)
+    vtkfile_41 = File(output_folder_str+ "Y_41.pvd")
+    P_Y_41.rename("$Y_{41}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_4p1")
+    vtkfile_41 << (P_Y_41, 0)                    
+    Y_4p2 = Expression("sqrt(45/(64*pi))*(pow(x[0], 2) - pow(x[1], 2))*(7*pow(x[2], 2) - pow(r, 2))/pow(r, 4)", r=r, degree=degree)
+    P_Y_42 = project(Y_4p2, H)
+    vtkfile_42 = File(output_folder_str+ "Y_42.pvd")
+    P_Y_42.rename("$Y_{42}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_4p2")
+    vtkfile_42 << (P_Y_42, 0)                    
+    Y_4p3 = Expression("sqrt(315/(32*pi))*x[0]*x[2]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 4)", r=r, degree=degree)
+    P_Y_43 = project(Y_4p3, H)
+    vtkfile_43 = File(output_folder_str+ "Y_43.pvd")
+    P_Y_43.rename("$Y_{43}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_4p3")
+    vtkfile_43 << (P_Y_43, 0)                    
+    Y_4p4 = Expression("sqrt(315/(256*pi))*(pow(x[0], 2)*(pow(x[0], 2) - 3*pow(x[1], 2)) - pow(x[1], 2)*(3*pow(x[0], 2) - pow(x[1], 2)))/pow(r, 4)", r=r, degree=degree)    
+    P_Y_44 = project(Y_4p4, H)
+    vtkfile_44 = File(output_folder_str+ "Y_44.pvd")
+    P_Y_44.rename("$Y_{44}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_4p4")
+    vtkfile_44 << (P_Y_44, 0)                    
