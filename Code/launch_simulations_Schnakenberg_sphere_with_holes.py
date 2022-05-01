@@ -27,19 +27,8 @@ b = 1
 print("---------------------------------------------------------------------------------------------------------\n")
 print("\tREPLICATING CHAPLAINS SIMULATIONS")
 print("---------------------------------------------------------------------------------------------------------\n")
-# Print the results
-print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
-print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))
 # Set the value of the relative diffusion
 d = 18
-# Compute minimal critical hole radius for pattern disturbance
-n_largest = 1
-eps_tuple, n_tuple, m_tuple = Schnakenberg_properties.compute_minimal_holeradius_for_pattern_disturbance(a,b,d,gamma,n,n_largest)
-hole_cylinder_radius = np.sin(eps_tuple[1])
-# Print the results
-print("\n\t\tTheoretical parameter values for pattern disturbances") 
-print("\t\tThe critical radii:\t\t(geodesic, cylindric)\t=\t(%0.4f,%0.4f)"%(eps_tuple[1], hole_cylinder_radius))
-print("\t\tThe critical spectral parameters:\t\t(n,m)\t=\t(%0.4f,%0.4f)"%(n_tuple[1], m_tuple[1]))
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
@@ -66,7 +55,10 @@ for n in n_vec:
     # Set the value of the reaction strength to its critical value
     gamma = gamma_c
     # Collect all parameters in a list
-    parameters = [a, b, d, gamma]    
+    parameters = [a, b, d, gamma]
+    # Print the results
+    print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
+    print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))    
     # Loop over the hole_radii and add the experiments
     for hole_radius in hole_radius_array:
         # Special case for the mesh with no hole
