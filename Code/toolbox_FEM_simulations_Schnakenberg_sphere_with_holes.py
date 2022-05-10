@@ -477,11 +477,13 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
             # Load the old initial conditions on the old function space
             u_old = Function(H_old, '../Output/fixed_IC_u.xml')
             v_old = Function(H_old, '../Output/fixed_IC_v.xml')
-            # Project the old initial conditions onto the new function space
-            u_prev = interpolate(u_old, H)
-            #u_prev.set_allow_extrapolation(True)
-            v_prev = interpolate(v_old, H)
-            #v_prev.set_allow_extrapolation(True)            
+            # Interpolate the old initial conditions onto the new function space
+            u_old.set_allow_extrapolation(True)
+            LagrangeInterpolator.interpolate(u_prev, u_old)
+            #u_prev = interpolate(u_old, H)
+            v_old.set_allow_extrapolation(True)
+            LagrangeInterpolator.interpolate(v_prev, v_old)
+            #v_prev = interpolate(v_old, H)
         else:
             # Calculate the initial conditions
             initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)
