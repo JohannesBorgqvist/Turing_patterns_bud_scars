@@ -421,7 +421,6 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     # Read in the mesh depending on the number of holes on the sphere
     mesh, mvc_subdomains, mf_subdomains, dx_list = read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes)
     # Define the finite element space for the Schackenberg model using the mesh
-    #H = define_Hilbert_space_Schnakenberg_sphere_with_holes(mesh)    
     H = FunctionSpace(mesh, "P", 1)
     #--------------------------------------------------------------
     # STEP 3 OUT OF 7: DEFINE TEST FUNCTIONS AND TRIAL FUNCTIONS (I.E.
@@ -469,10 +468,16 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
         # Set the time to zero as we are looking at the initial conditions
         t = 0.0
         if load_IC:
-            uvec_old = loadmat('../Output/IC_u')['uvec']
-            u_prev.vector().set_local(uvec_old[:,0])
-            vvec_old = loadmat('../Output/IC_v')['vvec']
-            v_prev.vector().set_local(vvec_old[:,0])
+            # Load the old mesh
+            mesh_old = Mesh('../Output/fixed_IC_mesh.xml')
+            # Define a function space on the old mesh
+            H_old = FunctionSpace(mesh_old, "P", 1)
+            # Load the old initial conditions on the old function space
+            u_old = Function(H_old, '../Output/fixed_IC_u.xml')
+            v_old = Function(H_old, '../Output/fixed_IC_v.xml')
+            # Project the old initial conditions onto the new function space
+            u_prev = interpolate(u_old, H)
+            v_prev = interpolate(v_old, H)
         else:
             # Calculate the initial conditions
             initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)
