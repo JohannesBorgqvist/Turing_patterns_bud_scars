@@ -19,6 +19,8 @@
 # =================================================================================
 # Most good things are contained in FEniCS
 from fenics import *
+# Interpolate non_matching_mesh
+#from fenicstools import interpolate_nonmatching_mesh
 # Import numpy as well
 import numpy as np
 # Write less trick
@@ -26,7 +28,7 @@ np.fac = np.math.factorial
 # Import pandas as well
 import pandas as pd 
 # Import scipy to load the initial conditions nicely
-from scipy.io import loadmat, savemat
+#from scipy.io import loadmat, savemat
 # =================================================================================
 # =================================================================================
 # Functions for conducting the FEM simulations
@@ -477,7 +479,9 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
             v_old = Function(H_old, '../Output/fixed_IC_v.xml')
             # Project the old initial conditions onto the new function space
             u_prev = interpolate(u_old, H)
+            #u_prev.set_allow_extrapolation(True)
             v_prev = interpolate(v_old, H)
+            #v_prev.set_allow_extrapolation(True)            
         else:
             # Calculate the initial conditions
             initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)

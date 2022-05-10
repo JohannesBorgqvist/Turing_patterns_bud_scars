@@ -59,12 +59,13 @@ for n in n_vec:
     print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
     print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))    
     # Loop over the hole_radii and add the experiments
-    for hole_radius in hole_radius_array:
+    #for hole_radius in hole_radius_array:
         # Special case for the mesh with no hole
-        if hole_radius == 0:
-            experimental_design.append((0,parameters,steady_states,numerical_parameters,[],True,True))
-        else:
-            experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,True))
+        #if hole_radius == 0:
+            #experimental_design.append((0,parameters,steady_states,numerical_parameters,[],True,True))
+        #else:
+            #experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,True))
+    experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius_array[1]],True,True))            
 # We repeat the experiments a certain number of times due to the stochasticity in the intial conditions
 number_of_repititions = 1        
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
