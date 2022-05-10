@@ -32,8 +32,7 @@ d = 18
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
-#sigma = 1e-4
-sigma = 0
+sigma = 1e-4
 # Define the end time for the simulations
 T = 50
 # Collect these latter two parameters in a list as well
