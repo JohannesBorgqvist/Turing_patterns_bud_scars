@@ -377,11 +377,11 @@ def save_IC(num_holes,steady_states,numerical_parameters,radii_holes,ICs_around_
     #--------------------------------------------------------------    
     # Calculate the initial conditions
     initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)
-    # conversions and scipy io functions
-    uvec = u_prev.vector().get_local().reshape(len(u_prev.vector()),1)
-    savemat('../Output/IC_u', { 'uvec': uvec }, oned_as='column')
-    vvec = v_prev.vector().get_local().reshape(len(v_prev.vector()),1)
-    savemat('../Output/IC_v', { 'vvec': vvec }, oned_as='column')        
+    # Save the initial conditions to files
+    File('../Output/fixed_IC_u.xml') << u_prev
+    File('../Output/fixed_IC_v.xml') << v_prev
+    # Save the mesh to a file as well
+    File('../Output/fixed_IC_mesh.xml') << mesh
 #------------------------------------------------------------------
 # Function 9: "FEMFD_simulation_Schnakenberg_sphere_with_holes"
 #------------------------------------------------------------------
