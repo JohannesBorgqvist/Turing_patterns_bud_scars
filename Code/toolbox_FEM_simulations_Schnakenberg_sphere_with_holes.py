@@ -455,7 +455,7 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     b_str = "b_" + str(round(b,3)).replace(".","p") + "_"
     d_str = "d_" + str(round(d,3)).replace(".","p") + "_"
     gamma_str = "gamma_" + str(round(gamma,3)).replace(".","p") + "_"
-    sigma_str = "sigma_" + str(round(sigma,3)).replace(".","p") + "_"
+    sigma_str = "sigma_" + str(round(sigma,5)).replace(".","p") + "_"
     T_str = "T_" + str(round(T,3)).replace(".","p") + "_"
     if ICs_around_steady_states:
         IC_str = "ICs_around_steady_states/"
