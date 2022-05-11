@@ -349,7 +349,7 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
 # Function 8: "save_IC"
 #------------------------------------------------------------------
 # The function saves the initial condition for the current mesh and parameters. It takes the same input as
-# the subsequent function, so read the comments for that function if you wish to know the name of this input.
+# the subsequent function, so read the comments for that function if you wish to know the name of these inputs.
 def save_IC(num_holes,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states):
     #--------------------------------------------------------------
     # STEP 1 OUT OF 7: EXTRACT PARAMETERS
@@ -478,12 +478,12 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
             u_old = Function(H_old, '../Output/fixed_IC_u.xml')
             v_old = Function(H_old, '../Output/fixed_IC_v.xml')
             # Interpolate the old initial conditions onto the new function space
+            # Note that we need to use LagrangeInterpolator in order for the interpolation
+            # to work in parallel
             u_old.set_allow_extrapolation(True)
             LagrangeInterpolator.interpolate(u_prev, u_old)
-            #u_prev = interpolate(u_old, H)
             v_old.set_allow_extrapolation(True)
             LagrangeInterpolator.interpolate(v_prev, v_old)
-            #v_prev = interpolate(v_old, H)
         else:
             # Calculate the initial conditions
             initial_conditions_Schnakenberg_sphere_with_holes(H,mesh,mf_subdomains,num_holes,steady_states,sigma,u_prev,v_prev,ICs_around_steady_states)
