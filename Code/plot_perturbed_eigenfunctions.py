@@ -182,6 +182,8 @@ for hole_index in range(len(hole_radius_array)):
         if help_variable == 0:
             # Save the legend strings
             legend_strings = list(dataframe.values[1:-1,1])
+            for index,legend in enumerate(legend_strings):
+                legend_strings[index] = legend_strings[index].replace("\\gamma","U")
             # Increment the legend string so that we do not save it anymore
             help_variable += 1
         # Loop through our data frame and save each value (we need to cast it as a double first)
@@ -238,3 +240,7 @@ for index in range(14):
     #plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),"../Figures/illustrate_eigenfunctions/Input/perturbed_eigenfunctions.tex","forget plot, densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
     plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),"../Figures/illustrate_eigenfunctions/Input/perturbed_eigenfunctions.tex","densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",legend_strings[index])
     #plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),"../Figures/illustrate_eigenfunctions/Input/perturbed_eigenfunctions.tex","forget plot, densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=down_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])    
+
+
+
+plot_LaTeX_2D(np.arange(14),np.asarray([basis_functions[index][0][0] for index in range(14)]),"../Figures/validation_Chaplain_spectral_analysis/Input/spectral_analysis.tex","only marks, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",[])
