@@ -1,7 +1,7 @@
 # =================================================================================
 # =================================================================================
 # Script:"launch_simulations_Schnakenberg_sphere_with_holes"
-# Date: 2022-03-30
+# Date: 2022-06-09
 # Implemented by: Johannes Borgqvist and Carl Lundholm
 # Description:
 # This is the script which launches the FEM simulations, and
@@ -42,8 +42,10 @@ numerical_parameters = [sigma, T]
 experimental_design = []
 # Define the meshes we want to loop over
 hole_radius_array = np.arange(0,0.75,0.05)
+#hole_radius_array = np.asarray([0])
 # Define the eigenvalues we want to consider
-n_vec = [1, 2, 3, 4]
+#n_vec = [1, 2, 3, 4]
+n_vec = [2]
 # Loop over the eigenvalues
 for n in n_vec:
     k_squared = n*(n+1)
@@ -62,11 +64,11 @@ for n in n_vec:
     for hole_radius in hole_radius_array:
         # Special case for the mesh with no hole
         if hole_radius == 0:
-            experimental_design.append((0,parameters,steady_states,numerical_parameters,[],True,True))
+            experimental_design.append((0,parameters,steady_states,numerical_parameters,[],True,False))
         else:
-            experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,True))
+            experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,False))
 # We repeat the experiments a certain number of times due to the stochasticity in the intial conditions
-number_of_repititions = 1        
+number_of_repititions = 10        
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
     # Prompt to the user

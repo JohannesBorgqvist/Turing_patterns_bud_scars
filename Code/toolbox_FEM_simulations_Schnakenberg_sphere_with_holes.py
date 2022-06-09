@@ -591,6 +591,12 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
             compute_spectral_coefficients_nohole(u_curr, dx_list[0], radii_holes[0],output_folder_str+ "iteration_" + str(repitition_index) + "/")
         else:
             compute_spectral_coefficients_nohole(u_curr, dx_list[0], 0,output_folder_str+ "iteration_" + str(repitition_index) + "/")
+        # Lastly, we want to save the final concentration profile as xml-files
+        # Save the initial conditions to files
+        File(output_folder_str + "iteration_" + str(repitition_index) + "/final_timestep_u.xml") << u_curr
+        File(output_folder_str + "iteration_" + str(repitition_index) + "/final_timestep_v.xml") << v_curr
+        # Save the mesh to a file as well
+        File(output_folder_str + "iteration_" + str(repitition_index) + "/final_timestep_mesh.xml") << mesh        
 #------------------------------------------------------------------
 # Function 7: "project_eigen_functions_onto_mesh"
 #------------------------------------------------------------------

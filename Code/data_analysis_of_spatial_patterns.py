@@ -1,7 +1,7 @@
 # =================================================================================
 # =================================================================================
 # Script:"data_analysis_of_spatial_patterns"
-# Date: 2022-04-29
+# Date: 2022-06-08
 # Implemented by: Johannes Borgqvist
 # Description:
 # This script analyses the spatial patterns by reading in the concentration profile
@@ -18,11 +18,19 @@ import numpy as np # Import numpy as well
 import Schnakenberg_properties # Home made
 from sklearn.cluster import DBSCAN # To calculate the number of poles in the concentration profile
 from matplotlib import pyplot as plt # For plotting
+from fenics import *
+import math as m
 # =================================================================================
 # =================================================================================
 # Functions
 # =================================================================================
 # =================================================================================
+def cart2sph(x,y,z):
+    XsqPlusYsq = x**2 + y**2
+    r = m.sqrt(XsqPlusYsq + z**2)               # r
+    elev = m.atan2(z,m.sqrt(XsqPlusYsq))     # theta
+    az = m.atan2(y,x)                           # phi
+    return r, elev, az
 def plot_LaTeX_2D(t,y,file_str,plot_str,legend_str):
     # Open a file with the append option
     # so that we can write to the same
@@ -53,6 +61,40 @@ def plot_LaTeX_2D(t,y,file_str,plot_str,legend_str):
     f.write("%s"%(temp_str))
     # Close the file
     f.close()
+def read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes):
+    # Allocate memory for the mesh and the mesh value collection
+    mesh = Mesh()
+    mvc_subdomains = MeshValueCollection("size_t", mesh, 2)
+    # Define a mesh function taking the subdomains into account
+    #mf_subdomains = 0
+    # Allocate memory for a list containing all the integration
+    # measures involved in the variational formulation
+    dx_list = []    
+    # Define the string of the mesh that we want to read
+    mesh_str = "../Meshes/s_h_" + str(num_holes)
+    # Define the string in which we read the mesh
+    # depending on the number of holes
+    if num_holes > 0:
+        # Loop over the radii and add these to the string name of the mesh
+        for radius in radii_holes:
+            mesh_str += "_r_" + str(round(radius,3)).replace(".","p") + "_"
+    # Now, we add the file format to the string as well
+    mesh_str += ".xdmf"
+    # And tidy the file name up in necessary
+    mesh_str = mesh_str.replace("_.xdmf",".xdmf")
+    #print(mesh_str)
+    # Read in the mesh and the subdomains into these two variables
+    with XDMFFile(mesh_str) as infile:
+        infile.read(mesh)
+        infile.read(mvc_subdomains, "name_to_read")
+    # Define a mesh function taking the subdomains into account
+    mf_subdomains = cpp.mesh.MeshFunctionSizet(mesh, mvc_subdomains)
+    # Add our integration measure to the list of integration measure
+    dx_list.append(Measure("dx", domain=mesh, subdomain_data=mf_subdomains, subdomain_id=1))
+    # Lastly, return our mesh, the mesh value collection, the mesh
+    # function and the integration measures.
+    return mesh, mvc_subdomains, mf_subdomains, dx_list
+    
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
@@ -98,7 +140,7 @@ a_str = "a_" + str(round(a,3)).replace(".","p") + "_"
 b_str = "b_" + str(round(b,3)).replace(".","p") + "_"
 d_str = "d_" + str(round(d,3)).replace(".","p") + "_"
 gamma_str = "gamma_" + str(round(gamma,3)).replace(".","p") + "_"
-sigma_str = "sigma_" + str(round(sigma,3)).replace(".","p") + "_"
+sigma_str = "sigma_" + str(round(sigma,5)).replace(".","p") + "_"
 T_str = "T_" + str(round(T,3)).replace(".","p") + "_"
 if ICs_around_steady_states:
     IC_str = "ICs_around_steady_states/"
@@ -107,7 +149,8 @@ else:
 # Let's start with the zeroth repitition
 repitition_index = 0
 # Define the meshes we want to loop over
-hole_radius_array = np.arange(0,0.75,0.05)
+#hole_radius_array = np.arange(0,0.75,0.05)
+hole_radius_array = np.arange(0,0.45,0.05)
 # Define a parameter epsilon for the clustering
 epsilon = 1
 #----------------------------------------------------------------------------------
@@ -118,9 +161,13 @@ epsilon = 1
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 # Allocate memory for the three metric we will plot
+pole_1_area = []
+pole_2_area = []
 rel_pol_area = []
 num_poles_vec = []
 max_conc = []
+min_dist = []
+angle_poles = []
 # Read ALL the data by looping over all hole radii
 for hole_index in range(len(hole_radius_array)):
     if hole_index == 0:
@@ -151,47 +198,173 @@ for hole_index in range(len(hole_radius_array)):
     cluster_labels = db.labels_
     # Get the number of poles
     num_poles = len(set(cluster_labels))
-    relative_pole_area = 100*len(pole_coordinates)/len(u)
+    #----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------
+    # Calculate the relative pole area by loading the old mesh and integrating
+    #----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------
+    # Load the old mesh
+    mesh_old = Mesh(folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "final_timestep_mesh.xml")
+    gdim = mesh_old.geometry().dim()
+    # Define a function space on the old mesh
+    H_old = FunctionSpace(mesh_old, "P", 1)
+    # Load the old initial conditions on the old function space
+    u_old = Function(H_old, folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_0final_timestep_u.xml")
+    v_old = Function(H_old, folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str  + "iteration_0final_timestep_v.xml")
+    # Find out the coordinates in the mesh
+    # Create a dofmap
+    dofmap = H_old.dofmap()
+    sphere_dofs = dofmap.dofs()
+    # Find all coordinates for the nodes in our mesh
+    coordinates = H_old.tabulate_dof_coordinates()
+    # Calculate the coordinates in the pole
+    pole_1_coordinates = []
+    pole_1_dofs = []
+    pole_2_coordinates = []
+    pole_2_dofs = []
+    non_pole_dofs = []
+    for index,coordinate in enumerate(coordinates):
+        for sub_index,temp_coordinate in enumerate(pole_coordinates):
+            if (coordinate[0]==temp_coordinate[0]) and ((coordinate[1]==temp_coordinate[1])) and ((coordinate[2]==temp_coordinate[2])):
+                if cluster_labels[sub_index] == 0:
+                    pole_1_coordinates.append(coordinate)
+                    pole_1_dofs.append(sphere_dofs[index])
+                elif cluster_labels[sub_index] == 1:
+                    pole_2_coordinates.append(coordinate)
+                    pole_2_dofs.append(sphere_dofs[index])                
+                else:
+                    non_pole_dofs.append(sphere_dofs[index])                
+    # Create a function as well 
+    pole_1_function = Function(H_old)
+    pole_2_function = Function(H_old)
+    # Set this pole function to 1 in the pole and 0 outside
+    pole_1_function.vector()[non_pole_dofs] = 0
+    pole_1_function.vector()[pole_1_dofs] = 1
+    pole_2_function.vector()[non_pole_dofs] = 0
+    pole_2_function.vector()[pole_2_dofs] = 1
+    # Define an integration measure
+    dx = Measure("dx", domain=mesh_old)
+    # Integrate over domain
+    pole_1_area_integration = 100*assemble(pole_1_function*dx)/assemble(Constant(1.0)*dx)
+    pole_2_area_integration = 100*assemble(pole_2_function*dx)/assemble(Constant(1.0)*dx)    
+    relative_pole_area = pole_1_area_integration + pole_2_area_integration
+    #relative_pole_area = 100*len(pole_coordinates)/len(u)
+    #----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------
+    # Calculate the relative pole area by loading the old mesh and integrating
+    #----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------
+    # Calculate the centroids as just the centres of mass of the poles
+    centroid_1 = [np.mean(np.asarray([point[0] for index,point in enumerate(pole_1_coordinates)])),np.mean(np.asarray([point[1] for index,point in enumerate(pole_1_coordinates)])),np.mean(np.asarray([point[2] for index,point in enumerate(pole_1_coordinates)]))]
+    centroid_2 = [np.mean(np.asarray([point[0] for index,point in enumerate(pole_2_coordinates)])),np.mean(np.asarray([point[1] for index,point in enumerate(pole_2_coordinates)])),np.mean(np.asarray([point[2] for index,point in enumerate(pole_2_coordinates)]))]
+    # Calculate these points in sphercial coordinates
+    r_1, theta_1, phi_1 = cart2sph(centroid_1[0],centroid_1[1],centroid_1[2])
+    r_2, theta_2, phi_2 = cart2sph(centroid_2[0],centroid_2[1],centroid_2[2])
+    # Now, we re-define our centroids based on these coordinates so that we are sure that we end up on the sphere
+    centroid_1 = [np.cos(phi_1)*np.cos(theta_1), np.cos(phi_1)*np.sin(theta_1), np.sin(phi_1)]
+    centroid_2 = [np.cos(phi_2)*np.cos(theta_2), np.cos(phi_2)*np.sin(theta_2), np.sin(phi_2)]
+    # Calculate the minimal distance between these points
+    dist_temp = m.acos(centroid_1[0]*centroid_2[0]+centroid_1[1]*centroid_2[1]+centroid_1[2]*centroid_2[2])
+    #----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------
+    # Calculate the angle between the poles and the holes
+    #----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------
+    # Define the location of the hole in the mesh
+    hole = [0, 0, -1]
+    # Define two vectors between the hole and the centroids
+    #v1 = [centroid_1[0]-hole[0], centroid_1[1]-hole[1], centroid_1[2]-hole[2]]
+    #v2 = [centroid_2[0]-hole[0], centroid_2[1]-hole[1], centroid_2[2]-hole[2]]
+    v1 = hole
+    v2 = centroid_1
+    # Normalise both vectors
+    unit_vector_1 = v1 / np.linalg.norm(v1)
+    unit_vector_2 = v2 / np.linalg.norm(v2)
+    # Calculate the dot product between these vectors
+    dot_product = np.dot(unit_vector_1, unit_vector_2)
+    # Calculate the angle between these two vectors
+    angle = np.arccos(dot_product)    
+    #----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------
+    # Append all the values we return in the end
+    #----------------------------------------------------------------------------------
+    #----------------------------------------------------------------------------------
     # Append all values to our output vectors
     rel_pol_area.append(relative_pole_area)
+    pole_1_area.append(pole_1_area_integration)
+    pole_2_area.append(pole_2_area_integration)    
     num_poles_vec.append(num_poles)
     max_conc.append(max(u))
+    min_dist.append(dist_temp)
+    angle_poles.append(angle)    
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 # Plot our metrics as a function of the hole area
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
-fig, axes = plt.subplots(1,3,figsize=(15,5))
+fig, axes = plt.subplots(2,3,figsize=(20,10))
 plt.rc('axes', labelsize=25)    # fontsize of the x and y label
 plt.rc('legend', fontsize=20)    # legend fontsize
 plt.rc('xtick', labelsize=20)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=20)    # fontsize of the tick labels
 # add a big axis, hide frame
 fig.add_subplot(111, frameon=False)
-# Subplot 1 of 3
-axes[0].plot(hole_radius_array,np.asarray(rel_pol_area),'-',color=(115/256,115/256,115/256),label="Relative pole area in %")
-axes[0].legend(loc='lower left')
-# Subplot 2 of 3
-axes[1].plot(hole_radius_array,np.asarray(num_poles_vec),'-',color=(77/256,0/256,75/256),label="Number of poles")
-axes[1].legend(loc='lower left')
-# Subplot 3 of 3
-axes[2].plot(hole_radius_array,np.asarray(max_conc),'-',color=(129/256,15/256,124/256),label="Maximum concentration")
-axes[2].legend(loc='lower left')
+# Subplot 1 of 5
+axes[0][0].plot(hole_radius_array,np.asarray(rel_pol_area),'-',color=(0/256,68/256,27/256),label="Total pole area in %")
+axes[0][0].plot(hole_radius_array,np.asarray(pole_1_area),'-',color=(65/256,171/256,93/256),label="Area of pole 1 in %")
+axes[0][0].plot(hole_radius_array,np.asarray(pole_2_area),'-',color=(199/256,233/256,192/256),label="Area of pole 2 in %")
+axes[0][0].legend(loc='upper left')
+axes[0][0].set_ylim([0,100])
+axes[0][0].yaxis.set_ticks(np.arange(0,110,10))
+axes[0][0].set_xlim([0,0.40])
+# Subplot 2 of 5
+axes[0][1].plot(hole_radius_array,np.asarray(num_poles_vec),'-',color=(77/256,0/256,75/256),label="Number of poles")
+axes[0][1].legend(loc='lower left')
+axes[0][1].set_ylim([0,5])
+axes[0][1].set_xlim([0,0.40])
+# Subplot 3 of 5
+axes[0][2].plot(hole_radius_array,np.asarray(max_conc),'-',color=(129/256,15/256,124/256),label="Max. conc.")
+axes[0][2].legend(loc='lower left')
+axes[0][2].set_ylim([0,2])
+axes[0][2].set_xlim([0,0.40])
+# Subplot 4 of 5
+axes[1][0].plot(hole_radius_array,np.asarray(min_dist),'-',color=(64/256,0/256,125/256),label="Min. dist.")
+axes[1][0].legend(loc='lower left')
+axes[1][0].set_ylim([0,4])
+axes[1][0].yaxis.set_ticks(np.arange(0,4.5,0.5))
+axes[1][0].set_xlim([0,0.40])
+# Subplot 5 of 5
+axes[1][1].plot(hole_radius_array,np.asarray(angle_poles),'-',color=(63/256,0/256,125/256),label="Angle poles")
+axes[1][1].legend(loc='lower left')
+axes[1][1].set_ylim([0,np.pi])
+axes[1][1].yaxis.set_ticks(np.asarray([0, np.pi/6,np.pi/3,np.pi/2,2*np.pi/3,5*np.pi/6,pi]))
+axes[1][1].set_yticklabels(["$0$", "$\\frac{\\pi}{6}$", "$\\frac{\\pi}{3}$", "$\\frac{\\pi}{2}$", "$\\frac{2*\\pi}{3}$", "$\\frac{5*\\pi}{6}$", "$\\pi$"])
+axes[1][1].set_xlim([0,0.40])
+# Remove the sixth plot which we do not want to use
+fig.delaxes(axes[1][2])
 #hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
 #plt.xlabel("Geodesic hole radius, $\\varepsilon$")
-plt.xlabel("Cylindrical hole radius, $\\varepsilon$")
+plt.xlabel("Cylindrical hole radius, $\\varepsilon$, when the hole is placed at (0,0,-1)")
 plt.ylabel("Metrics of pole formation")
 # displaying the title
 plt.title("Metrics of pole formation as functions of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
-plt.show()
+#plt.show()
 plt.savefig("../Figures/patterns_are_preserved_growing_hole_radii.png")
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 # Save out plots as LaTeX plots as well
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
-plot_LaTeX_2D(hole_radius_array,np.asarray(rel_pol_area),"../Figures/metrics_pole_formation_growing_radii/Input/relative_pole_area.tex","densely dashed, thin, color=eigen_2_0,line width=1pt,",[])
-plot_LaTeX_2D(hole_radius_array,np.asarray(num_poles_vec),"../Figures/metrics_pole_formation_growing_radii/Input/num_poles.tex","densely dashed, thin, color=eigen_3_0,line width=1pt,",[])
-plot_LaTeX_2D(hole_radius_array,np.asarray(max_conc),"../Figures/metrics_pole_formation_growing_radii/Input/max_conc.tex","densely dashed, thin, color=eigen_4_0,line width=1pt,",[])
+#plot_LaTeX_2D(hole_radius_array,np.asarray(rel_pol_area),"../Figures/metrics_pole_formation_growing_radii/Input/relative_pole_area.tex","densely dashed, thin, color=eigen_2_0,line width=1pt,",[])
+#plot_LaTeX_2D(hole_radius_array,np.asarray(num_poles_vec),"../Figures/metrics_pole_formation_growing_radii/Input/num_poles.tex","densely dashed, thin, color=eigen_3_0,line width=1pt,",[])
+#plot_LaTeX_2D(hole_radius_array,np.asarray(max_conc),"../Figures/metrics_pole_formation_growing_radii/Input/max_conc.tex","densely dashed, thin, color=eigen_4_0,line width=1pt,",[])
+
+
+#----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------
+# Try to calculate the pole area using meshes
+#----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------
+#mesh, mvc_subdomains, mf_subdomains, dx_list = read_mesh_Schnakenberg_sphere_with_holes(0,[])
