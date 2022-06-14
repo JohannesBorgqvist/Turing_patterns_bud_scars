@@ -149,8 +149,8 @@ else:
 # Let's start with the zeroth repitition
 repitition_index = 0
 # Define the meshes we want to loop over
-#hole_radius_array = np.arange(0,0.75,0.05)
-hole_radius_array = np.arange(0,0.45,0.05)
+hole_radius_array = np.arange(0,0.75,0.05)
+#hole_radius_array = np.arange(0,0.45,0.05)
 # Define a parameter epsilon for the clustering
 epsilon = 1
 #----------------------------------------------------------------------------------
@@ -181,109 +181,126 @@ for hole_index in range(len(hole_radius_array)):
     # Loop over all raddi and read them one by one
     for radius in radii_holes:
         radius_str += "r_" + str(round(radius,3)).replace(".","p") + "_"
-    # Gather all these substrings into one giant string where we will save the output files
-    mesh_name = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) + "/u000101"
-    # Read the msh file
-    conc_profile = meshio.read(mesh_name + ".vtu")
-    # Extract the concentration profile
-    u = np.asarray(list(conc_profile.point_data.values())[0])
-    # Extract the spatial coordinates
-    spatial_coordinates = conc_profile.points
-    # Define a threshold concentration
-    threshold_concentration = 0.8*max(u)
-    # Save the spatial coordinates for which the concentration profile is above our threshold value
-    pole_coordinates = np.asarray([spatial_coordinate for index,spatial_coordinate in enumerate(spatial_coordinates) if u[index]>=threshold_concentration])
-    # CLUSTERING: conduct the density based scan using DBSCAN
-    db = DBSCAN(eps=epsilon, min_samples=1).fit(pole_coordinates)
-    cluster_labels = db.labels_
-    # Get the number of poles
-    num_poles = len(set(cluster_labels))
-    #----------------------------------------------------------------------------------
-    #----------------------------------------------------------------------------------
-    # Calculate the relative pole area by loading the old mesh and integrating
-    #----------------------------------------------------------------------------------
-    #----------------------------------------------------------------------------------
-    # Load the old mesh
-    mesh_old = Mesh(folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "final_timestep_mesh.xml")
-    gdim = mesh_old.geometry().dim()
-    # Define a function space on the old mesh
-    H_old = FunctionSpace(mesh_old, "P", 1)
-    # Load the old initial conditions on the old function space
-    u_old = Function(H_old, folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_0final_timestep_u.xml")
-    v_old = Function(H_old, folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str  + "iteration_0final_timestep_v.xml")
-    # Find out the coordinates in the mesh
-    # Create a dofmap
-    dofmap = H_old.dofmap()
-    sphere_dofs = dofmap.dofs()
-    # Find all coordinates for the nodes in our mesh
-    coordinates = H_old.tabulate_dof_coordinates()
-    # Calculate the coordinates in the pole
-    pole_1_coordinates = []
-    pole_1_dofs = []
-    pole_2_coordinates = []
-    pole_2_dofs = []
-    non_pole_dofs = []
-    for index,coordinate in enumerate(coordinates):
-        for sub_index,temp_coordinate in enumerate(pole_coordinates):
-            if (coordinate[0]==temp_coordinate[0]) and ((coordinate[1]==temp_coordinate[1])) and ((coordinate[2]==temp_coordinate[2])):
-                if cluster_labels[sub_index] == 0:
-                    pole_1_coordinates.append(coordinate)
-                    pole_1_dofs.append(sphere_dofs[index])
-                elif cluster_labels[sub_index] == 1:
-                    pole_2_coordinates.append(coordinate)
-                    pole_2_dofs.append(sphere_dofs[index])                
-                else:
-                    non_pole_dofs.append(sphere_dofs[index])                
-    # Create a function as well 
-    pole_1_function = Function(H_old)
-    pole_2_function = Function(H_old)
-    # Set this pole function to 1 in the pole and 0 outside
-    pole_1_function.vector()[non_pole_dofs] = 0
-    pole_1_function.vector()[pole_1_dofs] = 1
-    pole_2_function.vector()[non_pole_dofs] = 0
-    pole_2_function.vector()[pole_2_dofs] = 1
-    # Define an integration measure
-    dx = Measure("dx", domain=mesh_old)
-    # Integrate over domain
-    pole_1_area_integration = 100*assemble(pole_1_function*dx)/assemble(Constant(1.0)*dx)
-    pole_2_area_integration = 100*assemble(pole_2_function*dx)/assemble(Constant(1.0)*dx)    
-    relative_pole_area = pole_1_area_integration + pole_2_area_integration
-    #relative_pole_area = 100*len(pole_coordinates)/len(u)
-    #----------------------------------------------------------------------------------
-    #----------------------------------------------------------------------------------
-    # Calculate the relative pole area by loading the old mesh and integrating
-    #----------------------------------------------------------------------------------
-    #----------------------------------------------------------------------------------
-    # Calculate the centroids as just the centres of mass of the poles
-    centroid_1 = [np.mean(np.asarray([point[0] for index,point in enumerate(pole_1_coordinates)])),np.mean(np.asarray([point[1] for index,point in enumerate(pole_1_coordinates)])),np.mean(np.asarray([point[2] for index,point in enumerate(pole_1_coordinates)]))]
-    centroid_2 = [np.mean(np.asarray([point[0] for index,point in enumerate(pole_2_coordinates)])),np.mean(np.asarray([point[1] for index,point in enumerate(pole_2_coordinates)])),np.mean(np.asarray([point[2] for index,point in enumerate(pole_2_coordinates)]))]
-    # Calculate these points in sphercial coordinates
-    r_1, theta_1, phi_1 = cart2sph(centroid_1[0],centroid_1[1],centroid_1[2])
-    r_2, theta_2, phi_2 = cart2sph(centroid_2[0],centroid_2[1],centroid_2[2])
-    # Now, we re-define our centroids based on these coordinates so that we are sure that we end up on the sphere
-    centroid_1 = [np.cos(phi_1)*np.cos(theta_1), np.cos(phi_1)*np.sin(theta_1), np.sin(phi_1)]
-    centroid_2 = [np.cos(phi_2)*np.cos(theta_2), np.cos(phi_2)*np.sin(theta_2), np.sin(phi_2)]
-    # Calculate the minimal distance between these points
-    dist_temp = m.acos(centroid_1[0]*centroid_2[0]+centroid_1[1]*centroid_2[1]+centroid_1[2]*centroid_2[2])
-    #----------------------------------------------------------------------------------
-    #----------------------------------------------------------------------------------
-    # Calculate the angle between the poles and the holes
-    #----------------------------------------------------------------------------------
-    #----------------------------------------------------------------------------------
-    # Define the location of the hole in the mesh
-    hole = [0, 0, -1]
-    # Define two vectors between the hole and the centroids
-    #v1 = [centroid_1[0]-hole[0], centroid_1[1]-hole[1], centroid_1[2]-hole[2]]
-    #v2 = [centroid_2[0]-hole[0], centroid_2[1]-hole[1], centroid_2[2]-hole[2]]
-    v1 = hole
-    v2 = centroid_1
-    # Normalise both vectors
-    unit_vector_1 = v1 / np.linalg.norm(v1)
-    unit_vector_2 = v2 / np.linalg.norm(v2)
-    # Calculate the dot product between these vectors
-    dot_product = np.dot(unit_vector_1, unit_vector_2)
-    # Calculate the angle between these two vectors
-    angle = np.arccos(dot_product)    
+    # Allocate the memory for all the outpu
+    num_poles = []
+    u_max = []
+    pole_1_area_integration = []
+    pole_2_area_integration = []
+    relative_pole_area = []
+    dist_temp = []
+    angle = []    
+    # Loop over all repititions
+    for repitition_index in range(10):
+        # Gather all these substrings into one giant string where we will save the output files
+        mesh_name = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) + "/u000101"
+        # Read the msh file
+        conc_profile = meshio.read(mesh_name + ".vtu")
+        # Extract the concentration profile
+        u = np.asarray(list(conc_profile.point_data.values())[0])
+        # Extract the spatial coordinates
+        spatial_coordinates = conc_profile.points
+        # Define a threshold concentration
+        threshold_concentration = 0.8*max(u)
+        # Save the spatial coordinates for which the concentration profile is above our threshold value
+        pole_coordinates = np.asarray([spatial_coordinate for index,spatial_coordinate in enumerate(spatial_coordinates) if u[index]>=threshold_concentration])
+        # CLUSTERING: conduct the density based scan using DBSCAN
+        db = DBSCAN(eps=epsilon, min_samples=1).fit(pole_coordinates)
+        cluster_labels = db.labels_
+        # Get the number of poles
+        #num_poles = len(set(cluster_labels))
+        num_poles.append(len(set(cluster_labels)))
+        u_max.append(max(u))
+        #----------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------
+        # Calculate the relative pole area by loading the old mesh and integrating
+        #----------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------
+        # Load the old mesh
+        mesh_old = Mesh(folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) +"/final_timestep_mesh.xml")
+        gdim = mesh_old.geometry().dim()
+        # Define a function space on the old mesh
+        H_old = FunctionSpace(mesh_old, "P", 1)
+        # Load the old initial conditions on the old function space
+        u_old = Function(H_old, folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) +"/final_timestep_u.xml")
+        v_old = Function(H_old, folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str  + "iteration_" + str(repitition_index) + "/final_timestep_v.xml")
+        # Find out the coordinates in the mesh
+        # Create a dofmap
+        dofmap = H_old.dofmap()
+        sphere_dofs = dofmap.dofs()
+        # Find all coordinates for the nodes in our mesh
+        coordinates = H_old.tabulate_dof_coordinates()
+        # Calculate the coordinates in the pole
+        pole_1_coordinates = []
+        pole_1_dofs = []
+        pole_2_coordinates = []
+        pole_2_dofs = []
+        non_pole_dofs = []
+        for index,coordinate in enumerate(coordinates):
+            for sub_index,temp_coordinate in enumerate(pole_coordinates):
+                if (coordinate[0]==temp_coordinate[0]) and ((coordinate[1]==temp_coordinate[1])) and ((coordinate[2]==temp_coordinate[2])):
+                    if cluster_labels[sub_index] == 0:
+                        pole_1_coordinates.append(coordinate)
+                        pole_1_dofs.append(sphere_dofs[index])
+                    elif cluster_labels[sub_index] == 1:
+                        pole_2_coordinates.append(coordinate)
+                        pole_2_dofs.append(sphere_dofs[index])                
+                    else:
+                        non_pole_dofs.append(sphere_dofs[index])                
+        # Create a function as well 
+        pole_1_function = Function(H_old)
+        pole_2_function = Function(H_old)
+        # Set this pole function to 1 in the pole and 0 outside
+        pole_1_function.vector()[non_pole_dofs] = 0
+        pole_1_function.vector()[pole_1_dofs] = 1
+        pole_2_function.vector()[non_pole_dofs] = 0
+        pole_2_function.vector()[pole_2_dofs] = 1
+        # Define an integration measure
+        dx = Measure("dx", domain=mesh_old)
+        # Integrate over domain
+        #pole_1_area_integration = 100*assemble(pole_1_function*dx)/assemble(Constant(1.0)*dx)
+        pole_1_area_integration.append(100*assemble(pole_1_function*dx)/assemble(Constant(1.0)*dx))
+        #pole_2_area_integration = 100*assemble(pole_2_function*dx)/assemble(Constant(1.0)*dx)
+        pole_2_area_integration.append(100*assemble(pole_2_function*dx)/assemble(Constant(1.0)*dx))
+        #relative_pole_area = pole_1_area_integration + pole_2_area_integration
+        relative_pole_area.append(pole_1_area_integration[-1] + pole_2_area_integration[-1])
+        #relative_pole_area = 100*len(pole_coordinates)/len(u)
+        #----------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------
+        # Calculate the relative pole area by loading the old mesh and integrating
+        #----------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------
+        # Calculate the centroids as just the centres of mass of the poles
+        centroid_1 = [np.mean(np.asarray([point[0] for index,point in enumerate(pole_1_coordinates)])),np.mean(np.asarray([point[1] for index,point in enumerate(pole_1_coordinates)])),np.mean(np.asarray([point[2] for index,point in enumerate(pole_1_coordinates)]))]
+        centroid_2 = [np.mean(np.asarray([point[0] for index,point in enumerate(pole_2_coordinates)])),np.mean(np.asarray([point[1] for index,point in enumerate(pole_2_coordinates)])),np.mean(np.asarray([point[2] for index,point in enumerate(pole_2_coordinates)]))]
+        # Calculate these points in sphercial coordinates
+        r_1, theta_1, phi_1 = cart2sph(centroid_1[0],centroid_1[1],centroid_1[2])
+        r_2, theta_2, phi_2 = cart2sph(centroid_2[0],centroid_2[1],centroid_2[2])
+        # Now, we re-define our centroids based on these coordinates so that we are sure that we end up on the sphere
+        centroid_1 = [np.cos(phi_1)*np.cos(theta_1), np.cos(phi_1)*np.sin(theta_1), np.sin(phi_1)]
+        centroid_2 = [np.cos(phi_2)*np.cos(theta_2), np.cos(phi_2)*np.sin(theta_2), np.sin(phi_2)]
+        # Calculate the minimal distance between these points
+        dist_temp.append(m.acos(centroid_1[0]*centroid_2[0]+centroid_1[1]*centroid_2[1]+centroid_1[2]*centroid_2[2]))
+        #dist_temp = m.acos(centroid_1[0]*centroid_2[0]+centroid_1[1]*centroid_2[1]+centroid_1[2]*centroid_2[2])
+        #----------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------
+        # Calculate the angle between the poles and the holes
+        #----------------------------------------------------------------------------------
+        #----------------------------------------------------------------------------------
+        # Define the location of the hole in the mesh
+        hole = [0, 0, -1]
+        # Define two vectors between the hole and the centroids
+        #v1 = [centroid_1[0]-hole[0], centroid_1[1]-hole[1], centroid_1[2]-hole[2]]
+        #v2 = [centroid_2[0]-hole[0], centroid_2[1]-hole[1], centroid_2[2]-hole[2]]
+        v1 = hole
+        v2 = centroid_1
+        # Normalise both vectors
+        unit_vector_1 = v1 / np.linalg.norm(v1)
+        unit_vector_2 = v2 / np.linalg.norm(v2)
+        # Calculate the dot product between these vectors
+        dot_product = np.dot(unit_vector_1, unit_vector_2)
+        # Calculate the angle between these two vectors
+        angle.append(np.arccos(dot_product))
+        #angle = np.arccos(dot_product)    
     #----------------------------------------------------------------------------------
     #----------------------------------------------------------------------------------
     # Append all the values we return in the end
@@ -294,9 +311,10 @@ for hole_index in range(len(hole_radius_array)):
     pole_1_area.append(pole_1_area_integration)
     pole_2_area.append(pole_2_area_integration)    
     num_poles_vec.append(num_poles)
-    max_conc.append(max(u))
+    max_conc.append(u_max)
     min_dist.append(dist_temp)
-    angle_poles.append(angle)    
+    angle_poles.append(angle)
+
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
@@ -311,36 +329,74 @@ plt.rc('ytick', labelsize=20)    # fontsize of the tick labels
 # add a big axis, hide frame
 fig.add_subplot(111, frameon=False)
 # Subplot 1 of 5
-axes[0][0].plot(hole_radius_array,np.asarray(rel_pol_area),'-',color=(0/256,68/256,27/256),label="Total pole area in %")
-axes[0][0].plot(hole_radius_array,np.asarray(pole_1_area),'-',color=(65/256,171/256,93/256),label="Area of pole 1 in %")
-axes[0][0].plot(hole_radius_array,np.asarray(pole_2_area),'-',color=(199/256,233/256,192/256),label="Area of pole 2 in %")
+#np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))])
+axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(rel_pol_area[index],50) for index in range(len(rel_pol_area))]),'-',color=(0/256,68/256,27/256),label="Total pole area in %")
+axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(rel_pol_area[index],95) for index in range(len(rel_pol_area))]),'-',color=(0/256,68/256,27/256))
+axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(rel_pol_area[index],5) for index in range(len(rel_pol_area))]),'-',color=(0/256,68/256,27/256))
+axes[0][0].fill_between(hole_radius_array,np.asarray([np.percentile(rel_pol_area[index],5) for index in range(len(rel_pol_area))]),np.asarray([np.percentile(rel_pol_area[index],95) for index in range(len(rel_pol_area))]), facecolor=(0/256,68/256,27/256),alpha=0.5,interpolate=True)
+axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(pole_1_area[index],50) for index in range(len(pole_1_area))]),'-',color=(65/256,171/256,93/256),label="Area of pole 1 in %")
+axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(pole_1_area[index],95) for index in range(len(pole_1_area))]),'-',color=(65/256,171/256,93/256))
+axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(pole_1_area[index],5) for index in range(len(pole_1_area))]),'-',color=(65/256,171/256,93/256))
+axes[0][0].fill_between(hole_radius_array,np.asarray([np.percentile(pole_1_area[index],5) for index in range(len(pole_1_area))]),np.array([np.percentile(pole_1_area[index],95) for index in range(len(pole_1_area))]), facecolor=(65/256,171/256,93/256),alpha=0.5,interpolate=True)
+axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(pole_2_area[index],50) for index in range(len(pole_2_area))]),'-',color=(199/256,233/256,192/256),label="Area of pole 2 in %")
+axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(pole_2_area[index],95) for index in range(len(pole_2_area))]),'-',color=(199/256,233/256,192/256))
+axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(pole_2_area[index],5) for index in range(len(pole_2_area))]),'-',color=(199/256,233/256,192/256))
+axes[0][0].fill_between(hole_radius_array,np.asarray([np.percentile(pole_2_area[index],5) for index in range(len(pole_2_area))]),np.array([np.percentile(pole_2_area[index],95) for index in range(len(pole_2_area))]), facecolor=(199/256,233/256,192/256),alpha=0.5,interpolate=True)
 axes[0][0].legend(loc='upper left')
 axes[0][0].set_ylim([0,100])
 axes[0][0].yaxis.set_ticks(np.arange(0,110,10))
-axes[0][0].set_xlim([0,0.40])
+axes[0][0].set_xlim([0,hole_radius_array[-1]])
+# We change the fontsize of minor ticks label 
+axes[0][0].tick_params(axis='both', which='major', labelsize=15)
+axes[0][0].tick_params(axis='both', which='minor', labelsize=15)
+
 # Subplot 2 of 5
-axes[0][1].plot(hole_radius_array,np.asarray(num_poles_vec),'-',color=(77/256,0/256,75/256),label="Number of poles")
+axes[0][1].plot(hole_radius_array,np.asarray([np.percentile(num_poles_vec[index],50) for index in range(len(num_poles_vec))]),'-',color=(77/256,0/256,75/256),label="Number of poles")
+axes[0][1].plot(hole_radius_array,np.asarray([np.percentile(num_poles_vec[index],95) for index in range(len(num_poles_vec))]),'-',color=(77/256,0/256,75/256))
+axes[0][1].plot(hole_radius_array,np.asarray([np.percentile(num_poles_vec[index],5) for index in range(len(num_poles_vec))]),'-',color=(77/256,0/256,75/256))
+axes[0][1].fill_between(hole_radius_array,np.asarray([np.percentile(num_poles_vec[index],5) for index in range(len(num_poles_vec))]),np.array([np.percentile(num_poles_vec[index],95) for index in range(len(num_poles_vec))]), facecolor=(77/256,0/256,75/256),alpha=0.5,interpolate=True)
+#axes[0][1].plot(hole_radius_array,np.asarray(num_poles_vec),'-',color=(77/256,0/256,75/256),label="Number of poles")
 axes[0][1].legend(loc='lower left')
 axes[0][1].set_ylim([0,5])
-axes[0][1].set_xlim([0,0.40])
+axes[0][1].set_xlim([0,hole_radius_array[-1]])
+axes[0][1].tick_params(axis='both', which='major', labelsize=15)
+axes[0][1].tick_params(axis='both', which='minor', labelsize=15)
 # Subplot 3 of 5
-axes[0][2].plot(hole_radius_array,np.asarray(max_conc),'-',color=(129/256,15/256,124/256),label="Max. conc.")
+axes[0][2].plot(hole_radius_array,np.asarray([np.percentile(max_conc[index],50) for index in range(len(max_conc))]),'-',color=(129/256,15/256,124/256),label="Max. conc.")
+axes[0][2].plot(hole_radius_array,np.asarray([np.percentile(max_conc[index],95) for index in range(len(max_conc))]),'-',color=(129/256,15/256,124/256))
+axes[0][2].plot(hole_radius_array,np.asarray([np.percentile(max_conc[index],5) for index in range(len(max_conc))]),'-',color=(129/256,15/256,124/256))
+axes[0][2].fill_between(hole_radius_array,np.asarray([np.percentile(max_conc[index],5) for index in range(len(max_conc))]),np.array([np.percentile(max_conc[index],95) for index in range(len(max_conc))]), facecolor=(129/256,15/256,124/256),alpha=0.5,interpolate=True)
+#axes[0][2].plot(hole_radius_array,np.asarray(max_conc),'-',color=(129/256,15/256,124/256),label="Max. conc.")
 axes[0][2].legend(loc='lower left')
 axes[0][2].set_ylim([0,2])
-axes[0][2].set_xlim([0,0.40])
+axes[0][2].set_xlim([0,hole_radius_array[-1]])
+axes[0][2].tick_params(axis='both', which='major', labelsize=15)
+axes[0][2].tick_params(axis='both', which='minor', labelsize=15)
 # Subplot 4 of 5
-axes[1][0].plot(hole_radius_array,np.asarray(min_dist),'-',color=(64/256,0/256,125/256),label="Min. dist.")
+axes[1][0].plot(hole_radius_array,np.asarray([np.percentile(min_dist[index],50) for index in range(len(min_dist))]),'-',color=(64/256,0/256,125/256),label="Min. dist.")
+axes[1][0].plot(hole_radius_array,np.asarray([np.percentile(min_dist[index],95) for index in range(len(min_dist))]),'-',color=(64/256,0/256,125/256))
+axes[1][0].plot(hole_radius_array,np.asarray([np.percentile(min_dist[index],5) for index in range(len(min_dist))]),'-',color=(64/256,0/256,125/256))
+axes[1][0].fill_between(hole_radius_array,np.asarray([np.percentile(min_dist[index],5) for index in range(len(min_dist))]),np.array([np.percentile(min_dist[index],95) for index in range(len(min_dist))]), facecolor=(64/256,0/256,125/256),alpha=0.5,interpolate=True)
+#axes[1][0].plot(hole_radius_array,np.asarray(min_dist),'-',color=(64/256,0/256,125/256),label="Min. dist.")
 axes[1][0].legend(loc='lower left')
 axes[1][0].set_ylim([0,4])
 axes[1][0].yaxis.set_ticks(np.arange(0,4.5,0.5))
-axes[1][0].set_xlim([0,0.40])
+axes[1][0].set_xlim([0,hole_radius_array[-1]])
+axes[1][0].tick_params(axis='both', which='major', labelsize=15)
+axes[1][0].tick_params(axis='both', which='minor', labelsize=15)
 # Subplot 5 of 5
-axes[1][1].plot(hole_radius_array,np.asarray(angle_poles),'-',color=(63/256,0/256,125/256),label="Angle poles")
+axes[1][1].plot(hole_radius_array,np.asarray([np.percentile(angle_poles[index],50) for index in range(len(angle_poles))]),'-',color=(254/256,153/256,41/256),label="Angle poles")
+axes[1][1].plot(hole_radius_array,np.asarray([np.percentile(angle_poles[index],95) for index in range(len(angle_poles))]),'-',color=(254/256,153/256,41/256))
+axes[1][1].plot(hole_radius_array,np.asarray([np.percentile(angle_poles[index],5) for index in range(len(angle_poles))]),'-',color=(254/256,153/256,41/256))
+axes[1][1].fill_between(hole_radius_array,np.asarray([np.percentile(angle_poles[index],5) for index in range(len(angle_poles))]),np.array([np.percentile(angle_poles[index],95) for index in range(len(angle_poles))]), facecolor=(254/256,153/256,41/256),alpha=0.5,interpolate=True)
+#axes[1][1].plot(hole_radius_array,np.asarray(angle_poles),'-',color=(254/256,153/256,41/256),label="Angle poles")
 axes[1][1].legend(loc='lower left')
 axes[1][1].set_ylim([0,np.pi])
 axes[1][1].yaxis.set_ticks(np.asarray([0, np.pi/6,np.pi/3,np.pi/2,2*np.pi/3,5*np.pi/6,pi]))
-axes[1][1].set_yticklabels(["$0$", "$\\frac{\\pi}{6}$", "$\\frac{\\pi}{3}$", "$\\frac{\\pi}{2}$", "$\\frac{2*\\pi}{3}$", "$\\frac{5*\\pi}{6}$", "$\\pi$"])
-axes[1][1].set_xlim([0,0.40])
+axes[1][1].set_yticklabels(["$0$", "$\\frac{\\pi}{6}$", "$\\frac{\\pi}{3}$", "$\\frac{\\pi}{2}$", "$\\frac{2*\\pi}{3}$", "$\\frac{5*\\pi}{6}$", "$\\pi$"],fontsize=15)
+axes[1][1].set_xlim([0,hole_radius_array[-1]])
+axes[1][1].tick_params(axis='both', which='major', labelsize=15)
+axes[1][1].tick_params(axis='both', which='minor', labelsize=15)
 # Remove the sixth plot which we do not want to use
 fig.delaxes(axes[1][2])
 #hide tick and tick label of the big axis

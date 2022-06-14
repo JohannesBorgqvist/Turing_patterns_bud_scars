@@ -32,3 +32,5 @@ for index in range(len(hole_radii_list)):
 # Loop over all points and radii to generate the corresponding meshes
 for list_index in range(len(hole_radii_list)):
     toolbox_generate_meshes.generate_spherical_mesh_with_holes(c0_lists[list_index],c1_lists[list_index],hole_radii_list[list_index])
+#toolbox_generate_meshes.generate_spherical_mesh_with_holes([(0,0,0)],[(0,0,-1)],[0.2])
+#toolbox_generate_meshes.generate_spherical_mesh_with_holes([(0,0,0)],[(0,0,-1)],[0.25])

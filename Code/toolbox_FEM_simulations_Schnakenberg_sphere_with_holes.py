@@ -396,7 +396,7 @@ def save_IC(num_holes,steady_states,numerical_parameters,radii_holes,ICs_around_
 # 6. A logical variable called ICs_around_steady_states which determines whether the initial conditions are set to the steady states values or not,
 # 7. A logical variable called load_IC which determines whether we generate new ICs or if load some fixed ICs,
 
-def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states,number_of_repititions,load_IC):
+def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states,number_of_repititions,load_IC,mesh_name,hole_index):
     #--------------------------------------------------------------
     # STEP 1 OUT OF 7: EXTRACT PARAMETERS
     #--------------------------------------------------------------    
@@ -421,7 +421,25 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     # DEFINE THE HILBERT SPACE FOR THE FEM FORMULATION
     #--------------------------------------------------------------    
     # Read in the mesh depending on the number of holes on the sphere
-    mesh, mvc_subdomains, mf_subdomains, dx_list = read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes)
+    #mesh, mvc_subdomains, mf_subdomains, dx_list = read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes)
+    # Allocate memory for the mesh and the mesh value collection
+    print("Name of mesh:\t%s"%(mesh_name))
+    mesh = Mesh()
+    mvc_subdomains = MeshValueCollection("size_t", mesh, 2)
+    # Define a mesh function taking the subdomains into account
+    mf_subdomains = 0
+    # Allocate memory for a list containing all the integration
+    # measures involved in the variational formulation
+    dx_list = []        
+    # Read in the mesh and the subdomains into these two variables
+    with XDMFFile(mesh_name) as infile:
+        infile.read(mesh)
+        infile.read(mvc_subdomains, "name_to_read")
+    # Define a mesh function taking the subdomains into account
+    mf_subdomains = cpp.mesh.MeshFunctionSizet(mesh, mvc_subdomains)
+    # Add our integration measure to the list of integration measure
+    dx_list.append(Measure("dx", domain=mesh, subdomain_data=mf_subdomains, subdomain_id=1))
+    #dx_list.append(Measure("dx", domain=mesh))    
     # Define the finite element space for the Schackenberg model using the mesh
     H = FunctionSpace(mesh, "P", 1)
     #--------------------------------------------------------------
@@ -462,7 +480,11 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
     else:
         IC_str = "ICs_at_zero/"
     # Gather all these substrings into one giant string where we will save the output files
-    output_folder_str = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str
+    #output_folder_str = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str
+    if hole_index == 0:
+        output_folder_str = "../Output/north_pole/"
+    else:
+        output_folder_str = "../Output/equator/"
     for repitition_index in range(number_of_repititions):
         # Define two output files based on this giant result folder where we have one output file for each of the two states
         vtkfile_u = File(output_folder_str+ "iteration_" + str(repitition_index) + "/" + "u.pvd")

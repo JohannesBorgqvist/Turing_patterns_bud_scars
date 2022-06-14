@@ -65,3 +65,15 @@ for hole_radius in np.arange(0,0.75,0.05):
     meshio.write("../Meshes/" + mesh_name + ".xdmf", triangle_mesh)
     print("\t\tDone!")    
 print("---------------------------------------------------------------------------------------------------")
+hole_radius = 0.2
+# EQUATOR MESH
+mesh_name = "s_h_1_r_"+str(round(hole_radius,3)).replace(".","p")+ "_equator"
+msh = meshio.read("../Meshes/" + mesh_name + ".msh")
+triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
+meshio.write("../Meshes/" + mesh_name + ".xdmf", triangle_mesh)
+# NORTH POLE MESH
+mesh_name = "s_h_1_r_"+str(round(hole_radius,3)).replace(".","p")+ "_north_pole"
+msh = meshio.read("../Meshes/" + mesh_name + ".msh")
+triangle_mesh = create_mesh(msh, "triangle", prune_z=True)
+meshio.write("../Meshes/" + mesh_name + ".xdmf", triangle_mesh)
+
