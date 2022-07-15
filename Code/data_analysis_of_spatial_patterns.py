@@ -190,7 +190,7 @@ for hole_index in range(len(hole_radius_array)):
     dist_temp = []
     angle = []    
     # Loop over all repititions
-    for repitition_index in range(10):
+    for repitition_index in range(15):
         # Gather all these substrings into one giant string where we will save the output files
         mesh_name = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) + "/u000101"
         # Read the msh file
@@ -298,8 +298,14 @@ for hole_index in range(len(hole_radius_array)):
         unit_vector_2 = v2 / np.linalg.norm(v2)
         # Calculate the dot product between these vectors
         dot_product = np.dot(unit_vector_1, unit_vector_2)
+        # Calculate a temporary angle
+        alpha = np.arccos(dot_product)
+        # We might have gotten the pole furthest away by mistake, so we take that into account by
+        # substracting 90 degrees
+        if alpha > pi/2:
+            alpha = np.pi - alpha
         # Calculate the angle between these two vectors
-        angle.append(np.arccos(dot_product))
+        angle.append(alpha)
         #angle = np.arccos(dot_product)    
     #----------------------------------------------------------------------------------
     #----------------------------------------------------------------------------------
@@ -342,7 +348,7 @@ axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(pole_2_area[index],5
 axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(pole_2_area[index],95) for index in range(len(pole_2_area))]),'-',color=(199/256,233/256,192/256))
 axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(pole_2_area[index],5) for index in range(len(pole_2_area))]),'-',color=(199/256,233/256,192/256))
 axes[0][0].fill_between(hole_radius_array,np.asarray([np.percentile(pole_2_area[index],5) for index in range(len(pole_2_area))]),np.array([np.percentile(pole_2_area[index],95) for index in range(len(pole_2_area))]), facecolor=(199/256,233/256,192/256),alpha=0.5,interpolate=True)
-axes[0][0].legend(loc='upper left')
+axes[0][0].legend(loc='best')
 axes[0][0].set_ylim([0,100])
 axes[0][0].yaxis.set_ticks(np.arange(0,110,10))
 axes[0][0].set_xlim([0,hole_radius_array[-1]])
@@ -356,7 +362,7 @@ axes[0][1].plot(hole_radius_array,np.asarray([np.percentile(num_poles_vec[index]
 axes[0][1].plot(hole_radius_array,np.asarray([np.percentile(num_poles_vec[index],5) for index in range(len(num_poles_vec))]),'-',color=(77/256,0/256,75/256))
 axes[0][1].fill_between(hole_radius_array,np.asarray([np.percentile(num_poles_vec[index],5) for index in range(len(num_poles_vec))]),np.array([np.percentile(num_poles_vec[index],95) for index in range(len(num_poles_vec))]), facecolor=(77/256,0/256,75/256),alpha=0.5,interpolate=True)
 #axes[0][1].plot(hole_radius_array,np.asarray(num_poles_vec),'-',color=(77/256,0/256,75/256),label="Number of poles")
-axes[0][1].legend(loc='lower left')
+axes[0][1].legend(loc='best')
 axes[0][1].set_ylim([0,5])
 axes[0][1].set_xlim([0,hole_radius_array[-1]])
 axes[0][1].tick_params(axis='both', which='major', labelsize=15)
@@ -367,7 +373,7 @@ axes[0][2].plot(hole_radius_array,np.asarray([np.percentile(max_conc[index],95) 
 axes[0][2].plot(hole_radius_array,np.asarray([np.percentile(max_conc[index],5) for index in range(len(max_conc))]),'-',color=(129/256,15/256,124/256))
 axes[0][2].fill_between(hole_radius_array,np.asarray([np.percentile(max_conc[index],5) for index in range(len(max_conc))]),np.array([np.percentile(max_conc[index],95) for index in range(len(max_conc))]), facecolor=(129/256,15/256,124/256),alpha=0.5,interpolate=True)
 #axes[0][2].plot(hole_radius_array,np.asarray(max_conc),'-',color=(129/256,15/256,124/256),label="Max. conc.")
-axes[0][2].legend(loc='lower left')
+axes[0][2].legend(loc='best')
 axes[0][2].set_ylim([0,2])
 axes[0][2].set_xlim([0,hole_radius_array[-1]])
 axes[0][2].tick_params(axis='both', which='major', labelsize=15)
@@ -378,7 +384,7 @@ axes[1][0].plot(hole_radius_array,np.asarray([np.percentile(min_dist[index],95) 
 axes[1][0].plot(hole_radius_array,np.asarray([np.percentile(min_dist[index],5) for index in range(len(min_dist))]),'-',color=(64/256,0/256,125/256))
 axes[1][0].fill_between(hole_radius_array,np.asarray([np.percentile(min_dist[index],5) for index in range(len(min_dist))]),np.array([np.percentile(min_dist[index],95) for index in range(len(min_dist))]), facecolor=(64/256,0/256,125/256),alpha=0.5,interpolate=True)
 #axes[1][0].plot(hole_radius_array,np.asarray(min_dist),'-',color=(64/256,0/256,125/256),label="Min. dist.")
-axes[1][0].legend(loc='lower left')
+axes[1][0].legend(loc='best')
 axes[1][0].set_ylim([0,4])
 axes[1][0].yaxis.set_ticks(np.arange(0,4.5,0.5))
 axes[1][0].set_xlim([0,hole_radius_array[-1]])
@@ -390,7 +396,7 @@ axes[1][1].plot(hole_radius_array,np.asarray([np.percentile(angle_poles[index],9
 axes[1][1].plot(hole_radius_array,np.asarray([np.percentile(angle_poles[index],5) for index in range(len(angle_poles))]),'-',color=(254/256,153/256,41/256))
 axes[1][1].fill_between(hole_radius_array,np.asarray([np.percentile(angle_poles[index],5) for index in range(len(angle_poles))]),np.array([np.percentile(angle_poles[index],95) for index in range(len(angle_poles))]), facecolor=(254/256,153/256,41/256),alpha=0.5,interpolate=True)
 #axes[1][1].plot(hole_radius_array,np.asarray(angle_poles),'-',color=(254/256,153/256,41/256),label="Angle poles")
-axes[1][1].legend(loc='lower left')
+axes[1][1].legend(loc='best')
 axes[1][1].set_ylim([0,np.pi])
 axes[1][1].yaxis.set_ticks(np.asarray([0, np.pi/6,np.pi/3,np.pi/2,2*np.pi/3,5*np.pi/6,pi]))
 axes[1][1].set_yticklabels(["$0$", "$\\frac{\\pi}{6}$", "$\\frac{\\pi}{3}$", "$\\frac{\\pi}{2}$", "$\\frac{2*\\pi}{3}$", "$\\frac{5*\\pi}{6}$", "$\\pi$"],fontsize=15)

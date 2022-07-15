@@ -41,11 +41,12 @@ numerical_parameters = [sigma, T]
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Define the meshes we want to loop over
-#hole_radius_array = np.arange(0,0.75,0.05)
-hole_radius_array = np.asarray([0.2, 0.2])
+hole_radius_array = np.arange(0,0.75,0.05)
+#hole_radius_array = np.asarray([0.2, 0.2])
 # Define the eigenvalues we want to consider
 #n_vec = [1, 2, 3, 4]
-n_vec = [2]
+#n_vec = [2]
+n_vec = [1, 3]
 # Loop over the eigenvalues
 for n in n_vec:
     k_squared = n*(n+1)
@@ -66,14 +67,15 @@ for n in n_vec:
         if hole_radius == 0:
             experimental_design.append((0,parameters,steady_states,numerical_parameters,[],True,False))
         else:
-            #experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,False))
-            if hole_index == 0:
-                mesh_name = "../Meshes/s_h_1_r_0p2_north_pole.xdmf"
-            else:
-                mesh_name = "../Meshes/s_h_1_r_0p2_equator.xdmf"                
-            experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,True,mesh_name,hole_index))
+            experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,False))
+            #if hole_index == 0:
+            #    mesh_name = "../Meshes/s_h_1_r_0p2_north_pole.xdmf"
+            #else:
+            #    mesh_name = "../Meshes/s_h_1_r_0p2_equator.xdmf"                
+            #experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,True,mesh_name,hole_index))
 # We repeat the experiments a certain number of times due to the stochasticity in the intial conditions
-number_of_repititions = 1        
+number_of_repititions = 20
+start_repitition = 0
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
     # Prompt to the user
@@ -81,6 +83,6 @@ for experiment in experimental_design:
     print("\tNUM_HOLES\t=\t%d,\tRADII\t=\t%s"%(int(experiment[0]),str(experiment[3])))
     print("---------------------------------------------------------------------------------------------------------\n")    
     # Solve the FEM system with the given parameters
-    #FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],experiment[2],experiment[3],experiment[4],experiment[5],number_of_repititions,experiment[6])
-    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],experiment[2],experiment[3],experiment[4],experiment[5],number_of_repititions,experiment[6],experiment[7],experiment[8])    
+    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],experiment[2],experiment[3],experiment[4],experiment[5],number_of_repititions,experiment[6],start_repitition)
+    #FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],experiment[2],experiment[3],experiment[4],experiment[5],number_of_repititions,experiment[6],experiment[7],experiment[8])    
 
