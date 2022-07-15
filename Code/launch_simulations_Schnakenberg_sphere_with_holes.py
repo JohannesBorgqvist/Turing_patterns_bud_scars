@@ -28,7 +28,8 @@ print("-------------------------------------------------------------------------
 print("\tREPLICATING CHAPLAINS SIMULATIONS")
 print("---------------------------------------------------------------------------------------------------------\n")
 # Set the value of the relative diffusion
-d = 18
+#d = 18 # For n=2 and n=3
+d = 30 # For n=1
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
@@ -45,8 +46,8 @@ hole_radius_array = np.arange(0,0.75,0.05)
 #hole_radius_array = np.asarray([0.2, 0.2])
 # Define the eigenvalues we want to consider
 #n_vec = [1, 2, 3, 4]
-#n_vec = [2]
-n_vec = [1, 3]
+n_vec = [1]
+#n_vec = [1, 3]
 # Loop over the eigenvalues
 for n in n_vec:
     k_squared = n*(n+1)
@@ -74,7 +75,7 @@ for n in n_vec:
             #    mesh_name = "../Meshes/s_h_1_r_0p2_equator.xdmf"                
             #experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,True,mesh_name,hole_index))
 # We repeat the experiments a certain number of times due to the stochasticity in the intial conditions
-number_of_repititions = 20
+number_of_repititions = 1
 start_repitition = 0
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
