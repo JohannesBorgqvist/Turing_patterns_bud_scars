@@ -563,10 +563,10 @@ def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_
                 # Increase the iterations
                 save_iteration += 0.5
                 # Save the components in the data files
-                u_curr.rename("Concentration profile, $u(\mathbf{x},t)$","u")
-                vtkfile_u << (u_curr, t)
-                v_curr.rename("Concentration profile, $v(\mathbf{x},t)$","v")
-                vtkfile_v << (v_curr, t)
+                #u_curr.rename("Concentration profile, $u(\mathbf{x},t)$","u")
+                #vtkfile_u << (u_curr, t)
+                #v_curr.rename("Concentration profile, $v(\mathbf{x},t)$","v")
+                #vtkfile_v << (v_curr, t)
                 # Iteration health check
                 R = assemble(residual_form)
                 l2_norm_R = norm(R, 'l2')
