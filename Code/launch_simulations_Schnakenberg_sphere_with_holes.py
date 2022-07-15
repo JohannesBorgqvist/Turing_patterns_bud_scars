@@ -43,7 +43,7 @@ numerical_parameters = [sigma, T]
 experimental_design = []
 # Define the meshes we want to loop over
 #hole_radius_array = np.arange(0,0.75,0.05)
-hole_radius_array = np.arange([0])
+hole_radius_array = np.array([0])
 #hole_radius_array = np.asarray([0.2, 0.2])
 # Define the eigenvalues we want to consider
 #n_vec = [1, 2, 3, 4]
