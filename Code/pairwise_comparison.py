@@ -104,14 +104,14 @@ def read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes):
 a = 0.2
 b = 1.0
 # The wavenumber k^2
-n = 2
+n = 3
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-d = 18.0
+d = 22.0
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Define the number of holes

@@ -28,8 +28,11 @@ print("-------------------------------------------------------------------------
 print("\tREPLICATING CHAPLAINS SIMULATIONS")
 print("---------------------------------------------------------------------------------------------------------\n")
 # Set the value of the relative diffusion
-#d = 18 # For n=2 and n=3
-d = 30 # For n=1
+#d = 30 # For n=1
+#d = 18 # For n=2 
+#d = 22 # For n=3
+#d_vec = [30, 18, 22]
+d_vec = [18]
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
@@ -47,11 +50,11 @@ experimental_design = []
 hole_radius_array = np.array([0])
 #hole_radius_array = np.asarray([0.2, 0.2])
 # Define the eigenvalues we want to consider
-#n_vec = [1, 2, 3, 4]
-n_vec = [1]
+#n_vec = [1, 2, 3]
+n_vec = [2]
 #n_vec = [1, 3]
 # Loop over the eigenvalues
-for n in n_vec:
+for n_index,n in enumerate(n_vec):
     k_squared = n*(n+1)
     # Calculate the steady states and the critical parameters
     u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
@@ -60,7 +63,7 @@ for n in n_vec:
     # Set the value of the reaction strength to its critical value
     gamma = gamma_c
     # Collect all parameters in a list
-    parameters = [a, b, d, gamma]
+    parameters = [a, b, d_vec[n_index], gamma]
     # Print the results
     print("\n\t\tThe steady states:\t\t\t(u_0,v_0)\t=\t(%0.4f,%0.4f)"%(u_0,v_0))
     print("\t\tThe critical parameters:\t\t(d_c,gamma_c)\t=\t(%0.4f,%0.4f)"%(d_c,gamma_c))    
@@ -71,14 +74,8 @@ for n in n_vec:
             experimental_design.append((0,parameters,steady_states,numerical_parameters,[],True,False))
         else:
             experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,False))
-            #if hole_index == 0:
-            #    mesh_name = "../Meshes/s_h_1_r_0p2_north_pole.xdmf"
-            #else:
-            #    mesh_name = "../Meshes/s_h_1_r_0p2_equator.xdmf"                
-            #experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,True,mesh_name,hole_index))
-# We repeat the experiments a certain number of times due to the stochasticity in the intial conditions
-number_of_repititions = 19
-start_repitition = 1
+number_of_repititions = 2
+start_repitition = 18
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
     # Prompt to the user
@@ -87,5 +84,4 @@ for experiment in experimental_design:
     print("---------------------------------------------------------------------------------------------------------\n")    
     # Solve the FEM system with the given parameters
     FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],experiment[2],experiment[3],experiment[4],experiment[5],number_of_repititions,experiment[6],start_repitition)
-    #FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],experiment[2],experiment[3],experiment[4],experiment[5],number_of_repititions,experiment[6],experiment[7],experiment[8])    
 
