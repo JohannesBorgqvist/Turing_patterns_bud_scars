@@ -32,7 +32,7 @@ print("-------------------------------------------------------------------------
 #d = 18 # For n=2 
 #d = 22 # For n=3
 #d_vec = [30, 18, 22]
-d_vec = [18]
+d_vec = [22]
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
@@ -51,7 +51,7 @@ hole_radius_array = np.array([0])
 #hole_radius_array = np.asarray([0.2, 0.2])
 # Define the eigenvalues we want to consider
 #n_vec = [1, 2, 3]
-n_vec = [2]
+n_vec = [3]
 #n_vec = [1, 3]
 # Loop over the eigenvalues
 for n_index,n in enumerate(n_vec):
@@ -74,8 +74,9 @@ for n_index,n in enumerate(n_vec):
             experimental_design.append((0,parameters,steady_states,numerical_parameters,[],True,False))
         else:
             experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,False))
-number_of_repititions = 2
-start_repitition = 18
+# Here, we define the start repititions and the number of repititions
+number_of_repititions = 19
+start_repitition = 1
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
     # Prompt to the user
