@@ -105,14 +105,18 @@ def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
 a = 0.2
 b = 1.0
 # The wavenumber k^2
-n = 2
+#n = 1
+#n = 2
+n = 3
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-d = 18.0
+#d = 30.0 # n=1
+#d = 18.0 # n=2
+d = 22.0 # n=3
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Define the number of holes
@@ -128,7 +132,8 @@ T = 50
 # Let's start with the zeroth repitition
 repitition_index = 0
 # Define the meshes we want to loop over
-hole_radius_array = np.arange(0,0.75,0.05)
+#hole_radius_array = np.arange(0,0.75,0.05) # For n=1 and n=2 we are completely finished
+hole_radius_array = np.arange(0,0.6,0.05) # For n=3 we have a few runs left
 # Allocate a list of all the basis functions
 basis_functions = []
 # Let's add 14 lists for each basis function
@@ -172,8 +177,8 @@ for hole_index in range(len(hole_radius_array)):
     for radius in radii_holes:
         radius_str += "r_" + str(round(radius,3)).replace(".","p") + "_"
     # Now, the hole and the radii string is finished, so let's loop through all of the iterations
-    #for repitition_index in range(10):
-    for repitition_index in range(1):
+    for repitition_index in range(20):
+    #for repitition_index in range(1):
         # Gather all these substrings into one giant string where we will save the output files
         output_folder_str = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) + "/"
         # Read the csv file
@@ -225,7 +230,7 @@ plt.ylabel("Eigenfunctions, $\\lambda_{n,m}(\\varepsilon)$")
 # displaying the title
 plt.title("Perturbed eigenfunctions $\\gamma_{n,m}(\\varepsilon)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
 plt.show()
-plt.savefig("../Figures/perturbed_eigenfunctions.png")
+plt.savefig("../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + ".png")
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 # ILLUSTRATE THE EIGENVALUES IN LATEX
@@ -237,10 +242,10 @@ eigen_value_list = [(n,m) for n in [0,1,2,3,4] for m in range(n+1)]
 # Loop over all basis functions and plot them
 for index in range(14):
 #for index in range(3,6):
-    #plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),"../Figures/illustrate_eigenfunctions/Input/perturbed_eigenfunctions.tex","forget plot, densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
-    plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),"../Figures/illustrate_eigenfunctions/Input/perturbed_eigenfunctions.tex","densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",legend_strings[index])
-    #plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),"../Figures/illustrate_eigenfunctions/Input/perturbed_eigenfunctions.tex","forget plot, densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=down_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])    
+    plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/perturbed_eigenfunctions.tex","forget plot, densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
+    plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/perturbed_eigenfunctions.tex","densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",legend_strings[index])
+    plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/perturbed_eigenfunctions.tex","forget plot, densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=down_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])    
 
 
 
-plot_LaTeX_2D(np.arange(14),np.asarray([basis_functions[index][0][0] for index in range(14)]),"../Figures/validation_Chaplain_spectral_analysis/Input/spectral_analysis.tex","only marks, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",[])
+#plot_LaTeX_2D(np.arange(14),np.asarray([basis_functions[index][0][0] for index in range(14)]),"../Figures/validation_Chaplain_spectral_analysis/Input/spectral_analysis.tex","only marks, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",[])
