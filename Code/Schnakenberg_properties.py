@@ -247,3 +247,20 @@ def calculate_distance_between_bounds(a,b,d):
         dist = dist/(d*(a+b))
     # Return distance 
     return dist
+
+#------------------------------------------------------------------
+# Function 6: "Compute isolated spectral modes"
+# This function computes the isolated spectral modes (if any) on
+# the interval [nmin, nmax] given by the  parameters gamma, L,
+# and M, i.e., it checks which n:s satisfies (4.5) in Chaplain. 
+#------------------------------------------------------------------
+def compute_isolated_spectral_modes(ninterval, gamma, L, M):
+    nmin = ninterval[0]
+    nmax = ninterval[1]
+    for n in range(nmin, nmax):
+        k2 = n*(n+1)
+        if gamma*L < k2 and k2 < gamma*M:
+            print("n = %d is an isolated spectral mode"%int(n))
+    
+    
+    
