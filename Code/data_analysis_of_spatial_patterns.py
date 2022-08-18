@@ -106,14 +106,18 @@ def read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes):
 a = 0.2
 b = 1.0
 # The wavenumber k^2
-n = 2
+n = 1
+#n = 2
+#n = 3
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-d = 18.0
+d = 30.0 # n=1
+#d = 18.0 # n=2
+#d = 22.0 # n=3
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Define the number of holes
@@ -149,8 +153,8 @@ else:
 # Let's start with the zeroth repitition
 repitition_index = 0
 # Define the meshes we want to loop over
-hole_radius_array = np.arange(0,0.75,0.05)
-#hole_radius_array = np.arange(0,0.45,0.05)
+hole_radius_array = np.arange(0,0.75,0.05) # For n=1 and n=2 we are completely finished
+#hole_radius_array = np.arange(0,0.6,0.05) # For n=3 we have a few runs left
 # Define a parameter epsilon for the clustering
 epsilon = 1
 #----------------------------------------------------------------------------------
@@ -190,9 +194,9 @@ for hole_index in range(len(hole_radius_array)):
     dist_temp = []
     angle = []    
     # Loop over all repititions
-    for repitition_index in range(15):
+    for repitition_index in range(20):
         # Gather all these substrings into one giant string where we will save the output files
-        mesh_name = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) + "/u000101"
+        mesh_name = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) + "/u000001"
         # Read the msh file
         conc_profile = meshio.read(mesh_name + ".vtu")
         # Extract the concentration profile
@@ -374,7 +378,7 @@ axes[0][2].plot(hole_radius_array,np.asarray([np.percentile(max_conc[index],5) f
 axes[0][2].fill_between(hole_radius_array,np.asarray([np.percentile(max_conc[index],5) for index in range(len(max_conc))]),np.array([np.percentile(max_conc[index],95) for index in range(len(max_conc))]), facecolor=(129/256,15/256,124/256),alpha=0.5,interpolate=True)
 #axes[0][2].plot(hole_radius_array,np.asarray(max_conc),'-',color=(129/256,15/256,124/256),label="Max. conc.")
 axes[0][2].legend(loc='best')
-axes[0][2].set_ylim([0,2])
+#axes[0][2].set_ylim([0,2])
 axes[0][2].set_xlim([0,hole_radius_array[-1]])
 axes[0][2].tick_params(axis='both', which='major', labelsize=15)
 axes[0][2].tick_params(axis='both', which='minor', labelsize=15)
@@ -385,7 +389,7 @@ axes[1][0].plot(hole_radius_array,np.asarray([np.percentile(min_dist[index],5) f
 axes[1][0].fill_between(hole_radius_array,np.asarray([np.percentile(min_dist[index],5) for index in range(len(min_dist))]),np.array([np.percentile(min_dist[index],95) for index in range(len(min_dist))]), facecolor=(64/256,0/256,125/256),alpha=0.5,interpolate=True)
 #axes[1][0].plot(hole_radius_array,np.asarray(min_dist),'-',color=(64/256,0/256,125/256),label="Min. dist.")
 axes[1][0].legend(loc='best')
-axes[1][0].set_ylim([0,4])
+#axes[1][0].set_ylim([0,4])
 axes[1][0].yaxis.set_ticks(np.arange(0,4.5,0.5))
 axes[1][0].set_xlim([0,hole_radius_array[-1]])
 axes[1][0].tick_params(axis='both', which='major', labelsize=15)
@@ -413,7 +417,7 @@ plt.ylabel("Metrics of pole formation")
 # displaying the title
 plt.title("Metrics of pole formation as functions of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
 #plt.show()
-plt.savefig("../Figures/patterns_are_preserved_growing_hole_radii.png")
+plt.savefig("../Figures/patterns_are_preserved_growing_hole_radii_n_" + str(n) + ".png")
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 # Save out plots as LaTeX plots as well
