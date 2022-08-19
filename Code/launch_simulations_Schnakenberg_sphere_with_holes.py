@@ -39,9 +39,9 @@ print("-------------------------------------------------------------------------
 #d = 19.75 # For n=4
 #d = 18.75 # For n=5
 #d = 18.23 # For n=6
-#d_vec = [30, 18, 22]
-d_vec = [30, 18, 21.75]
-#d_vec = [18.23]
+# Calibrated values of d based on simulations (for n=1,2,3)
+#d_vec = [20, 18, 19] # n=1,2,3
+d_vec = [20, 19] # n=1,3
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
@@ -54,14 +54,10 @@ numerical_parameters = [sigma, T]
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Define the meshes we want to loop over
-#hole_radius_array = np.arange(0.05,0.75,0.05)
-#hole_radius_array = np.arange(0.20,0.75,0.05)
-hole_radius_array = np.array([0])
-#hole_radius_array = np.asarray([0.2, 0.2])
+hole_radius_array = np.arange(0,0.75,0.05) # The full experimental design
+#hole_radius_array = np.array([0]) # Calibrate d-value on the mesh without hole
 # Define the eigenvalues we want to consider
-#n_vec = [1, 2, 3]
-n_vec = [6]
-#n_vec = [1, 3]
+n_vec = [1, 3]
 # Loop over the eigenvalues
 for n_index,n in enumerate(n_vec):
     k_squared = n*(n+1)
@@ -91,9 +87,9 @@ for n_index,n in enumerate(n_vec):
         else:
             experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,False))
 # Here, we define the start repititions and the number of repititions
-#number_of_repititions = 20
-number_of_repititions = 1
-start_repitition = 0
+number_of_repititions = 20 # For the full experimental design
+#number_of_repititions = 1 # For a single repitition when calibrating the d-value
+start_repitition = 0 # This value we can tweek if we want to add extra simulations afterwards
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
     # Prompt to the user
@@ -101,5 +97,5 @@ for experiment in experimental_design:
     print("\tNUM_HOLES\t=\t%d,\tRADII\t=\t%s"%(int(experiment[0]),str(experiment[4])))
     print("---------------------------------------------------------------------------------------------------------\n")    
     # Solve the FEM system with the given parameters
-    #FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],experiment[2],experiment[3],experiment[4],experiment[5],number_of_repititions,experiment[6],start_repitition)
+    FEM_toolbox.FEMFD_simulation_Schnakenberg_sphere_with_holes(experiment[0],experiment[1],experiment[2],experiment[3],experiment[4],experiment[5],number_of_repititions,experiment[6],start_repitition)
 
