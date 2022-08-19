@@ -112,7 +112,7 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-d = 22.0
+d = 19.0
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Define the number of holes
@@ -200,6 +200,6 @@ print(basis_function_index)
 
 
 
-plot_LaTeX_2D(basis_function_index,basis_functions,"../Figures/n_3_final_concentration_decomposition/Input/spectral_analysis.tex","only marks,mark size=1.5pt,color=clr_1,",[])
+plot_LaTeX_2D(basis_function_index,basis_functions,"../Figures/n_" + str(n) + "_final_concentration_decomposition/Input/spectral_analysis.tex","only marks,mark size=1.5pt,color=clr_1,",[])
 
             
