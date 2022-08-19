@@ -25,7 +25,7 @@ a = 0.2
 b = 1
 # Prompt to the user
 print("---------------------------------------------------------------------------------------------------------\n")
-print("\tREPLICATING CHAPLAINS SIMULATIONS")
+print("\tRUNNING SCHNAKENBERG'S MODEL ON A SPHERICAL MESH WITH A HOLE IN IT")
 print("---------------------------------------------------------------------------------------------------------\n")
 # Set the value of the relative diffusion
 # BEFORE d-interval-calibration/maxing d (for n > 2)
