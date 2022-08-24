@@ -114,9 +114,9 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-#d = 30.0 # n=1
+#d = 20.0 # n=1
 #d = 18.0 # n=2
-d = 22.0 # n=3
+d = 19.0 # n=3
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Define the number of holes
@@ -132,15 +132,14 @@ T = 50
 # Let's start with the zeroth repitition
 repitition_index = 0
 # Define the meshes we want to loop over
-#hole_radius_array = np.arange(0,0.75,0.05) # For n=1 and n=2 we are completely finished
-hole_radius_array = np.arange(0,0.6,0.05) # For n=3 we have a few runs left
+hole_radius_array = np.arange(0,0.75,0.05) 
 # Allocate a list of all the basis functions
 basis_functions = []
 # Let's add 14 lists for each basis function
-for index in range(14):
+for index in range(15):
     basis_functions.append([])   
 # Now for each hole radius add an empty list as well with all iterations
-for index in range(14):
+for index in range(15):
     for sub_index in range(len(hole_radius_array)):
         basis_functions[index].append([])
 #----------------------------------------------------------------------------------
@@ -178,7 +177,6 @@ for hole_index in range(len(hole_radius_array)):
         radius_str += "r_" + str(round(radius,3)).replace(".","p") + "_"
     # Now, the hole and the radii string is finished, so let's loop through all of the iterations
     for repitition_index in range(20):
-    #for repitition_index in range(1):
         # Gather all these substrings into one giant string where we will save the output files
         output_folder_str = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) + "/"
         # Read the csv file
@@ -186,16 +184,20 @@ for hole_index in range(len(hole_radius_array)):
         # Save the legends one time
         if help_variable == 0:
             # Save the legend strings
-            legend_strings = list(dataframe.values[1:-1,1])
+            legend_strings = list(dataframe.values[:,1])
+            # Remove the very first element hey?
+            del legend_strings[0]
+            # Rename the legends
             for index,legend in enumerate(legend_strings):
                 legend_strings[index] = legend_strings[index].replace("\\gamma","U")
             # Increment the legend string so that we do not save it anymore
             help_variable += 1
         # Loop through our data frame and save each value (we need to cast it as a double first)
-        for index in range(len(dataframe.values[1:-1,3])):
-            # Append the casted value to our data frame
-            basis_functions[index][hole_index].append(float(dataframe.values[index+1,3]))            
-
+        for index in range(len(dataframe.values[:,3])):
+            if index > 0:
+                # Append the casted value to our data frame
+                basis_functions[index-1][hole_index].append(float(dataframe.values[index,3]))            
+# Colours for plotting
 colour_list_for_plotting = [(115/256,115/256,115/256),(77/256,0/256,75/256), (129/256,15/256,124/256), (0/256,68/256,27/256),(0/256,109/256,44/256),(35/256,139/256,69/256), (4/256,90/256,141/256),(5/256,112/256,176/256),(54/256,144/256,192/256),(116/256,169/256,207/256),(102/256,37/256,6/256),(153/256,52/256,4/256),(204/256,76/256,2/256),(236/256,112/256,20/256),(254/256,153/256,41/256)]
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
@@ -211,7 +213,7 @@ plt.rc('ytick', labelsize=20)    # fontsize of the tick labels
 # add a big axis, hide frame
 fig.add_subplot(111, frameon=False)
 # Loop over all basis functions and plot them
-for index in range(14):
+for index in range(15):
     # Plot the 90 percentile
     axes.plot(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),'--',color=colour_list_for_plotting[index])
     # Plot the 50 percentile
@@ -240,12 +242,29 @@ plt.savefig("../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + ".png")
 eigen_value_list = [(n,m) for n in [0,1,2,3,4] for m in range(n+1)]
 # Plot the eigenvalues
 # Loop over all basis functions and plot them
-for index in range(14):
-#for index in range(3,6):
-    plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/perturbed_eigenfunctions.tex","forget plot, densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
-    plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/perturbed_eigenfunctions.tex","densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",legend_strings[index])
-    plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/perturbed_eigenfunctions.tex","forget plot, densely dashed, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=down_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])    
-
+for index in range(15):
+    # We need marks to distinguish between the various cases
+    mark_str = " every mark/.append style={solid, fill=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1])
+    # Decide the type of mark based on the value of m
+    if eigen_value_list[index][1]==0:
+        mark_str += "}, mark=*, "
+    elif eigen_value_list[index][1]==1:
+        mark_str += "}, mark=square*, "
+    elif eigen_value_list[index][1]==2:
+        mark_str += "}, mark=otimes*, "
+    elif eigen_value_list[index][1]==3:
+        mark_str += "}, mark=triangle*, "
+    elif eigen_value_list[index][1]==4:
+        mark_str +=  "}, mark=diamond*, "
+    # Add cases and split into files
+    if eigen_value_list[index][0] <= 1:
+        plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(1) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
+        plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(1) + ".tex","densely dashed, thin," +  mark_str +  "color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",legend_strings[index])
+        plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(1) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=down_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])    
+    else:
+        plot_LaTeX_2D(hole_radius_array,np.array([round(np.percentile(basis_functions[index][sub_index],95),3) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(eigen_value_list[index][0]) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
+        plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(eigen_value_list[index][0]) + ".tex","densely dashed, thin," +  mark_str +  "color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",legend_strings[index])
+        plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(eigen_value_list[index][0]) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=down_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])    
 
 
 #plot_LaTeX_2D(np.arange(14),np.asarray([basis_functions[index][0][0] for index in range(14)]),"../Figures/validation_Chaplain_spectral_analysis/Input/spectral_analysis.tex","only marks, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",[])
