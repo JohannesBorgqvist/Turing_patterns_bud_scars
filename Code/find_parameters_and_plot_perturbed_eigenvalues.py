@@ -5,7 +5,8 @@
 # Implemented by: Johannes Borgqvist
 # Description:
 # This script checks whether certain parameters satisfy the Turing conditions and
-# then it plots the eigenvalues as functions of the hole radius epsilon
+# then it plots the eigenvalues as functions of the hole radius epsilon. We can refer
+# to this script as Philip's spaghetti plots. 
 # =================================================================================
 # =================================================================================
 # Import Libraries
