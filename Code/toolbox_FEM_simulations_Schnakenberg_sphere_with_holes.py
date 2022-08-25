@@ -29,15 +29,6 @@ np.fac = np.math.factorial
 import pandas as pd 
 # For multiprosessing
 import multiprocessing as mp
-# Import scipy to load the initial conditions nicely
-#from scipy.io import loadmat, savemat
-#export OPENBLAS_NUM_THREADS=1
-#import os
-#os.environ['OMP_NUM_THREADS'] = '1'
-#os.environ['OPENBLAS_NUM_THREADS'] = '1'
-#os.system("taskset -p 0xff %d" % os.getpid())
-
-
 # =================================================================================
 # =================================================================================
 # Functions for conducting the FEM simulations
@@ -405,6 +396,7 @@ def solve_RD_system(repitition_index,parameters,numerical_parameters,load_IC,rad
     b = parameters[1]
     d = parameters[2]    
     gamma = parameters[3]
+    n = parameters[4]
     # Extract the numerical parameters
     sigma = numerical_parameters[0] # Determining the perturbation in the initial conditions
     T = numerical_parameters[1] # Determining the end time for the FD time stepping scheme
@@ -515,7 +507,11 @@ def solve_RD_system(repitition_index,parameters,numerical_parameters,load_IC,rad
     # STEP 6 OUT OF 7: TIME STEPPING USING FD IN TIME AND FEM IN SPACE
     #--------------------------------------------------------------
     # Define the constant time step
-    dt = 1e-2
+    if n<4:
+        dt = 1e-2
+    elif n == 4:
+        dt = 5e-3
+    # Re-define this as a constant for the FEM solver    
     k = Constant(dt) # For the fem solver as well
     # Define an iterator for the time stepping keeping track of
     # how many iterations that has passed

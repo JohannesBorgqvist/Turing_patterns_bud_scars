@@ -40,8 +40,8 @@ print("-------------------------------------------------------------------------
 #d = 18.75 # For n=5
 #d = 18.23 # For n=6
 # Calibrated values of d based on simulations (for n=1,2,3)
-d_vec = [20, 18, 19] # n=1,2,3
-#d_vec = [20, 19] # n=1,3
+#d_vec = [20, 18, 19] # n=1,2,3
+d_vec = [18] # n=4
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
@@ -54,10 +54,11 @@ numerical_parameters = [sigma, T]
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Define the meshes we want to loop over
-hole_radius_array = np.arange(0,0.75,0.05) # The full experimental design
-#hole_radius_array = np.array([0]) # Calibrate d-value on the mesh without hole
+#hole_radius_array = np.arange(0,0.75,0.05) # The full experimental design
+hole_radius_array = np.array([0]) # Calibrate d-value on the mesh without hole
 # Define the eigenvalues we want to consider
-n_vec = [1, 3]
+#n_vec = [1, 3]
+n_vec = [4]
 # Loop over the eigenvalues
 for n_index,n in enumerate(n_vec):
     k_squared = n*(n+1)
@@ -70,7 +71,7 @@ for n_index,n in enumerate(n_vec):
     # Set the value of the reaction strength to its critical value
     gamma = gamma_c
     # Collect all parameters in a list
-    parameters = [a, b, d, gamma]
+    parameters = [a, b, d, gamma, n]
     # Check isolated spectral modes for choices of a, b, d, and gamma.
     Turing_conditions,L,M = Schnakenberg_properties.check_Turing_conditions_Scnakenberg(a,b,d)
     print(gamma*L, gamma*M)
