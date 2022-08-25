@@ -88,8 +88,8 @@ for n_index,n in enumerate(n_vec):
         else:
             experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,False))
 # Here, we define the start repititions and the number of repititions
-number_of_repititions = 20 # For the full experimental design
-#number_of_repititions = 1 # For a single repitition when calibrating the d-value
+#number_of_repititions = 20 # For the full experimental design
+number_of_repititions = 1 # For a single repitition when calibrating the d-value
 start_repitition = 0 # This value we can tweek if we want to add extra simulations afterwards
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
