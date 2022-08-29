@@ -108,7 +108,8 @@ b = 1.0
 # The wavenumber k^2
 #n = 1
 #n = 2
-n = 3
+#n = 3
+n = 4
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
@@ -117,7 +118,8 @@ steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
 #d = 20.0 # n=1
 #d = 18.0 # n=2
-d = 19.0 # n=3
+#d = 19.0 # n=3
+d = 18.0 # n=2
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Define the number of holes
