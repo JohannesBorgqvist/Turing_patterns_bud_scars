@@ -41,7 +41,8 @@ print("-------------------------------------------------------------------------
 #d = 18.23 # For n=6
 # Calibrated values of d based on simulations (for n=1,2,3)
 #d_vec = [20, 18, 19] # n=1,2,3
-d_vec = [18] # n=4
+#d_vec = [18] # n=4
+d_vec = [18] # New attempt with d=3. 
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
@@ -54,11 +55,12 @@ numerical_parameters = [sigma, T]
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Define the meshes we want to loop over
-hole_radius_array = np.arange(0,0.75,0.05) # The full experimental design
-#hole_radius_array = np.array([0]) # Calibrate d-value on the mesh without hole
+#hole_radius_array = np.arange(0,0.75,0.05) # The full experimental design
+hole_radius_array = np.array([0]) # Calibrate d-value on the mesh without hole
 # Define the eigenvalues we want to consider
 #n_vec = [1, 3]
-n_vec = [4]
+#n_vec = [4]
+n_vec = [3]
 # Loop over the eigenvalues
 for n_index,n in enumerate(n_vec):
     k_squared = n*(n+1)
@@ -88,8 +90,8 @@ for n_index,n in enumerate(n_vec):
         else:
             experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,False))
 # Here, we define the start repititions and the number of repititions
-number_of_repititions = 20 # For the full experimental design
-#number_of_repititions = 1 # For a single repitition when calibrating the d-value
+#number_of_repititions = 20 # For the full experimental design
+number_of_repititions = 1 # For a single repitition when calibrating the d-value
 start_repitition = 0 # This value we can tweek if we want to add extra simulations afterwards
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
