@@ -60,7 +60,7 @@ hole_radius_array = np.array([0]) # Calibrate d-value on the mesh without hole
 # Define the eigenvalues we want to consider
 #n_vec = [1, 3]
 #n_vec = [4]
-n_vec = [3]
+n_vec = [1]
 # Loop over the eigenvalues
 for n_index,n in enumerate(n_vec):
     k_squared = n*(n+1)
