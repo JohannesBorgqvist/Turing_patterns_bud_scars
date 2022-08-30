@@ -107,8 +107,8 @@ b = 1.0
 # The wavenumber k^2
 #n = 1
 #n = 2
-#n = 3
-n = 4
+n = 3
+#n = 4
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
