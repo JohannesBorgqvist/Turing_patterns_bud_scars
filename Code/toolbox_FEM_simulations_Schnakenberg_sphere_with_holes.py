@@ -299,6 +299,13 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
     Y_4p2 = Expression("sqrt(45/(64*pi))*(pow(x[0], 2) - pow(x[1], 2))*(7*pow(x[2], 2) - pow(r, 2))/pow(r, 4)", r=r, degree=degree)
     Y_4p3 = Expression("sqrt(315/(32*pi))*x[0]*x[2]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 4)", r=r, degree=degree)
     Y_4p4 = Expression("sqrt(315/(256*pi))*(pow(x[0], 2)*(pow(x[0], 2) - 3*pow(x[1], 2)) - pow(x[1], 2)*(3*pow(x[0], 2) - pow(x[1], 2)))/pow(r, 4)", r=r, degree=degree)
+    # n=5
+    Y_50 = Expression("sqrt(11/(256*pi))*(63*pow(x[2], 5) - 70*pow(x[2],3)*pow(r, 2)+15*x[2]*pow(r,4))/pow(r, 5)", r=r, degree=degree)
+    Y_51 = Expression("sqrt(165/(1024*pi))*x[0]*(21*pow(x[2], 4) - 14*pow(x[2],2)*pow(r, 2)+pow(r,4))/pow(r, 5)", r=r, degree=degree)
+    Y_52 = Expression("sqrt(1155/(64*pi))*(pow(x[0],2)-pow(x[1],2))*(3*pow(x[2], 3) - x[2]*pow(r, 2))/pow(r, 5)", r=r, degree=degree)
+    Y_53= Expression("sqrt(385/(512*pi))*pow(x[0],3)*(9*pow(x[2],2) - pow(r, 2))/pow(r, 5)", r=r, degree=degree)
+    Y_54= Expression("sqrt(3465/(256*pi))*(pow(x[0],4)-6*pow(x[0],2)*pow(x[1],2)+pow(x[1],4))*(x[2]/pow(r, 5))", r=r, degree=degree)
+    Y_55= Expression("sqrt(693/(512*pi))*((pow(x[0],5)-10*pow(x[0],3)*pow(x[1],2)+5*x[0]*pow(x[1],4))/pow(r, 5))", r=r, degree=degree)
     # ASSEMBLE THE SOLUTION AS A FUNCTION OF THESE BASIS FUNCTIONS
     # The real part of the complex spectral coefficients of
     # the supplied function according to Chaplain,
@@ -326,18 +333,25 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
     U_4p2 = 1/sqrt(2)*assemble(u*Y_4p2*dx)
     U_4p3 = 1/sqrt(2)*assemble(u*Y_4p3*dx)
     U_4p4 = 1/sqrt(2)*assemble(u*Y_4p4*dx)
+    # n=5
+    U_50 = assemble(u*Y_50*dx)
+    U_5p1 = 1/sqrt(2)*assemble(u*Y_5p1*dx)
+    U_5p2 = 1/sqrt(2)*assemble(u*Y_5p2*dx)
+    U_5p3 = 1/sqrt(2)*assemble(u*Y_5p3*dx)
+    U_5p4 = 1/sqrt(2)*assemble(u*Y_5p4*dx)
+    U_5p5 = 1/sqrt(2)*assemble(u*Y_5p5*dx)    
     # Save the results
     # Create a list of the coefficients of the basis functions
-    coeff_list = [U_00, U_10, U_1p1, U_20, U_2p1, U_2p2, U_30, U_3p1, U_3p2, U_3p3, U_40, U_4p1, U_4p2, U_4p3, U_4p4]
+    coeff_list = [U_00, U_10, U_1p1, U_20, U_2p1, U_2p2, U_30, U_3p1, U_3p2, U_3p3, U_40, U_4p1, U_4p2, U_4p3, U_4p4, U_50, U_5p1, U_5p2, U_5p3, U_5p4, U_5p5]
     # Create a list of the corresponding hole radius
-    hole_radii_list = [hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius]
+    hole_radii_list = [hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius, hole_radius]
     # Create an array with the temporary data
     temp_data = np.array([hole_radii_list,coeff_list])
     # Create a list of the column names
     col_names = ["Hole radius in the mesh", "Spectral coefficients of the eigenfunctions at final time t=T"]
     # Create a list of the names of the eigenfunctions
-    row_names = ["$\\gamma_{0,0}$", "$\\gamma_{1,0}$", "$\\gamma_{1,1}$", "$\\gamma_{2,0}$", "$\\gamma_{2,1}$", "$\\gamma_{2,2}$", "$\\gamma_{3,0}$", "$\\gamma_{3,1}$", "$\\gamma_{3,2}$", "$\\gamma_{3,3}$", "$\\gamma_{4,0}$", "$\\gamma_{4,1}$", "$\\gamma_{4,2}$", "$\\gamma_{4,3}$", "$\\gamma_{4,4}$"]
-    # Create a datafrane
+    row_names = ["$\\gamma_{0,0}$", "$\\gamma_{1,0}$", "$\\gamma_{1,1}$", "$\\gamma_{2,0}$", "$\\gamma_{2,1}$", "$\\gamma_{2,2}$", "$\\gamma_{3,0}$", "$\\gamma_{3,1}$", "$\\gamma_{3,2}$", "$\\gamma_{3,3}$", "$\\gamma_{4,0}$", "$\\gamma_{4,1}$", "$\\gamma_{4,2}$", "$\\gamma_{4,3}$", "$\\gamma_{4,4}$", "$\\gamma_{5,0}$", "$\\gamma_{5,1}$", "$\\gamma_{5,2}$", "$\\gamma_{5,3}$", "$\\gamma_{5,4}$", "$\\gamma_{5,5}$"]
+    # Create a dataframe
     data = temp_data.T
     # Create a pandas data frame which we want to save
     df = pd.DataFrame(data,columns=col_names)
@@ -717,3 +731,4 @@ def project_eigen_functions_onto_mesh(num_holes,radii_holes):
     vtkfile_44 = File(output_folder_str+ "Y_44.pvd")
     P_Y_44.rename("$Y_{44}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_4p4")
     vtkfile_44 << (P_Y_44, 0)                    
+    # n=5
