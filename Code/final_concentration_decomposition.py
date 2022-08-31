@@ -105,7 +105,7 @@ def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
 a = 0.2
 b = 1.0
 # The wavenumber k^2
-n = 4
+n = 5
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
@@ -133,7 +133,7 @@ hole_radius_array = np.array([0])
 # Allocate a list of all the basis functions
 basis_functions = []
 # Let's add 14 lists for each basis function
-for index in range(14):
+for index in range(20):
     basis_functions.append([])   
 # Now for each hole radius add an empty list as well with all iterations
 #for index in range(14):
