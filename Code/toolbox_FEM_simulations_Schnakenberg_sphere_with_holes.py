@@ -301,11 +301,11 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
     Y_4p4 = Expression("sqrt(315/(256*pi))*(pow(x[0], 2)*(pow(x[0], 2) - 3*pow(x[1], 2)) - pow(x[1], 2)*(3*pow(x[0], 2) - pow(x[1], 2)))/pow(r, 4)", r=r, degree=degree)
     # n=5
     Y_50 = Expression("sqrt(11/(256*pi))*(63*pow(x[2], 5) - 70*pow(x[2],3)*pow(r, 2)+15*x[2]*pow(r,4))/pow(r, 5)", r=r, degree=degree)
-    Y_51 = Expression("sqrt(165/(1024*pi))*x[0]*(21*pow(x[2], 4) - 14*pow(x[2],2)*pow(r, 2)+pow(r,4))/pow(r, 5)", r=r, degree=degree)
-    Y_52 = Expression("sqrt(1155/(64*pi))*(pow(x[0],2)-pow(x[1],2))*(3*pow(x[2], 3) - x[2]*pow(r, 2))/pow(r, 5)", r=r, degree=degree)
-    Y_53= Expression("sqrt(385/(512*pi))*pow(x[0],3)*(9*pow(x[2],2) - pow(r, 2))/pow(r, 5)", r=r, degree=degree)
-    Y_54= Expression("sqrt(3465/(256*pi))*(pow(x[0],4)-6*pow(x[0],2)*pow(x[1],2)+pow(x[1],4))*(x[2]/pow(r, 5))", r=r, degree=degree)
-    Y_55= Expression("sqrt(693/(512*pi))*((pow(x[0],5)-10*pow(x[0],3)*pow(x[1],2)+5*x[0]*pow(x[1],4))/pow(r, 5))", r=r, degree=degree)
+    Y_5p1 = Expression("sqrt(165/(1024*pi))*x[0]*(21*pow(x[2], 4) - 14*pow(x[2],2)*pow(r, 2)+pow(r,4))/pow(r, 5)", r=r, degree=degree)
+    Y_5p2 = Expression("sqrt(1155/(64*pi))*(pow(x[0],2)-pow(x[1],2))*(3*pow(x[2], 3) - x[2]*pow(r, 2))/pow(r, 5)", r=r, degree=degree)
+    Y_5p3= Expression("sqrt(385/(512*pi))*pow(x[0],3)*(9*pow(x[2],2) - pow(r, 2))/pow(r, 5)", r=r, degree=degree)
+    Y_5p4= Expression("sqrt(3465/(256*pi))*(pow(x[0],4)-6*pow(x[0],2)*pow(x[1],2)+pow(x[1],4))*(x[2]/pow(r, 5))", r=r, degree=degree)
+    Y_5p5= Expression("sqrt(693/(512*pi))*((pow(x[0],5)-10*pow(x[0],3)*pow(x[1],2)+5*x[0]*pow(x[1],4))/pow(r, 5))", r=r, degree=degree)
     # ASSEMBLE THE SOLUTION AS A FUNCTION OF THESE BASIS FUNCTIONS
     # The real part of the complex spectral coefficients of
     # the supplied function according to Chaplain,
@@ -523,8 +523,10 @@ def solve_RD_system(repitition_index,parameters,numerical_parameters,load_IC,rad
     # Define the constant time step (this you need to calibrate...).
     if n<4: # For n=1,2,3 a step size of dt=0.01 works
         dt = 1e-2
-    elif n == 4 or n==5: # For n=4,5 a step size of dt=0.005 works
+    elif n == 4: # For n=4 a step size of dt=0.005 works
         dt = 5e-3
+    elif n==5: # For n=5 a step size of dt=0.001 works
+        dt = 1e-3        
     # Re-define this as a constant for the FEM solver    
     k = Constant(dt) # For the fem solver as well
     # Define an iterator for the time stepping keeping track of
