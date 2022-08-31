@@ -132,8 +132,9 @@ repitition_index = 0
 hole_radius_array = np.array([0])
 # Allocate a list of all the basis functions
 basis_functions = []
-# Let's add 14 lists for each basis function
-for index in range(20):
+# Let's add 20 lists for each basis function corresponding to
+# n = 1,2,3,4,5...
+for index in range(21):
     basis_functions.append([])   
 # Now for each hole radius add an empty list as well with all iterations
 #for index in range(14):
@@ -183,15 +184,19 @@ for hole_index in range(len(hole_radius_array)):
         # Save the legends one time
         if help_variable == 0:
             # Save the legend strings
-            legend_strings = list(dataframe.values[1:-1,1])
+            legend_strings = list(dataframe.values[:,1])
+            # Remove the first value
+            del legend_strings[0]
+            # Loop over all legends and change their name
             for index,legend in enumerate(legend_strings):
                 legend_strings[index] = legend_strings[index].replace("\\gamma","U")
             # Increment the legend string so that we do not save it anymore
             help_variable += 1
         # Loop through our data frame and save each value (we need to cast it as a double first)
-        for index in range(len(dataframe.values[1:-1,3])):
-            # Append the casted value to our data frame
-            basis_functions[index].append(float(dataframe.values[index+1,3]))
+        for index in range(len(dataframe.values[:,3])):
+            if index>0:
+                # Append the casted value to our data frame
+                basis_functions[index-1].append(float(dataframe.values[index,3]))
 
 # Save indices            
 basis_functions = [value[0] for value in basis_functions]
