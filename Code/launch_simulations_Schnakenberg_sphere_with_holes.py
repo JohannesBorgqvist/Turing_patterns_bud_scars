@@ -96,7 +96,7 @@ number_of_repititions = 12 # Temporary fix for 2022-09-02
 #number_of_repititions = 20 # For the full experimental design
 #number_of_repititions = 1 # For a single repitition when calibrating the d-value
 start_repitition = 0 # This value we can tweek if we want to add extra simulations afterwards
-start_repitition = 8 # Temporary fix for 2022-09-02
+start_repitition = 8 # Temporary fix for 2022-09-02, show Erica how git works
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
     # Prompt to the user
