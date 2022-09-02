@@ -55,7 +55,8 @@ numerical_parameters = [sigma, T]
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Define the meshes we want to loop over
-hole_radius_array = np.arange(0.15,0.75,0.05) # The full experimental design
+hole_radius_array = np.array([0.25]) # Temporary fix for 2022-09-02
+#hole_radius_array = np.arange(0.15,0.75,0.05) # The full experimental design
 #hole_radius_array = np.arange(0,0.75,0.05) # The full experimental design
 #hole_radius_array = np.array([0]) # Calibrate d-value on the mesh without hole
 # Define the eigenvalues we want to consider
