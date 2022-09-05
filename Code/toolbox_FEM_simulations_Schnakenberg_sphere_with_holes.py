@@ -623,8 +623,8 @@ def solve_RD_system(repitition_index,parameters,numerical_parameters,load_IC,rad
 def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states,number_of_repititions,load_IC,start_repitition):
     # Now, we solve the PDE system, a defined number of repititions. Since each PDE simulations is solved on one core, we do this in parallel!
     # Define the pool of workes
-    pool = mp.Pool(mp.cpu_count())
-    #pool = mp.Pool(mp.cpu_count()-2) # Temporary fix so we do not use all cores. We want to be work on the computer while some simulations are running in the background.
+    #pool = mp.Pool(mp.cpu_count())
+    pool = mp.Pool(mp.cpu_count()-2) # Temporary fix so we do not use all cores. We want to be work on the computer while some simulations are running in the background.
     # Solve our RD system in parallel
     results = pool.starmap(solve_RD_system,[(repitition_index,parameters,numerical_parameters,load_IC,radii_holes,num_holes,steady_states,ICs_around_steady_states) for repitition_index in range(start_repitition,start_repitition+number_of_repititions)])
     # Close the pool
