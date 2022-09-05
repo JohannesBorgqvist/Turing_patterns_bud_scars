@@ -301,9 +301,9 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
     Y_4p4 = Expression("sqrt(315/(256*pi))*(pow(x[0], 2)*(pow(x[0], 2) - 3*pow(x[1], 2)) - pow(x[1], 2)*(3*pow(x[0], 2) - pow(x[1], 2)))/pow(r, 4)", r=r, degree=degree)
     # n=5
     Y_50 = Expression("sqrt(11/(256*pi))*(63*pow(x[2], 5) - 70*pow(x[2],3)*pow(r, 2)+15*x[2]*pow(r,4))/pow(r, 5)", r=r, degree=degree)
-    Y_5p1 = Expression("sqrt(165/(1024*pi))*x[0]*(21*pow(x[2], 4) - 14*pow(x[2],2)*pow(r, 2)+pow(r,4))/pow(r, 5)", r=r, degree=degree)
+    Y_5p1 = Expression("sqrt(165/(256*pi))*x[0]*(21*pow(x[2], 4) - 14*pow(x[2],2)*pow(r, 2)+pow(r,4))/pow(r, 5)", r=r, degree=degree)
     Y_5p2 = Expression("sqrt(1155/(64*pi))*(pow(x[0],2)-pow(x[1],2))*(3*pow(x[2], 3) - x[2]*pow(r, 2))/pow(r, 5)", r=r, degree=degree)
-    Y_5p3= Expression("sqrt(385/(512*pi))*pow(x[0],3)*(9*pow(x[2],2) - pow(r, 2))/pow(r, 5)", r=r, degree=degree)
+    Y_5p3= Expression("sqrt(385/(512*pi))*(pow(x[0],3)-3*x[0]*pow(x[1],2))*(9*pow(x[2],2) - pow(r, 2))/pow(r, 5)", r=r, degree=degree)
     Y_5p4= Expression("sqrt(3465/(256*pi))*(pow(x[0],4)-6*pow(x[0],2)*pow(x[1],2)+pow(x[1],4))*(x[2]/pow(r, 5))", r=r, degree=degree)
     Y_5p5= Expression("sqrt(693/(512*pi))*((pow(x[0],5)-10*pow(x[0],3)*pow(x[1],2)+5*x[0]*pow(x[1],4))/pow(r, 5))", r=r, degree=degree)
     # ASSEMBLE THE SOLUTION AS A FUNCTION OF THESE BASIS FUNCTIONS
