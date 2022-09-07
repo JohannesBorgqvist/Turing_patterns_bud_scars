@@ -521,10 +521,10 @@ def solve_RD_system(repitition_index,parameters,numerical_parameters,load_IC,rad
     # STEP 6 OUT OF 7: TIME STEPPING USING FD IN TIME AND FEM IN SPACE
     #--------------------------------------------------------------
     # Define the constant time step (this you need to calibrate...).
-    if n<4: # For n=1,2,3 a step size of dt=0.01 works
+    if n<3: # For n=1,2 a step size of dt=0.01 works
         dt = 1e-2
-    elif n == 4: # For n=4 a step size of dt=0.005 works
-        dt = 5e-3
+    elif n<5: # For n=3,4 a step size of dt=0.005 works
+        dt = 5e-3 
     elif n==5: # For n=5 a step size of dt=0.001 works
         dt = 1e-3        
     # Re-define this as a constant for the FEM solver    
