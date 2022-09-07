@@ -537,7 +537,7 @@ def solve_RD_system(repitition_index,parameters,numerical_parameters,load_IC,rad
     t = 0
     # Previous time step
     t_prev = 0
-    # Save time every time with value 0.5
+    # Save the concentration profile when the time has increased with a value 0.5
     save_iteration = 0.5
     #--------------------------------------------------------------
     # STEP 7 OUT OF 7: CALCULATE THE RESIDUAL FORMS NEEDED FOR THE
