@@ -106,8 +106,8 @@ a = 0.2
 b = 1.0
 # The wavenumber k^2
 #n = 1
-#n = 2
-n = 3
+n = 2
+#n = 3
 #n = 4
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
@@ -116,9 +116,9 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
 #d = 20.0 # n=1
-#d = 18.0 # n=2
+d = 18.0 # n=2
 #d = 19.0 # n=3
-d = 18.0 # n=4
+#d = 18.0 # n=4
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Define the number of holes
@@ -137,11 +137,12 @@ repitition_index = 0
 hole_radius_array = np.arange(0,0.75,0.05) 
 # Allocate a list of all the basis functions
 basis_functions = []
-# Let's add 14 lists for each basis function
-for index in range(15):
+# Let's add 21 lists for each basis function
+# corresponding to n=1,2,3,4,5
+for index in range(21):
     basis_functions.append([])   
 # Now for each hole radius add an empty list as well with all iterations
-for index in range(15):
+for index in range(21):
     for sub_index in range(len(hole_radius_array)):
         basis_functions[index].append([])
 #----------------------------------------------------------------------------------
@@ -200,7 +201,9 @@ for hole_index in range(len(hole_radius_array)):
                 # Append the casted value to our data frame
                 basis_functions[index-1][hole_index].append(float(dataframe.values[index,3]))            
 # Colours for plotting
-colour_list_for_plotting = [(115/256,115/256,115/256),(77/256,0/256,75/256), (129/256,15/256,124/256), (0/256,68/256,27/256),(0/256,109/256,44/256),(35/256,139/256,69/256), (4/256,90/256,141/256),(5/256,112/256,176/256),(54/256,144/256,192/256),(116/256,169/256,207/256),(102/256,37/256,6/256),(153/256,52/256,4/256),(204/256,76/256,2/256),(236/256,112/256,20/256),(254/256,153/256,41/256)]
+colour_list_for_plotting = [(115/256,115/256,115/256),(77/256,0/256,75/256), (129/256,15/256,124/256), (0/256,68/256,27/256),(0/256,109/256,44/256),(35/256,139/256,69/256), (4/256,90/256,141/256),(5/256,112/256,176/256),(54/256,144/256,192/256),(116/256,169/256,207/256),(102/256,37/256,6/256),(153/256,52/256,4/256),(204/256,76/256,2/256),(236/256,112/256,20/256),(254/256,153/256,41/256),(1/256,70/256,54/276),(1/256,108/256,89/256),(2/256,219/256,138/256),(54/256,144/256,192/256),(103/256,169/256,207/256),(166/256,189/256,219/256)]
+
+
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
@@ -241,10 +244,10 @@ plt.savefig("../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + ".png")
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 # Create a list of all tuples of m and n values
-eigen_value_list = [(n,m) for n in [0,1,2,3,4] for m in range(n+1)]
+eigen_value_list = [(n,m) for n in [0,1,2,3,4,5] for m in range(n+1)]
 # Plot the eigenvalues
 # Loop over all basis functions and plot them
-for index in range(15):
+for index in range(21):
     # We need marks to distinguish between the various cases
     mark_str = " every mark/.append style={solid, fill=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1])
     # Decide the type of mark based on the value of m
@@ -258,6 +261,8 @@ for index in range(15):
         mark_str += "}, mark=triangle*, "
     elif eigen_value_list[index][1]==4:
         mark_str +=  "}, mark=diamond*, "
+    elif eigen_value_list[index][1]==5:
+        mark_str +=  "}, mark=star, "        
     # Add cases and split into files
     if eigen_value_list[index][0] <= 1:
         plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(1) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
