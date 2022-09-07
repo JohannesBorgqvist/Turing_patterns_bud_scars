@@ -292,7 +292,7 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
     Y_30 = Expression("sqrt(7/(16*pi))*(5*pow(x[2], 3) - 3*x[2]*pow(r, 2))/pow(r, 3)", r=r, degree=degree)
     Y_3p1 = Expression("sqrt(21/(32*pi))*x[0]*(5*pow(x[2], 2) - pow(r, 2))/pow(r, 3)", r=r, degree=degree)
     Y_3p2 = Expression("sqrt(105/(16*pi))*x[2]*(pow(x[0], 2) - pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
-    Y_3p3 = Expression("sqrt(35/(16*pi))*x[0]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
+    Y_3p3 = Expression("sqrt(35/(32*pi))*x[0]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
     # n=4
     Y_40 = Expression("sqrt(9/(256*pi))*(35*pow(x[2], 4) - 30*pow(x[2], 2)*pow(r, 2) + 3*pow(r, 4))/pow(r, 4)", r=r, degree=degree)
     Y_4p1 = Expression("sqrt(45/(32*pi))*x[0]*(7*pow(x[2], 3) - 3*x[2]*pow(r, 2))/pow(r, 4)", r=r, degree=degree)
@@ -300,12 +300,12 @@ def compute_spectral_coefficients_nohole(u, dx, hole_radius,folder_str):
     Y_4p3 = Expression("sqrt(315/(32*pi))*x[0]*x[2]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 4)", r=r, degree=degree)
     Y_4p4 = Expression("sqrt(315/(256*pi))*(pow(x[0], 2)*(pow(x[0], 2) - 3*pow(x[1], 2)) - pow(x[1], 2)*(3*pow(x[0], 2) - pow(x[1], 2)))/pow(r, 4)", r=r, degree=degree)
     # n=5
-    Y_50 = Expression("sqrt(11/(256*pi))*(63*pow(x[2], 5) - 70*pow(x[2],3)*pow(r, 2)+15*x[2]*pow(r,4))/pow(r, 5)", r=r, degree=degree)
-    Y_5p1 = Expression("sqrt(165/(256*pi))*x[0]*(21*pow(x[2], 4) - 14*pow(x[2],2)*pow(r, 2)+pow(r,4))/pow(r, 5)", r=r, degree=degree)
-    Y_5p2 = Expression("sqrt(1155/(64*pi))*(pow(x[0],2)-pow(x[1],2))*(3*pow(x[2], 3) - x[2]*pow(r, 2))/pow(r, 5)", r=r, degree=degree)
-    Y_5p3= Expression("sqrt(385/(512*pi))*(pow(x[0],3)-3*x[0]*pow(x[1],2))*(9*pow(x[2],2) - pow(r, 2))/pow(r, 5)", r=r, degree=degree)
-    Y_5p4= Expression("sqrt(3465/(256*pi))*(pow(x[0],4)-6*pow(x[0],2)*pow(x[1],2)+pow(x[1],4))*(x[2]/pow(r, 5))", r=r, degree=degree)
-    Y_5p5= Expression("sqrt(693/(512*pi))*((pow(x[0],5)-10*pow(x[0],3)*pow(x[1],2)+5*x[0]*pow(x[1],4))/pow(r, 5))", r=r, degree=degree)
+    Y_50 = Expression("sqrt(11/(256*pi))*(63*pow(x[2], 5) - 70*pow(x[2],3)*pow(r, 2) + 15*x[2]*pow(r, 4))/pow(r, 5)", r=r, degree=degree)
+    Y_5p1 = Expression("sqrt(165/(256*pi))*x[0]*(21*pow(x[2], 4) - 14*pow(x[2], 2)*pow(r, 2) + pow(r, 4))/pow(r, 5)", r=r, degree=degree)
+    Y_5p2 = Expression("sqrt(1155/(64*pi))*(pow(x[0], 2) - pow(x[1], 2))*(3*pow(x[2], 3) - x[2]*pow(r, 2))/pow(r, 5)", r=r, degree=degree)
+    Y_5p3 = Expression("sqrt(385/(512*pi))*(pow(x[0], 3) - 3*x[0]*pow(x[1], 2))*(9*pow(x[2], 2) - pow(r, 2))/pow(r, 5)", r=r, degree=degree)
+    Y_5p4 = Expression("sqrt(3465/(256*pi))*(pow(x[0], 4) - 6*pow(x[0], 2)*pow(x[1], 2) + pow(x[1], 4))*x[2]/pow(r, 5)", r=r, degree=degree)
+    Y_5p5 = Expression("sqrt(693/(512*pi))*(pow(x[0], 5) - 10*pow(x[0], 3)*pow(x[1], 2) + 5*x[0]*pow(x[1], 4))/pow(r, 5)", r=r, degree=degree)
     # ASSEMBLE THE SOLUTION AS A FUNCTION OF THESE BASIS FUNCTIONS
     # The real part of the complex spectral coefficients of
     # the supplied function according to Chaplain,
@@ -702,7 +702,7 @@ def project_eigen_functions_onto_mesh(num_holes,radii_holes):
     vtkfile_32 = File(output_folder_str+ "Y_32.pvd")
     P_Y_32.rename("$Y_{32}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_3p2")
     vtkfile_32 << (P_Y_32, 0)                    
-    Y_3p3 = Expression("sqrt(35/(16*pi))*x[0]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
+    Y_3p3 = Expression("sqrt(35/(32*pi))*x[0]*(pow(x[0], 2) - 3*pow(x[1], 2))/pow(r, 3)", r=r, degree=degree)
     P_Y_33 = project(Y_3p3, H)
     vtkfile_33 = File(output_folder_str+ "Y_33.pvd")
     P_Y_33.rename("$Y_{33}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_3p3")
