@@ -40,8 +40,8 @@ print("-------------------------------------------------------------------------
 #d = 18.75 # For n=5
 #d = 18.23 # For n=6
 # Calibrated values of d based on simulations (for n=1,2,3)
-d_vec = [20, 18, 19, 18, 18] # n=1,2,3,4,5
-#d_vec = [18] # n=4
+#d_vec = [20, 18, 19, 18, 18] # n=1,2,3,4,5
+d_vec = [18] # n=2,4,5
 #d_vec = [18] # New attempt with d=18 for n=3. 
 # We have no holes, so no radius necessary
 radii_holes = []
