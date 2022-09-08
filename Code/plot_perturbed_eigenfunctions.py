@@ -106,8 +106,8 @@ a = 0.2
 b = 1.0
 # The wavenumber k^2
 #n = 1
-n = 2
-#n = 3
+#n = 2
+n = 3
 #n = 4
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
@@ -116,8 +116,8 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
 #d = 20.0 # n=1
-d = 18.0 # n=2
-#d = 19.0 # n=3
+#d = 18.0 # n=2
+d = 19.0 # n=3
 #d = 18.0 # n=4
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
@@ -134,7 +134,8 @@ T = 50
 # Let's start with the zeroth repitition
 repitition_index = 0
 # Define the meshes we want to loop over
-hole_radius_array = np.arange(0,0.75,0.05) 
+#hole_radius_array = np.arange(0,0.75,0.05)
+hole_radius_array = np.arange(0,0.55,0.05) 
 # Allocate a list of all the basis functions
 basis_functions = []
 # Let's add 21 lists for each basis function
@@ -264,14 +265,9 @@ for index in range(21):
     elif eigen_value_list[index][1]==5:
         mark_str +=  "}, mark=star, "        
     # Add cases and split into files
-    if eigen_value_list[index][0] <= 1:
-        plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(1) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
-        plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(1) + ".tex","densely dashed, thin," +  mark_str +  "color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",legend_strings[index])
-        plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(1) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=down_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])    
-    else:
-        plot_LaTeX_2D(hole_radius_array,np.array([round(np.percentile(basis_functions[index][sub_index],95),3) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(eigen_value_list[index][0]) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
-        plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(eigen_value_list[index][0]) + ".tex","densely dashed, thin," +  mark_str +  "color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",legend_strings[index])
-        plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(eigen_value_list[index][0]) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=down_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])    
+    plot_LaTeX_2D(hole_radius_array,np.array([round(np.percentile(basis_functions[index][sub_index],95),3) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(eigen_value_list[index][0]) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
+    plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(eigen_value_list[index][0]) + ".tex","densely dashed, thin," +  mark_str +  "color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",legend_strings[index])
+    plot_LaTeX_2D(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),"../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + "/Input/n_" +str(eigen_value_list[index][0]) + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=down_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])    
 
 
 #plot_LaTeX_2D(np.arange(14),np.asarray([basis_functions[index][0][0] for index in range(14)]),"../Figures/validation_Chaplain_spectral_analysis/Input/spectral_analysis.tex","only marks, thin, color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",[])
