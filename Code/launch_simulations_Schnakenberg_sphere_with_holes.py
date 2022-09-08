@@ -42,7 +42,7 @@ print("-------------------------------------------------------------------------
 # Calibrated values of d based on simulations (for n=1,2,3)
 #d_vec = [20, 18, 19, 18, 18] # n=1,2,3,4,5
 #d_vec = [18] # n=2,4,5
-d_vec = [20] # New attempt with d=20 for n=1.
+d_vec = [18] # New attempt with d=20 for n=1.
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
