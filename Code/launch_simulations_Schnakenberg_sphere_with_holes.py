@@ -55,13 +55,13 @@ numerical_parameters = [sigma, T]
 # Define the experimental design of holes with increasing radii
 experimental_design = []
 # Define the meshes we want to loop over
-#hole_radius_array = np.arange(0,0.75,0.05) # The full experimental design
-hole_radius_array = np.arange(0.45,0.75,0.05) # The full experimental design
+hole_radius_array = np.arange(0,0.75,0.05) # The full experimental design
+#hole_radius_array = np.arange(0.45,0.75,0.05) # The full experimental design
 #hole_radius_array = np.array([0]) # Calibrate d-value on the mesh without hole
 # Define the eigenvalues we want to consider
 #n_vec = [1, 2, 3, 4, 5] # Full design
 #n_vec = [3, 4] # One eigenvalue at a time
-n_vec = [3] # Do the third eigenvalue
+n_vec = [4, 5] # Do the fourth and fifth eigenvalue
 # Loop over the eigenvalues
 for n_index,n in enumerate(n_vec):
     k_squared = n*(n+1)
