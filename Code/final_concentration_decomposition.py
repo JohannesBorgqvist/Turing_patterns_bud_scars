@@ -105,8 +105,8 @@ def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
 a = 0.2
 b = 1.0
 # The wavenumber k^2
-#n = 5
-n = 4
+n = 5
+#n = 4
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
@@ -131,7 +131,8 @@ T = 50
 repitition_index = 0
 # Define the meshes we want to loop over
 #hole_radius_array = np.arange(0,0.75,0.05)
-hole_radius_array = np.array([0])
+hole_radius_array = np.arange(0,0.35,0.05)
+#hole_radius_array = np.array([0])
 # Allocate a list of all the basis functions
 basis_functions = []
 # Let's add 20 lists for each basis function corresponding to

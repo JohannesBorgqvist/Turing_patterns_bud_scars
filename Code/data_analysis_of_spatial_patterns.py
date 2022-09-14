@@ -109,8 +109,8 @@ b = 1.0
 #n = 1
 #n = 2
 #n = 3
-n = 4
-#n = 3
+#n = 4
+n = 5
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
@@ -156,8 +156,8 @@ else:
 # Let's start with the zeroth repitition
 repitition_index = 0
 # Define the meshes we want to loop over
-hole_radius_array = np.arange(0,0.75,0.05)
-#hole_radius_array = np.arange(0, 0.55, 0.05)
+#hole_radius_array = np.arange(0,0.75,0.05)
+hole_radius_array = np.arange(0, 0.35, 0.05)
 # Define a parameter epsilon for the clustering
 epsilon = 1
 # Define the location of the hole in the mesh
