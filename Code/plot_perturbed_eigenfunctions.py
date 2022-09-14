@@ -105,18 +105,18 @@ def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
 a = 0.2
 b = 1.0
 # The wavenumber k^2
-#n = 1
-n = 4
-#n = 3
+n = 1
 #n = 4
+#n = 3
+#n = 5
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-#d = 20.0 # n=1
-d = 18.0 # n=2
+d = 20.0 # n=1
+#d = 18.0 # n=2
 #d = 19.0 # n=3
 #d = 18.0 # n=4
 # Set the value of the reaction strength to its critical value
@@ -135,7 +135,7 @@ T = 50
 repitition_index = 0
 # Define the meshes we want to loop over
 hole_radius_array = np.arange(0,0.75,0.05)
-#hole_radius_array = np.arange(0,0.55,0.05) 
+#hole_radius_array = np.arange(0,0.35,0.05) 
 # Allocate a list of all the basis functions
 basis_functions = []
 # Let's add 21 lists for each basis function
