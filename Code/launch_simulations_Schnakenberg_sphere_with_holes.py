@@ -28,21 +28,7 @@ print("-------------------------------------------------------------------------
 print("\tRUNNING SCHNAKENBERG'S MODEL ON A SPHERICAL MESH WITH A HOLE IN IT")
 print("---------------------------------------------------------------------------------------------------------\n")
 # Set the value of the relative diffusion
-# BEFORE d-interval-calibration/maxing d (for n > 2)
-#d = 30 # For n=1
-#d = 18 # For n=2 
-#d = 22 # For n=3
-# AFTER d-interval-calibration/maxing d (for n > 2)
-#d = 30 # For n=1
-#d = 18 # For n=2 
-#d = 21.75 # For n=3
-#d = 19.75 # For n=4
-#d = 18.75 # For n=5
-#d = 18.23 # For n=6
-# Calibrated values of d based on simulations (for n=1,2,3)
-#d_vec = [20, 18, 19, 18, 18] # n=1,2,3,4,5
-#d_vec = [18] # n=2,4,5
-d_vec = [18, 18] # New attempt with d=20 for n=1.
+d_vec = [20] # New attempt with d=20 for n=1.
 # We have no holes, so no radius necessary
 radii_holes = []
 # Define the perturbation in the initial conditions
@@ -56,12 +42,8 @@ numerical_parameters = [sigma, T]
 experimental_design = []
 # Define the meshes we want to loop over
 hole_radius_array = np.arange(0,0.75,0.05) # The full experimental design
-#hole_radius_array = np.arange(0.45,0.75,0.05) # The full experimental design
-#hole_radius_array = np.array([0]) # Calibrate d-value on the mesh without hole
 # Define the eigenvalues we want to consider
-#n_vec = [1, 2, 3, 4, 5] # Full design
-#n_vec = [3, 4] # One eigenvalue at a time
-n_vec = [4, 5] # Do the fourth and fifth eigenvalue
+n_vec = [1] # Do the fourth and fifth eigenvalue
 # Loop over the eigenvalues
 for n_index,n in enumerate(n_vec):
     k_squared = n*(n+1)
@@ -92,7 +74,6 @@ for n_index,n in enumerate(n_vec):
             experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,False))
 # Here, we define the start repititions and the number of repititions
 number_of_repititions = 20 # For the full experimental design
-#number_of_repititions = 1 # For a single repitition when calibrating the d-value
 start_repitition = 0 # This value we can tweek if we want to add extra simulations afterwards
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
