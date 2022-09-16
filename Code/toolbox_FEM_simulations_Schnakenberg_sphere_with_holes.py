@@ -622,8 +622,7 @@ def solve_RD_system(repitition_index,parameters,numerical_parameters,load_IC,rad
 
 def FEMFD_simulation_Schnakenberg_sphere_with_holes(num_holes,parameters,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states,number_of_repititions,load_IC,start_repitition):
     # Now, we solve the PDE system, a defined number of repititions. Since each PDE simulations is solved on one core, we do this in parallel!
-    # Define the pool of workes
-    #pool = mp.Pool(mp.cpu_count())
+    # Define the pool of workers
     pool = mp.Pool(mp.cpu_count()-1) # Temporary fix so we do not use all cores. We want to be work on the computer while some simulations are running in the background.
     # Solve our RD system in parallel
     results = pool.starmap(solve_RD_system,[(repitition_index,parameters,numerical_parameters,load_IC,radii_holes,num_holes,steady_states,ICs_around_steady_states) for repitition_index in range(start_repitition,start_repitition+number_of_repititions)])
@@ -733,4 +732,3 @@ def project_eigen_functions_onto_mesh(num_holes,radii_holes):
     vtkfile_44 = File(output_folder_str+ "Y_44.pvd")
     P_Y_44.rename("$Y_{44}(\mathbf{x}),\;\mathbf{x}\in S^2$","Y_4p4")
     vtkfile_44 << (P_Y_44, 0)                    
-    # n=5
