@@ -23,7 +23,7 @@ import Schnakenberg_properties # Home-made
 a = 0.2
 b = 1
 # The wavenumber k^2
-n = 2
+n = 1
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
@@ -62,5 +62,5 @@ T = 50
 numerical_parameters = [sigma, T]
 # We set the initial conditions around the steady states
 ICs_around_steady_states = True
-# Save the initial conditio
+# Save the initial condition
 FEM_toolbox.save_IC(num_holes,steady_states,numerical_parameters,radii_holes,ICs_around_steady_states)
