@@ -39,7 +39,6 @@ def create_mesh(mesh, cell_type, prune_z=False):
         out_mesh.prune_z_0()
         
     return out_mesh
-
 # =================================================================================
 # =================================================================================
 # Reading in the mesh and studying its properties
