@@ -16,84 +16,6 @@ import numpy as np # For numerical calculations
 from matplotlib import pyplot as plt # For plotting
 import pandas as pd # Import pandas for reading the csv files
 from pandas import read_csv # Pandas to read the data
-# =================================================================================
-# =================================================================================
-# Functions
-# =================================================================================
-# =================================================================================
-def plot_LaTeX_2D(t,y,file_str,plot_str,legend_str):
-    # Open a file with the append option
-    # so that we can write to the same
-    # file multiple times
-    f = open(file_str, "a")
-    # Create a temporary string which
-    # is the one that does the plotting.
-    # Here we incorporate the input plot_str
-    # which contains the color, and the markers
-    # of the plot at hand
-    if len(legend_str)==0:
-        temp_str = "\\addplot[\nforget plot,\n" + plot_str+ "\n]\n"
-    else:
-        temp_str = "\\addplot[\n" + plot_str+ "\n]\n"
-    # Add the coordinates
-    temp_str += "coordinates {%\n"
-    # Loop over the input files and add
-    # them to the file
-    for i in range(len(t)):
-        temp_str += "(" + str(t[i]) + "," + str(y[i]) + ")\n"
-    # The plotting is done, let's close the shop    
-    temp_str += "};\n"
-    # Add a legend if one is provided
-    if len(legend_str) > 0:
-        temp_str += "\\addlegendentry{" + legend_str + "}\n"
-    # Finally, we write the huge string
-    # we have created
-    f.write("%s"%(temp_str))
-    # Close the file
-    f.close()
-def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
-    # Open a file with the append option
-    # so that we can write to the same
-    # file multiple times
-    f = open(file_str, "a")
-    # Create a temporary string which
-    # is the one that does the plotting.
-    # Here we incorporate the input plot_str
-    # which contains the color, and the markers
-    # of the plot at hand
-    if surfaceNotCurve:
-        if len(legend_str)==0:
-            temp_str = "\\addplot3[forget plot," + plot_str+ "]\n"
-        else:
-            temp_str = "\\addplot3[" + plot_str+ "]\n"
-    else:
-        if len(legend_str)==0:
-            temp_str = "\\addplot3+[forget plot," + plot_str+ "]\n"
-        else:
-            temp_str = "\\addplot3+[" + plot_str+ "]\n"        
-    # Add the coordinates
-    temp_str += "coordinates {%\n"
-    # Loop over the input files and add
-    # them to the file
-    for index in range(len(data)):
-        temp_str += "("+str(data[index][0]) + "," + str(data[index][1]) + "," + str(data[index][2]) + ")"
-        if index>0:
-            if index < len(data)-1 and data[index][1] < data[index+1][1]:
-                temp_str += "\n"
-            elif index == len(data)-1:
-                temp_str += "\n"
-            else:
-                temp_str += "  "
-    # The plotting is done, let's close the shop    
-    temp_str += "};\n"
-    # Add a legend if one is provided
-    if len(legend_str) > 0:
-        temp_str += "\\addlegendentry{" + legend_str + "}\n"
-    # Finally, we write the huge string
-    # we have created
-    f.write("%s"%(temp_str))
-    # Close the file
-    f.close()
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
@@ -181,7 +103,6 @@ for hole_index in range(len(hole_radius_array)):
     for repitition_index in range(1):
         # Gather all these substrings into one giant string where we will save the output files
         output_folder_str = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) + "/"
-        print(output_folder_str)
         # Read the csv file
         dataframe = read_csv(output_folder_str + "spectral_coefficients.csv", header=None)
         # Save the legends one time
@@ -202,12 +123,31 @@ for hole_index in range(len(hole_radius_array)):
                 basis_functions[index-1].append(float(dataframe.values[index,3]))
 
 # Save indices            
-basis_functions = [value[0] for value in basis_functions]
-basis_function_index = [index for index,value in enumerate(basis_functions)]
-print(basis_function_index)
+basis_functions = np.array([value[0] for value in basis_functions])
+basis_function_index = np.array([index for index,value in enumerate(basis_functions)])
+#===================================================================================================================================================
+# Set all parameters to tex
+plt.rcParams['text.usetex'] = True
+# Plot our lovely solutions
+fig_1 = plt.figure(constrained_layout=True, figsize=(20, 8))
+plt.plot(basis_function_index, basis_functions, '*' ,color=(0/256,0/256,0/256),linewidth=3.0)
+plt.grid()
+plt.legend(loc='best',prop={"size":20})
+plt.xlabel(xlabel='$(n,m)$-indices for $U_{n,m}$',fontsize=25)
+plt.ylabel(ylabel='Coefficients $U_{n,m}$ in \\\\$u(\\mathbf{x},t=50)=\\sum_{n=0}^{5}\\sum_{m=0}^{n}U_{n,m}Y_{n}^{m}(\\mathbf{x}),\\quad\\mathbf{x}\\in S^2$',fontsize=25)
+# Change the size of the ticks
+plt.tick_params(axis='both', which='major', labelsize=20)
+plt.tick_params(axis='both', which='minor', labelsize=20)
+# Title and saving the figure
+plt.title('Spectral decomposition of $u(\\mathbf{x},t=50)$',fontsize=30,weight='bold')
+# Set the xticklabels
+ax = plt.gca()
+ax.set_xticks(list(basis_function_index))
+ax.set_xticklabels(['$(0,0)$', '$(1,0)$', '$(1,1)$', '$(2,0)$', '$(2,1)$', '$(2,2)$', '$(3,0)$', '$(3,1)$', '$(3,2)$', '$(3,3)$', '$(4,0)$', '$(4,1)$', '$(4,2)$', '$(4,3)$', '$(4,4)$','$(5,0)$', '$(5,1)$', '$(5,2)$', '$(5,3)$', '$(5,4)$', '$(5,5)$'])
+# Show the plot
+plt.show()
+plt.savefig('../Figures/spectral_decomposition_no_holes_u_at_time_t_50.png')
+#===================================================================================================================================================
 
-
-
-plot_LaTeX_2D(basis_function_index,basis_functions,"../Figures/n_" + str(n) + "_final_concentration_decomposition/Input/spectral_analysis.tex","only marks,mark size=1.5pt,color=clr_1,",[])
 
             
