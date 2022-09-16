@@ -110,7 +110,9 @@ def plot_LaTeX_3D(data,file_str,plot_str,legend_str,surfaceNotCurve):
 a = 0.2
 b = 1
 # The wavenumber k^2
-n = 2
+n = 1
+#n = 2
+#n = 4 
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
@@ -118,7 +120,8 @@ u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_cri
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
 #d = d_c + 1.5
-d = 18
+d = 20# n=1
+#d=18 # n=2 och n=4
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Calculate the critical hole radius for all eigenvalues between n=2 and n=4
@@ -221,11 +224,27 @@ plt.savefig("../Figures/perturbed_eigenvalues.png")
 #----------------------------------------------------------------------------------
 # Plot the eigenvalues
 for index in index_list:
-    plot_LaTeX_2D(epsilon_vector,lambda_vec[index],"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=2pt,",label_strings[index])
+    # We need marks to distinguish between the various cases
+    mark_str = " every mark/.append style={solid, fill=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1])
+    # Decide the type of mark based on the value of m
+    if eigen_value_list[index][1]==0:
+        mark_str += "}, mark=*, "
+    elif eigen_value_list[index][1]==1:
+        mark_str += "}, mark=square*, "
+    elif eigen_value_list[index][1]==2:
+        mark_str += "}, mark=otimes*, "
+    elif eigen_value_list[index][1]==3:
+        mark_str += "}, mark=triangle*, "
+    elif eigen_value_list[index][1]==4:
+        mark_str +=  "}, mark=diamond*, "
+    elif eigen_value_list[index][1]==5:
+        mark_str +=  "}, mark=star, "
+    # Plot the perturbed eigenvalue    
+    plot_LaTeX_2D(epsilon_vector,lambda_vec[index],"../Figures/illustrate_eigenvalues/Input/n_" + str(n) + "_d_" + str(d) + ".tex","color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.5pt,"+mark_str+"mark size=0.75pt",label_strings[index])
 
 # Plot the thresholds
-plot_LaTeX_2D(epsilon_vector,upper_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=halfcircle*,mark size=0.5pt,color=black,","$\gamma M(a,b,d)$")
-plot_LaTeX_2D(epsilon_vector,lower_bound,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=square*,mark size=0.5pt,color=black,","$\gamma L(a,b,d)$")
+plot_LaTeX_2D(epsilon_vector,upper_bound,"../Figures/illustrate_eigenvalues/Input/n_" + str(n) + "_d_" + str(d) + ".tex","only marks, mark=halfcircle*,mark size=1.0pt,color=black,","$\gamma M(a,b,d)$")
+plot_LaTeX_2D(epsilon_vector,lower_bound,"../Figures/illustrate_eigenvalues/Input/n_" + str(n) + "_d_" + str(d) + ".tex","only marks, mark=diamond*,mark size=1.0pt,color=black,","$\gamma L(a,b,d)$")
 # Plot the vertical line as well
 #plot_LaTeX_2D(crit_radius,vertical_line,"../Figures/illustrate_eigenvalues/Input/perturbed_eigenvalues.tex","only marks, mark=diamond*,mark size=0.5pt,color=black,","$\\varepsilon_{\\mathrm{crit}}$")
 print("\n\n==============================================================================================================================\n")

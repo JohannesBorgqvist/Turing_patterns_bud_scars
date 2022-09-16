@@ -156,8 +156,8 @@ else:
 # Let's start with the zeroth repitition
 repitition_index = 0
 # Define the meshes we want to loop over
-#hole_radius_array = np.arange(0,0.75,0.05)
-hole_radius_array = np.arange(0, 0.35, 0.05)
+hole_radius_array = np.arange(0,0.75,0.05)
+#hole_radius_array = np.arange(0, 0.35, 0.05)
 # Define a parameter epsilon for the clustering
 epsilon = 1
 # Define the location of the hole in the mesh
