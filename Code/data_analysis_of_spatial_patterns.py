@@ -31,36 +31,6 @@ def cart2sph(x,y,z):
     elev = m.atan2(z,m.sqrt(XsqPlusYsq))     # theta
     az = m.atan2(y,x)                           # phi
     return r, elev, az
-def plot_LaTeX_2D(t,y,file_str,plot_str,legend_str):
-    # Open a file with the append option
-    # so that we can write to the same
-    # file multiple times
-    f = open(file_str, "a")
-    # Create a temporary string which
-    # is the one that does the plotting.
-    # Here we incorporate the input plot_str
-    # which contains the color, and the markers
-    # of the plot at hand
-    if len(legend_str)==0:
-        temp_str = "\\addplot[\nforget plot,\n" + plot_str+ "\n]\n"
-    else:
-        temp_str = "\\addplot[\n" + plot_str+ "\n]\n"
-    # Add the coordinates
-    temp_str += "coordinates {%\n"
-    # Loop over the input files and add
-    # them to the file
-    for i in range(len(t)):
-        temp_str += "(" + str(t[i]) + "," + str(y[i]) + ")\n"
-    # The plotting is done, let's close the shop    
-    temp_str += "};\n"
-    # Add a legend if one is provided
-    if len(legend_str) > 0:
-        temp_str += "\\addlegendentry{" + legend_str + "}\n"
-    # Finally, we write the huge string
-    # we have created
-    f.write("%s"%(temp_str))
-    # Close the file
-    f.close()
 def read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes):
     # Allocate memory for the mesh and the mesh value collection
     mesh = Mesh()
@@ -106,21 +76,14 @@ def read_mesh_Schnakenberg_sphere_with_holes(num_holes,radii_holes):
 a = 0.2
 b = 1.0
 # The wavenumber k^2
-#n = 1
-#n = 2
-#n = 3
-#n = 4
-n = 5
+n = 1
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-#d = 20.0 # n=1
-d = 18.0 # n=2
-#d = 19.0 # n=3
-#d = 18.0 # n=3
+d = 20.0 # n=1
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
 # Define the number of holes
@@ -196,10 +159,8 @@ for hole_index in range(len(hole_radius_array)):
     individual_pole_area_integration = []
     relative_pole_area = []
     dist_temp = []
-    #angle = []    
     # Loop over all repititions
     for repitition_index in range(20):
-    #for repitition_index in range(3):
         # Gather all these substrings into one giant string where we will save the output files
         mesh_name = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) + "/u000001"
         # Read the msh file
@@ -210,7 +171,6 @@ for hole_index in range(len(hole_radius_array)):
         spatial_coordinates = conc_profile.points
         # Define a threshold concentration
         threshold_concentration = 0.95*max(u)
-        #threshold_concentration = 0.8*max(u)
         # Save the spatial coordinates for which the concentration profile is above our threshold value
         pole_coordinates = np.asarray([spatial_coordinate for index,spatial_coordinate in enumerate(spatial_coordinates) if u[index]>=threshold_concentration])
         # CLUSTERING: conduct the density based scan using DBSCAN
@@ -324,11 +284,14 @@ for hole_index in range(len(hole_radius_array)):
 # Plot our metrics as a function of the hole area
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
-fig, axes = plt.subplots(2,2,figsize=(20,10))
-plt.rc('axes', labelsize=25)    # fontsize of the x and y label
-plt.rc('legend', fontsize=20)    # legend fontsize
-plt.rc('xtick', labelsize=20)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=20)    # fontsize of the tick labels
+# Set all parameters to tex
+plt.rcParams['text.usetex'] = True
+# Figures
+fig, axes = plt.subplots(2,2,figsize=(30,10))
+plt.rc('axes', labelsize=35)    # fontsize of the x and y label
+plt.rc('legend', fontsize=15)    # legend fontsize
+plt.rc('xtick', labelsize=30)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=30)    # fontsize of the tick labels
 # add a big axis, hide frame
 fig.add_subplot(111, frameon=False)
 # Subplot 1 of 4
@@ -376,49 +339,17 @@ axes[1][1].set_xlim([0,hole_radius_array[-1]])
 axes[1][1].tick_params(axis='both', which='major', labelsize=15)
 axes[1][1].tick_params(axis='both', which='minor', labelsize=15)
 # displaying the title
+# hide tick and tick label of the big axis
+plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
+plt.xlabel("Cylindrical hole radius, $\\varepsilon$")
+plt.ylabel("Quantitative metric")
+# displaying the title
 plt.title("Metrics of pole formation as functions of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
-plt.show()
+# Save fig and show it
 plt.savefig("../Figures/patterns_are_preserved_growing_hole_radii_n_" + str(n) + ".png")
+plt.show()
 
-#----------------------------------------------------------------------------------
-#----------------------------------------------------------------------------------
-# Save out plots as LaTeX plots as well
-#----------------------------------------------------------------------------------
-#----------------------------------------------------------------------------------
-# Define some lists that we loop over
-eigen_value_list = [(n,n) for n in [1,2,3,4]] # For the colours
-file_str = ["num_poles", "pol_area", "u_max", "min_dist"] # The names of the files we save
-legend_strings = ["Number of poles", "Rel. pole area in \\%", "$u_{\\max}$", "Min.dist"]
-# Loop over all our results and save them
-for index in range(len(eigen_value_list)):
-    # Define the mark_str as well
-    mark_str = " every mark/.append style={solid, fill=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1])
-    # Decide the type of mark based on the value of m
-    if eigen_value_list[index][1]==0:
-        mark_str += "}, mark=*, "
-    elif eigen_value_list[index][1]==1:
-        mark_str += "}, mark=square*, "
-    elif eigen_value_list[index][1]==2:
-        mark_str += "}, mark=otimes*, "
-    elif eigen_value_list[index][1]==3:
-        mark_str += "}, mark=triangle*, "
-    elif eigen_value_list[index][1]==4:
-        mark_str +=  "}, mark=diamond*, "
-    # Define the y vector we want to plot, hey?    
-    if index == 0:
-        y_vec = num_poles_vec
-    elif index == 1:
-        y_vec = rel_pol_area
-    elif index == 2:
-        y_vec = max_conc
-    elif index == 3:        
-        y_vec = min_dist
-    # 95 % percentile
-    plot_LaTeX_2D(hole_radius_array,np.asarray([np.percentile(y_vec[index],95) for index in range(len(y_vec))]),"../Figures/quantiative_metrics_vs_hole_radius_n_" + str(n) + "/Input/" + file_str[index] + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=up_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
-    # 50 % percentile
-    plot_LaTeX_2D(hole_radius_array,np.asarray([np.percentile(y_vec[index],50) for index in range(len(y_vec))]),"../Figures/quantiative_metrics_vs_hole_radius_n_" + str(n) + "/Input/" + file_str[index] + ".tex","densely dashed, thin," +  mark_str +  "color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=1pt,",legend_strings[index])
-    # 5 % percentile
-    plot_LaTeX_2D(hole_radius_array,np.asarray([np.percentile(y_vec[index],5) for index in range(len(y_vec))]),"../Figures/quantiative_metrics_vs_hole_radius_n_" + str(n) + "/Input/"+file_str[index] + ".tex","densely dashed, thin,color=eigen_" + str(eigen_value_list[index][0]) + "_" + str(eigen_value_list[index][1]) + ",line width=0.2pt,name path=down_n_" + str(eigen_value_list[index][0]) + "_m_" + str(eigen_value_list[index][1]) + ",",[])
+
 
 
 

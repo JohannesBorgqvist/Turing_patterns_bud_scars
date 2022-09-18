@@ -129,7 +129,7 @@ colour_list_for_plotting = [(115/256,115/256,115/256),(77/256,0/256,75/256), (12
 # Set all parameters to tex
 plt.rcParams['text.usetex'] = True
 # Figures
-fig, axes = plt.subplots(2,3,figsize=(15,5))
+fig, axes = plt.subplots(2,3,figsize=(30,10))
 plt.rc('axes', labelsize=35)    # fontsize of the x and y label
 plt.rc('legend', fontsize=15)    # legend fontsize
 plt.rc('xtick', labelsize=30)    # fontsize of the tick labels
@@ -169,13 +169,13 @@ for index in range(21):
     axes[row][col].fill_between(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]), np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]), facecolor=colour_list_for_plotting[index],alpha=0.5,interpolate=True)
     # Add the legend in the end
     axes[row][col].legend(bbox_to_anchor=(0.50,0.5), loc="center left", borderaxespad=0)
-#hide tick and tick label of the big axis
+# hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
-#plt.xlabel("Geodesic hole radius, $\\varepsilon$")
 plt.xlabel("Cylindrical hole radius, $\\varepsilon$")
 plt.ylabel("Eigenfunctions, $\\lambda_{n,m}(\\varepsilon)$")
 # displaying the title
 plt.title("Perturbed eigenfunctions $\\gamma_{n,m}(\\varepsilon)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
+# Save fig and show it
+plt.savefig("../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + ".png")
 plt.show()
-#plt.savefig("../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + ".png")
 

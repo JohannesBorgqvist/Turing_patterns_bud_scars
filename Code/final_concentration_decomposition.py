@@ -28,14 +28,12 @@ a = 0.2
 b = 1.0
 # The wavenumber k^2
 n = 1
-#n = 4
 k_squared = n*(n+1)
 # Calculate the steady states and the critical parameters
 u_0, v_0, d_c, gamma_c = Schnakenberg_properties.calculate_steady_states_and_critical_parameters_Schnakenberg(a,b,k_squared)
 # Save the steady states in a list
 steady_states = [u_0,v_0]
 # Set the value of the relative diffusion
-#d = 18.0 # n=2,4,5
 d = 20.0 # n=1
 # Set the value of the reaction strength to its critical value
 gamma = gamma_c
@@ -53,18 +51,12 @@ T = 50
 repitition_index = 0
 # Define the meshes we want to loop over
 hole_radius_array = np.arange(0,0.75,0.05)
-#hole_radius_array = np.arange(0,0.35,0.05)
-#hole_radius_array = np.array([0])
 # Allocate a list of all the basis functions
 basis_functions = []
 # Let's add 20 lists for each basis function corresponding to
 # n = 1,2,3,4,5...
 for index in range(21):
     basis_functions.append([])   
-# Now for each hole radius add an empty list as well with all iterations
-#for index in range(14):
-    #for sub_index in range(len(hole_radius_array)):
-        #basis_functions[index].append([])
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 # DEFINE THE FOLDERS WE LOOK THROUGH
@@ -98,8 +90,7 @@ for hole_index in range(len(hole_radius_array)):
     # Loop over all raddi and read them one by one
     for radius in radii_holes:
         radius_str += "r_" + str(round(radius,3)).replace(".","p") + "_"
-    # Now, the hole and the radii string is finished, so let's loop through all of the iterations
-    #for repitition_index in range(10):
+    # Now, the hole and the radii string is finished, extract the basis functions corresponding to the zeroth iteration
     for repitition_index in range(1):
         # Gather all these substrings into one giant string where we will save the output files
         output_folder_str = folder_str + hole_str + radius_str + a_str + b_str + d_str + gamma_str + sigma_str + T_str + IC_str + "iteration_" + str(repitition_index) + "/"
