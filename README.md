@@ -1,6 +1,6 @@
 
 
-https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-afd8-a9064b8fbf3a.mp4
+
 
 # Turing patterns on a sphere with holes, cell growth and local parameter changes
 *Date:* 2021-09-01<br>
@@ -9,7 +9,9 @@ https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-
 
 Description of the project
 
-![Simulation of the active component of the Schnakenberg model](https://user-images.githubusercontent.com/77111216/190901753-f8122cb9-fc3e-45c5-8e3c-14efbca3f24c.mp4)
+https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-afd8-a9064b8fbf3a.mp4
+
+
 
 
 
