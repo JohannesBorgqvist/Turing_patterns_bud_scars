@@ -1,9 +1,5 @@
-
-
-
-
 # Turing patterns on a sphere with holes, cell growth and local parameter changes
-*Date:* 2021-09-01<br>
+*Date:* 2021-09-18<br>
 *Written by:* Johannes Borgqvist<br>
 
 
@@ -17,20 +13,6 @@ https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-
 
 
 
-
-
-
-
-
-
-
-## Working with branches
-We have one main branch and two additional individual branches. All the work that should be done individually should be managed on the two individual branches called "Johannes\_branch" and "Philips\_branch" respectively. All the work that has been done in parallel should then be merged to the main branch. A good rule of thumb is that *no work is done on the main branch*, and we only merge to this branch. However, there are two important exceptions to this rule:
-
-1. The README.md file should only be changed on the main branch,
-2. The TASK_LIST.md file should only be changed on the main branch as well. 
-
-Here is a good guide on *how to work with branches* ([see the following link](https://thenewstack.io/dont-mess-with-the-master-working-with-branches-in-git-and-github/)).
 
 
 
@@ -82,6 +64,8 @@ In order to make the project as reproducible as possible, the coding has been do
 
 Both of the first two of these has a Python interface. Thus the scripts for generating the meshes using Gmsh and the scripts for conducting the FEM simulations using FEniCS are written in Python. For visualising the results, the graphical interface of ParaView has been used. 
 
+![Work flow](./Figures/diagram.png)
+
 
 Provided that anaconda has been succesfully installed, the easiest way to install all relevant packages is to install two different conda environments. These can be accessed through the provided yml-files called *gmsh\_latest\_version.yml* and *fenicsproject.yml*. These two environments are installed using the command<br>
 
@@ -126,12 +110,4 @@ Now, the environment "gmsh\_latest\_version" is entered when the meshes are crea
 
 
 
-### REALLY UGLY FIX FOR JOHANNES WORK COMPUTER
 
-For some reason, "*conda activate*" does not work on this computer. So instead I need to run the following command: <br>
-
-source /home/borgqvist/anaconda3/bin/activate gmsh\_latest\_version
-
-It is also strange that "*conda deactivate*" seems to work, but apparently this command should be more or less equivalent
-
-source /home/borgqvist/anaconda3/bin/deactivate gmsh\_latest\_version
