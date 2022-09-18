@@ -1,4 +1,4 @@
-# Turing patterns on a sphere with holes, cell growth and local parameter changes
+# The effect of a single hole in the unit sphere on Turing patterns
 *Date:* 2021-09-18<br>
 *Written by:* Johannes Borgqvist<br>
 
@@ -8,7 +8,7 @@ Description of the project
 https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-afd8-a9064b8fbf3a.mp4
 
 
-
+![Pattern of the Schnakenberg model](./Figures/Schnakenberg_pattern_formation.png)
 
 
 
