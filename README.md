@@ -65,7 +65,7 @@ In order to make the project as reproducible as possible, the coding has been do
 4. [*ParaView*](https://www.paraview.org/) which is an "*open-source, multi-platform data analysis and visualization application*".
 
 
-The first of these two have Python interfaces, and the last third is itself a library in Python. Thus, all scripts which involve the scripts for generating the meshes using Gmsh, the scripts for conducting the FEM simulations using FEniCS and the scripts for analysing the data using scikit-learn are written in Python. For visualising the results, the graphical interface ParaView has been used as well as [*PGFPlots*](http://pgfplots.sourceforge.net/) in LaTeX. 
+The first of these two have Python interfaces, and the third is itself a library in Python. Thus, all scripts which involve the scripts for generating the meshes using Gmsh, the scripts for conducting the FEM simulations using FEniCS and the scripts for analysing the data using scikit-learn are written in Python. For visualising the results, the graphical interface ParaView has been used as well as [*PGFPlots*](http://pgfplots.sourceforge.net/) in LaTeX. 
 
 ![Work flow](./Figures/diagram.png)
 
