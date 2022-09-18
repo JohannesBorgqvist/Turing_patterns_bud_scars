@@ -5,7 +5,11 @@
 
 Description of the project
 
-![Simulation of the active component of the Schnakenberg model](Schnakenberg_simulation_active_component.mp4)
+![Simulation of the active component of the Schnakenberg model](https://user-images.githubusercontent.com/77111216/190901753-f8122cb9-fc3e-45c5-8e3c-14efbca3f24c.mp4)
+
+
+
+
 
 
 
