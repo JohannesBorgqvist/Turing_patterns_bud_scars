@@ -572,11 +572,15 @@ def solve_RD_system(repitition_index,parameters,numerical_parameters,load_IC,rad
         if  (t_prev < save_iteration) and (t > save_iteration):
             # Increase the iterations
             save_iteration += 0.5
+            #=============================================================
+            # UNCOMMENT THIS IF YOU WANT TO SAVE FILES MORE FREQUENTLY
+            #=============================================================
             # Save the components in the data files
             #u_curr.rename("Concentration profile, $u(\mathbf{x},t)$","u")
             #vtkfile_u << (u_curr, t)
             #v_curr.rename("Concentration profile, $v(\mathbf{x},t)$","v")
             #vtkfile_v << (v_curr, t)
+            #=============================================================   
             # Iteration health check
             R = assemble(residual_form)
             l2_norm_R = norm(R, 'l2')
