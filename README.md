@@ -87,8 +87,9 @@ When everything works properly, it should be possible to run all scripts inside 
 
 and to exit this environment type
 
-* conda deactivate
-. As we said previously, the environment "*gmsh\_latest\_version.yml*" is activated and deactivated in the same way.
+* conda deactivate*<br>
+
+. As we said previously, the environment "*gmsh\_latest\_version.yml*" is activated and deactivated in the same way. If, God forbid, the installation from the yml-files fails for some reason, all involved libraries must be installed manually. Some guidance on how this can be done is presented in the file "*IF\_CONDA\_INSTALLATION\_FAILS.md*".
 
 
 
