@@ -1,3 +1,7 @@
+
+
+https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-afd8-a9064b8fbf3a.mp4
+
 # Turing patterns on a sphere with holes, cell growth and local parameter changes
 *Date:* 2021-09-01<br>
 *Written by:* Johannes Borgqvist<br>
