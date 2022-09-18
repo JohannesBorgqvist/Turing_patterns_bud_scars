@@ -56,7 +56,7 @@ Some information about the *OS* of the machine is the following:
 
 
 ### Installation of the packages using anaconda
-In order to make the project as reproducible as possible, the coding has been done entirely in Python and the installation of all necessary packages is made possible by *anaconda*. The scripts associated with this project is enabled by four major platforms:
+In order to make the project as reproducible as possible, the coding has been done entirely in Python and the installation of all necessary packages is made possible by the packate [*conda*](https://anaconda.org/anaconda/conda) which is developed by *anaconda*. The scripts associated with this project is enabled by four major platforms:
 	
 1. The [*FEniCS Project*](https://fenicsproject.org/) which is a "*popular open-source (LGPLv3) computing platform for solving partial differential equations (PDEs)*",
 2. [*Gmsh*](https://gmsh.info/) which is a "*a three-dimensional finite element mesh generator with built-in pre- and post-processing facilities*",
