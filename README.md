@@ -93,7 +93,7 @@ Unfortunately, this approach does not install the latest version of Gmsh which i
 
 conda create -n gmsh\_latest\_version -c conda-forge python=3.9 gmsh=4.8 python-gmsh
 
-Now, the environment "gmsh\_latest\_version" is entered when the meshes are created and "fenicsproject" is entered when we want to simulate the PDE system. This environment is also activate and deactivated exactly in the same manner as the environment "fenicsproject". 
+This environment is also activate and deactivated exactly in the same manner as the environment "fenicsproject". The environment "gmsh\_latest\_version" is activated when the meshes are created and "fenicsproject" is activated when we want to simulate the PDE system. 
 
 
 
