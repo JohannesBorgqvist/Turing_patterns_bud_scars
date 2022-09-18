@@ -83,11 +83,11 @@ respectively. The first environment must be activated in order to generate the m
 
 When everything works properly, it should be possible to run all scripts inside these two conda environments. Both environments are activated and deactivated in the same way. For example, the environment  "*fenicsproject*" is activated using the command
 
-* conda activate fenicsproject
+* *conda activate fenicsproject*
 
 and to exit this environment type
 
-* conda deactivate*<br>
+* *conda deactivate*<br>
 
 . As we said previously, the environment "*gmsh\_latest\_version.yml*" is activated and deactivated in the same way. If, God forbid, the installation from the yml-files fails for some reason, all involved libraries must be installed manually. Some guidance on how this can be done is presented in the file "*IF\_CONDA\_INSTALLATION\_FAILS.md*".
 
