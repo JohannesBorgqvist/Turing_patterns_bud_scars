@@ -56,7 +56,7 @@ Some information about the *OS* of the machine is the following:
 
 
 ### Installation of the packages using anaconda
-In order to make the project as reproducible as possible, the coding has been done entirely in Python and the installation of all necessary packages is made possible by the package [*conda*](https://anaconda.org/anaconda/conda) which is part of *anaconda*. The scripts associated with this project is enabled by four major platforms:
+	In order to make the project as reproducible as possible, the coding has been done entirely in Python and the installation of all necessary packages is made possible by the package [*conda*](https://anaconda.org/anaconda/conda) which is part of *anaconda*. The scripts associated with this project is enabled by four major platforms:
 	
 1. The [*FEniCS Project*](https://fenicsproject.org/) which is a "*popular open-source (LGPLv3) computing platform for solving partial differential equations (PDEs)*",
 2. [*Gmsh*](https://gmsh.info/) which is a "*a three-dimensional finite element mesh generator with built-in pre- and post-processing facilities*",
@@ -80,22 +80,16 @@ respectively. The first environment must be activated in order to generate the m
 
 
 
-When everything works properly, it should be possible to run all scripts inside the conda environment "*fenicsproject*". This environment is activated using the command
+When everything works properly, it should be possible to run all scripts inside these two conda environments. Both environments are activated and deactivated in the same way. For example, the environment  "*fenicsproject*" is activated using the command
 
 * conda activate fenicsproject
 
-and to exit the environment type
+and to exit this environment type
 
 * conda deactivate
+. As we said previously, the environment "*gmsh\_latest\_version.yml*" is activated and deactivated in the same way.
 
 
-
-
-Unfortunately, this approach does not install the latest version of Gmsh which is needed. So type the following command to create *another* environment in which the latest version of Gmsh is installed:
-
-conda create -n gmsh\_latest\_version -c conda-forge python=3.9 gmsh=4.8 python-gmsh
-
-This environment is also activate and deactivated exactly in the same manner as the environment "fenicsproject". The environment "gmsh\_latest\_version" is activated when the meshes are created and "fenicsproject" is activated when we want to simulate the PDE system. 
 
 
 

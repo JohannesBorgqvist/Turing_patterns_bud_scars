@@ -14,3 +14,11 @@ In order to be able to generate the meshes and to visualise the results of the F
 2. conda config --set channel_priority strict
 3. conda install --name fenicsproject gmsh python-gmsh
 4. conda install --name fenicsproject paraview
+. Lastly, as these platforms are under constant development the versions of the involved packages changes often. Therefore, the versions of the packages involved in this project have been documented in the Markdown-file "*VERSIONS\_OF\_PACKAGES.md*" in this repositry. 
+
+
+Unfortunately, step 3 listed above does not install the latest version of Gmsh which is needed. So type the following command to create *another* environment in which the latest version of Gmsh is installed:
+
+conda create -n gmsh\_latest\_version -c conda-forge python=3.9 gmsh=4.8 python-gmsh
+
+This environment is also activate and deactivated exactly in the same manner as the environment "fenicsproject". The environment "gmsh\_latest\_version" is activated when the meshes are created and "fenicsproject" is activated when we want to simulate the PDE system. 
