@@ -110,8 +110,7 @@ for index in index_list:
     axes.plot(epsilon_vector,lambda_vec[index],'-',color=colour_list_for_plotting[index],label=label_strings[index])
 # Plot the upper bound
 axes.plot(epsilon_vector,upper_bound,'--k',label="$\\gamma\\;M$")
-axes.plot(epsilon_vector,lower_bound,'--k',label="$\\gamma\\;L$")
-axes.plot(crit_radius,vertical_line,'+k',label="$\\varepsilon_{\\mathrm{crit}}$")
+axes.plot(epsilon_vector,lower_bound,'*k',label="$\\gamma\\;L$")
 axes.legend()
 #hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
