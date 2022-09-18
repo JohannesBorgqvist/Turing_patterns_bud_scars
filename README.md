@@ -56,13 +56,15 @@ Some information about the *OS* of the machine is the following:
 
 
 ### Installation of the packages using anaconda
-In order to make the project as reproducible as possible, the coding has been done entirely in Python and the installation of all necessary packages is made possible by *anaconda*. The scripts associated with this project is enabled by three major platforms:
+In order to make the project as reproducible as possible, the coding has been done entirely in Python and the installation of all necessary packages is made possible by *anaconda*. The scripts associated with this project is enabled by four major platforms:
 	
 1. The [*FEniCS Project*](https://fenicsproject.org/) which is a "*popular open-source (LGPLv3) computing platform for solving partial differential equations (PDEs)*",
 2. [*Gmsh*](https://gmsh.info/) which is a "*a three-dimensional finite element mesh generator with built-in pre- and post-processing facilities*",
-3. [*ParaView*](https://www.paraview.org/) which is an "*open-source, multi-platform data analysis and visualization application*".
+3. [*scikit-learn*](https://scikit-learn.org/stable/) which is a library that enables "*machine Learning in Python*",
+4. [*ParaView*](https://www.paraview.org/) which is an "*open-source, multi-platform data analysis and visualization application*".
 
-Both of the first two of these has a Python interface. Thus the scripts for generating the meshes using Gmsh and the scripts for conducting the FEM simulations using FEniCS are written in Python. For visualising the results, the graphical interface of ParaView has been used. 
+
+Both of the first two and the last of these has a Python interfaces. Thus, all scripts which involve the scripts for generating the meshes using Gmsh, the scripts for conducting the FEM simulations using FEniCS and the scripts for analysing the data using scikit-learn are written in Python. For visualising the results, the graphical interface ParaView has been used as well as [*PGFPlots*](http://pgfplots.sourceforge.net/) in LaTeX. 
 
 ![Work flow](./Figures/diagram.png)
 
