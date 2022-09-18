@@ -50,7 +50,7 @@ T = 50
 # Let's start with the zeroth repitition
 repitition_index = 0
 # Define the meshes we want to loop over
-hole_radius_array = np.arange(0,0.75,0.05)
+hole_radius_array = np.array([0])
 # Allocate a list of all the basis functions
 basis_functions = []
 # Let's add 20 lists for each basis function corresponding to
