@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Borgqvist, Lundholm
+    given-names: Johannes Gabriel, Carl
+    orcid:  https://orcid.org/0000-0001-6441-2942
+title: "A python implementation using FEniCS and Gmsh for simulating the Schnakenberg model on a sphere with a hole on it."
+version: 1.0
+doi: https://github.com/JohannesBorgqvist/Turing_patterns_bud_scars_and_growth
+date-released: 2022-03-21
