@@ -5,7 +5,7 @@
 
 Description of the project
 
-![Spherical mesh with one bud scar](mesh_one_bud_scar.png)
+![Simulation of the active component of the Schnakenberg model](Schnakenberg_simulation_active_component.mp4)
 
 
 
