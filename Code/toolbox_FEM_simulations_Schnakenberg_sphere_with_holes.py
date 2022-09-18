@@ -574,7 +574,9 @@ def solve_RD_system(repitition_index,parameters,numerical_parameters,load_IC,rad
             save_iteration += 0.5
             #=============================================================
             # UNCOMMENT THIS IF YOU WANT TO SAVE FILES MORE FREQUENTLY.
-            # CURRENTLY, WE ARE ONLY SAVING 
+            # CURRENTLY, WE ARE ONLY SAVING THE INITIAL CONDITION OF THE
+            # ACTIVE COMPONENT AND THE CONCENTRATION PROFILE OF THE ACTIVE
+            # COMPONENT AT THE FINAL TIME AT t=50
             #=============================================================
             # Save the components in the data files
             #u_curr.rename("Concentration profile, $u(\mathbf{x},t)$","u")
