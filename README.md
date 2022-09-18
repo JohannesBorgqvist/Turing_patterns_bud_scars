@@ -78,7 +78,7 @@ respectively. The first environment must be activated in order to generate the m
 
 
 
-When everythin works properly, it should be possible to run all scripts inside the conda environment "*fenicsproject*". This environment is activated using the command
+When everything works properly, it should be possible to run all scripts inside the conda environment "*fenicsproject*". This environment is activated using the command
 
 * conda activate fenicsproject
 
