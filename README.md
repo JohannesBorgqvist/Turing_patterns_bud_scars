@@ -17,7 +17,7 @@ https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-
 
 
 ## A note on reproducibility
-For the purpose of reproducibility, the project is entirely written in Python and the installation of all required packages has been managed through [anaconda](https://docs.anaconda.com/anaconda/install/index.html). Before presenting the instructions for installing all relevant packages using anaconda some information about the machine used to generate the results is presented. 
+For the purpose of reproducibility, the project is entirely written in Python and the installation of all required packages is managed by [anaconda](https://docs.anaconda.com/anaconda/install/index.html). Before presenting the instructions for installing all relevant packages using anaconda some information about the machine used to generate the results is presented. 
 
 ### Information about the laptop used to generate the results and write the code
 The code has been developed and tested on a computer laptop with the following cpu information:
