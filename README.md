@@ -1,5 +1,5 @@
 # A hole in Turing’s theory: pattern formation on the sphere with budscars
-*Date:* 2021-09-18<br>
+*Date:* 2021-09-20<br>
 *Written by:* Johannes Borgqvist<br>
 Welcome to the github repositry associated with the article "*A hole in Turing’s theory: pattern formation on the sphere with budscars*" (**Add link to the future article**). The starting point of this project is the Schnakenberg model which has previously been analysed on the sphere [1]. If we set the initial conditions for both species of this model to small perturbations around the respective steady state concentrations, then patterns in the concentration profile will be formed according to the phenomena called *diffusion-driven instability* initially proposed by Alan M. Turing. In the case of the sphere, these patterns will correspond to the formation of *poles* which are defined as high-concentration regions of the active component (see the simulation below and the figure below).  
 
