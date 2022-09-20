@@ -98,7 +98,7 @@ print("\n\n=====================================================================
 # Set all parameters to tex
 plt.rcParams['text.usetex'] = True
 # Do the actual plot
-fig, axes = plt.subplots(1,1,figsize=(15,5))
+fig, axes = plt.subplots(1,1,figsize=(30,10))
 plt.rc('axes', labelsize=25)    # fontsize of the x and y label
 plt.rc('legend', fontsize=20)    # legend fontsize
 plt.rc('xtick', labelsize=20)    # fontsize of the tick labels
@@ -119,6 +119,5 @@ plt.xlabel("Cylindrical hole radius, $\\varepsilon$")
 plt.ylabel("Eigenvalues, $\\lambda_{n,m}(\\varepsilon)$")
 # displaying the title
 plt.title("Perturbed eigenvalues $\\lambda_{n,m}(\\varepsilon)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
-plt.show()
 plt.savefig("../Figures/perturbed_eigenvalues_n_" + str(n) + ".png")
-
+plt.show()
