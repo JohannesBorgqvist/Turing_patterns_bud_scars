@@ -168,8 +168,12 @@ To conduct this quantitative analysis, run the script *data\_analysis\_of\_spati
 
 ![Quantitative properties of all simulations as a function of the hole radius](../Figures/patterns_are_preserved_growing_hole_radii_n_1.png)
 
+After this, we finish by deactivating the conda environment "*fenicsproject*":<br>
 
-This concludes the step by step guide. We will finish by mentioning some extra functionalities that are available. 
+*conda deactivate*<br>
+
+
+. This concludes the step by step guide. We will finish by mentioning some extra functionalities that are available. 
 
 # Extra functionalities
 All the properties of the Schnakenberg model can be found in the script *Schnakenberg\_properties.py*. 
