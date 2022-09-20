@@ -2,7 +2,10 @@
 *Date:* 2021-09-20<br>
 *Written by:* Johannes Borgqvist<br>
 
-Here, we will go through every detail behind the various scripts step by step. In summary, there are four main steps here:
+Here, we will go through every detail behind the various scripts step by step. Again, if you want to run all of these scripts in succession, we advise you to run the script with relative path "*../run\_all.sh*" (see the file "*../README.md*" for instructions on how this is done). 
+
+
+In summary, there are four main steps here:
 
 1. Theoretical prediction,
 2. Generate meshes and convert their format,
