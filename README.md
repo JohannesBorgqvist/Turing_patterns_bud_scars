@@ -30,7 +30,7 @@ This repositry is based on the idea of *reproducibility* which basically means t
 
 1. The project is completely open-source and written in open-source languages (mainly Python).
 2. The repositry has a clear folder structure where the folders are called Code, Figures, Meshes and Output.
-3. The repositry is well-documented with numerous README.md files containing clear instructions regarding how to run the scripts as well as installing relevant packages.
+3. The repositry is well-documented with numerous README.md files in each folder containing clear instructions on, for example, how to run the scripts as well as installing relevant packages.
 4. Installation of the numerous platforms required for generating the results is simplified by the usage of conda (see the next section for more details).
 5. The relevant functions carrying out specific tasks are divided into numerous scripts with clear names. For example, all scripts related to the *finite element method (FEM)* are stored in the script "*toolbox\_FEM\_simulations\_Schnakenberg\_sphere\_with\_holes.py*".
 6. The code itself contains a lot of comments to clarify what is being done in a specific part of any particular script. 
