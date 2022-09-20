@@ -122,11 +122,19 @@ The easiest way to run all relevant script is to use the bash-script called *run
 
 "*chmod +x run\_all.sh*"<br>
 
-which gives you permission to run all scripts in succession. You might need to add a "sudo" in front of chmod to make this work. Next, you can run all scripts in the following way:<br>
+which gives you permission to run all scripts in succession. You might need to add a "sudo" in front of chmod to make this work. After this, you need to change line 14 in the script "./run\_all.sh" from:<br>
+
+*source /home/johannes/anaconda3/etc/profile.d/conda.sh*<br>
+
+to the correct path where anaconda is installed on your computer. When you have entered the correct path, you can run all scripts in the following way:<br>
 
 "*./run\_all.sh*"<br>
 
-and this will generate all meshes, run the FEM-simulations as well as analysing the generated data. If you are interested in all of the individual steps, you can navigate to the Code-folder and follow the detailed instructions presented in the document called "*STEP\_BY\_STEP\_GUIDE.md*".<br>
+and this will generate all meshes, run the FEM-simulations as well as analysing the generated data. 
+
+
+
+If you are interested in all of the individual steps, you can navigate to the Code-folder and follow the detailed instructions presented in the document called "*STEP\_BY\_STEP\_GUIDE.md*".<br>
 
 Enjoy!
 
