@@ -37,7 +37,7 @@ This repositry is based on the idea of *reproducibility* which basically means t
 
 
 
-Before presenting the instructions for installing all relevant packages using anaconda some information about the machine used to generate the results is presented. 
+Before presenting the instructions for installing all relevant packages using anaconda, some information about the machine used to generate the results is presented. 
 
 ### Information about the laptop used to generate the results and write the code
 The code has been developed and tested on a computer laptop with the following cpu information:
