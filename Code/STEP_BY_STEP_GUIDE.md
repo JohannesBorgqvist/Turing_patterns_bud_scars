@@ -108,7 +108,7 @@ Moreover, we should say that all of the functions required for running the FEM-b
 *toolbox\_FEM\_simulations\_Schnakenberg\_sphere\_with\_holes.py*<br>
 
 
-. So, when you come back after, say, 8 hours, your folder with "../Output/" will be full of data files. For example, to see what the concentration profile of the active component looks like at time t=50, you can open the pvd-files in [*ParaView*](https://www.paraview.org/). If you study these pvd-files, you will see that the patterns (i.e. the number of poles, the size and shape of them etc.) are preserved when a hole is introduced into the mesh (see the figure below). 
+. So, when you come back after, say, 8 hours, your folder with path "../Output/" will be full of data files. For example, to see what the concentration profile of the active component looks like at time t=50, you can open the pvd-files in [*ParaView*](https://www.paraview.org/). If you study these pvd-files, you will see that the patterns (i.e. the number of poles, the size and shape of them etc.) are preserved when a hole is introduced into the mesh (see the figure below). 
 
 ![The patterns are preserved despite the introduction of a hole at the south pole](../Figures/chaplain_meshes_with_holes.png)
 
