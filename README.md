@@ -13,7 +13,7 @@ https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-
 
 Now, in this project we are interested in adding a single hole in the spatial domain, i.e. the unit sphere, in order to see how this change in the domain affects the resulting patterns. To be able to generate all the relevant results of the article, you can follow the "*STEP\_BY\_STEP\_GUIDE.md*" in the Code folder. Before, you navigate to the code folder, you need to install all relevant packages, and how to achieve this is described in the section entitled "*Installation of the packages using anaconda*" in this document.<br> 
 
-Before this is described, I wish to mention my own philosophy regarding the notion of *reproducibility* which permeates this project.  
+Before this is described, I wish to mention my own philosophy on the notion of *reproducibility* which permeates this project.  
 
 
 
