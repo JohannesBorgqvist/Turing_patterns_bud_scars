@@ -172,9 +172,9 @@ for index in range(21):
 # hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
 plt.xlabel("Cylindrical hole radius, $\\varepsilon$")
-plt.ylabel("Eigenfunctions, $\\lambda_{n,m}(\\varepsilon)$")
+plt.ylabel('Coefficients $U_{n,m}$ in \\\\$u(\\mathbf{x},t=50)=\\sum_{n=0}^{5}\\sum_{m=0}^{n}U_{n,m}Y_{n}^{m}(\\mathbf{x}),\\quad\\mathbf{x}\\in S^2$')
 # displaying the title
-plt.title("Perturbed eigenfunctions $\\gamma_{n,m}(\\varepsilon)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
+plt.title("Spectral decomposition of $u(\\mathbf{x},t=50)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
 # Save fig and show it
 plt.savefig("../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + ".png")
 plt.show()
