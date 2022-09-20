@@ -114,7 +114,19 @@ and to exit this environment type
 
 If, God forbid, the installation of all relevant platforms based on these yml-files fails for some reason, all involved libraries must be installed manually. Some guidance on how this can be done is presented in the file "*IF\_CONDA\_INSTALLATION\_FAILS.md*".<br>
 
-On the other hand, if you have managed to install the two conda environments "*fenicsproject*" and "*gmsh\_latest\_version*" you are now ready to start running simulations. To this end, let's navigate to the Code-folder and follow the detailed instructions presented in the document called "*STEP\_BY\_STEP\_GUIDE.md*".<br>
+On the other hand, if you have managed to install the two conda environments "*fenicsproject*" and "*gmsh\_latest\_version*" you are now ready to start running simulations. 
+
+# Running all of the scripts
+
+The easiest way to run all relevant script is to use the bash-script called *run\_all.sh*. To run this script, begin by typing:<br>
+
+"*chmod +x run\_all.sh*"<br>
+
+which gives you permission to run all scripts in succession. You might need to add a "sudo" in front of chmod to make this work. Next, you can run all scripts in the following way:<br>
+
+"*./run\_all.sh*"<br>
+
+and this will generate all meshes, run the FEM-simulations as well as analysing the generated data. If you are interested in all of the individual steps, you can navigate to the Code-folder and follow the detailed instructions presented in the document called "*STEP\_BY\_STEP\_GUIDE.md*".<br>
 
 Enjoy!
 
