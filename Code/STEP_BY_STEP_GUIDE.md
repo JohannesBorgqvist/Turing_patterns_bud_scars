@@ -143,9 +143,18 @@ Next, we will repeat the same spectral analysis on all meshes with a single hole
 
 ![Spectral decomposition of all simulations as a function of the hole radius](../Figures/eigenfunctions_vs_hole_radius_n_1.png)
 
+Next, we will analyse the quantitative properties of the concentration profile of the active component at time t=50.
 
 
-## 4.2 The quantiative properties of the formed pattern in the concentration profile of the active component at time t=50
+## 4.2 The quantitative properties of the formed pattern in the concentration profile of the active component at time t=50
+We analyse four quantitative properties of the concentration profile of the active component at time t=50 as a function of the hole radius:
+
+1. The total pole area as a percentage of the total surface area,
+2. The number of poles,
+3. The maximum concentration,
+4. The great-circle distance between the (centre of mass of the) closest pole and the hole located at (0,0,-1). 
+
+Points 1,2 and 4 are all calculated using various functionalities in FEniCS. Point 2 corresponding to the number of poles is calculated using the machine learning algorithm [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html). In general, we define a pole as a high concentration profile region, and in our particular implementation we define a pole as a cluster of nodes in the mesh where the concentration exceeds 95\% of the maximum concentration.
 
 
 ![Quantitative properties of all simulations as a function of the hole radius](../Figures/patterns_are_preserved_growing_hole_radii_n_1.png)
