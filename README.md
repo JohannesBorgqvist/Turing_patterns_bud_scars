@@ -85,7 +85,7 @@ In order to make the project as reproducible as possible, the coding has been do
 4. [*ParaView*](https://www.paraview.org/) which is an "*open-source, multi-platform data analysis and visualization application*".
 
 
-The first of these two have Python interfaces, and the third is itself a library in Python. Thus, all scripts which involve the scripts for generating the meshes using Gmsh, the scripts for conducting the FEM simulations using FEniCS and the scripts for analysing the data using scikit-learn are written in Python. For visualising the results, the graphical interface ParaView has been used as well as [*PGFPlots*](http://pgfplots.sourceforge.net/) in LaTeX. 
+The first of these two have Python interfaces, and the third is itself a library in Python. Thus, all scripts which involve the scripts for generating the meshes using Gmsh, the scripts for conducting the FEM simulations using FEniCS and the scripts for analysing the data using scikit-learn are written in Python. For visualising the results, the graphical interface ParaView has been used as well as [*PGFPlots*](http://pgfplots.sourceforge.net/) in LaTeX. In this project, we have not included the scripts for generating the LaTeX based plots, but instead we generated the same plots in Python using matplotlib. A diagram of how all the different parts of the project are connected is presented below.  
 
 ![Work flow](./Figures/diagram.png)
 
@@ -109,9 +109,14 @@ and to exit this environment type
 
 * *conda deactivate*<br>
 
-. As we said previously, the environment "*gmsh\_latest\_version.yml*" is activated and deactivated in the same way. If, God forbid, the installation from the yml-files fails for some reason, all involved libraries must be installed manually. Some guidance on how this can be done is presented in the file "*IF\_CONDA\_INSTALLATION\_FAILS.md*".
+. As we said previously, the environment "*gmsh\_latest\_version.yml*" is activated and deactivated in the same way.<br> 
 
 
+If, God forbid, the installation from the yml-files fails for some reason, all involved libraries must be installed manually. Some guidance on how this can be done is presented in the file "*IF\_CONDA\_INSTALLATION\_FAILS.md*".<br>
+
+On the other hand, if you have managed to install the two conda environments "*fenicsproject*" and "*gmsh\_latest\_version*" you are ready to run the project. To this end, let's navigate to the colder folder and follow the detailed instructions presented in the document called "*STEP\_BY\_STEP\_GUIDE.md*".<br>
+
+Enjoy!
 
 # References
 [1]  M. A. J. Chaplain, M. Ganesh, and I. G. Graham, “Spatio-temporal pattern formation
