@@ -121,6 +121,10 @@ Given all of our data files, we wish to analyse them in two different ways:
 2. The quantiative properties of the formed pattern in the concentration profile of the active component at time t=50.
 
 ## 4.1 The spectral properties of the FEM-solution
+Firstly, we will analyse the spectral properties of the concentration profile of the active component at time t=50. More precisely, we would like to express the calculated FEM solutions corresponding to the concentration profile of the active component at time t=50 in terms of the basis functions of the Laplace-Bletrami operator. 
+
+To this end, you will need to activate the conda environment called *fenicsproject*
+
 
 ![Spectral decomposition of single simulation on the unit sphere without a hole](../Figures/spectral_decomposition_no_holes_u_at_time_t_50.png)
 
