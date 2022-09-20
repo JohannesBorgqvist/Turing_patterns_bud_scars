@@ -1,9 +1,9 @@
-# The effect of a single hole in the unit sphere on Turing patterns
+# A hole in Turing’s theory: pattern formation on the sphere with budscars
 *Date:* 2021-09-18<br>
 *Written by:* Johannes Borgqvist<br>
+Welcome to the github repositry associated with the article "*A hole in Turing’s theory: pattern formation on the sphere with budscars*" (**Add link to the future article**). The starting point of this project is the Schnakenberg model which has previously been analysed on the sphere [1]. 
 
 
-Description of the project
 
 https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-afd8-a9064b8fbf3a.mp4
 
@@ -93,6 +93,9 @@ and to exit this environment type
 
 
 
-
+# References
+[1]  M. A. J. Chaplain, M. Ganesh, and I. G. Graham, “Spatio-temporal pattern formation
+on spherical surfaces: numerical simulation and application to solid tumour growth,”
+Journal of mathematical biology, vol. 42, pp. 387–423, 2001. <br>
 
 
