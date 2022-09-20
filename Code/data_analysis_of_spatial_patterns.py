@@ -134,8 +134,6 @@ hole = [0, 0, -1]
 #----------------------------------------------------------------------------------
 # Allocate memory for the three metric we will plot
 individual_pole_area = []
-#pole_1_area = []
-#pole_2_area = []
 rel_pol_area = []
 num_poles_vec = []
 max_conc = []
@@ -344,7 +342,7 @@ plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=F
 plt.xlabel("Cylindrical hole radius, $\\varepsilon$")
 plt.ylabel("Quantitative metric")
 # displaying the title
-plt.title("Metrics of pole formation as functions of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
+plt.title("Metrics of $u(\\mathbf{x},t=50)$ as functions of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
 # Save fig and show it
 plt.savefig("../Figures/patterns_are_preserved_growing_hole_radii_n_" + str(n) + ".png")
 plt.show()
