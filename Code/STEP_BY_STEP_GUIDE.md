@@ -18,7 +18,7 @@ Interestingly, Bandle et al. [1] have derived a theoretical formula for how the 
 . Then, the figure below will be generated. 
 
 ![Perturbed eigenvalues](../Figures/perturbed_eigenvalues_n_1.png)
-What this figure tells us is there is always at least one eigenvalue corresponding to n=1 the intervall indicated by the dashed lines denoted by M and L. In turn, this leads to the following rather striking conclusion: *the patterns are unaffected by the introduction of hole in the sphere*. 
+What this figure tells us is there is always at least one eigenvalue corresponding to n=1 the intervall indicated by the dashed lines denoted by M and L. In turn, this leads to the following rather striking conclusion: *the patterns are unaffected by the introduction of a hole in the sphere*. 
 
 Next, we wish to validate this theoretical prediction by running FEM simulations. In order to be able to run these simulations, we first need to generate some meshes of spheres which have a single hole of varying size located at the south pole.
  
