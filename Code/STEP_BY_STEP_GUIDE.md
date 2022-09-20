@@ -1,4 +1,7 @@
 # Step by step guide
+*Date:* 2021-09-20<br>
+*Written by:* Johannes Borgqvist<br>
+
 Here, we will go through every detail behind the various scripts step by step. In summary, there are four main steps here:
 
 1. Theoretical prediction,
