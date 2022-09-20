@@ -123,14 +123,26 @@ Given all of our data files, we wish to analyse them in two different ways:
 ## 4.1 The spectral properties of the FEM-solution
 Firstly, we will analyse the spectral properties of the concentration profile of the active component at time t=50. More precisely, we would like to express the calculated FEM solutions corresponding to the concentration profile of the active component at time t=50 in terms of the basis functions of the Laplace-Bletrami operator. 
 
-To this end, you will need to activate the conda environment called *fenicsproject*
+To this end, you will need to activate the conda environment called *fenicsproject*:<br>
 
+*conda activate fenicsproject*<br>
+
+and then you can run the script "*final\_concentration\_decomposition*":<br>
+
+*python final\_concentration\_decomposition.py*<br>
+
+. As you will see in the generated figure (see the figure below), for the chosen parameters it is only the eigenmodes corresponding to n=0 and n=1 that are excited in the concentration profile of the active component at time t=50. 
 
 ![Spectral decomposition of single simulation on the unit sphere without a hole](../Figures/spectral_decomposition_no_holes_u_at_time_t_50.png)
 
+Next, we will repeat the same spectral analysis on all meshes with a single hole on the south pole with increasing radius. To this end, run the script called *plot\_perturbed\_eigenfunctions*:<br>
 
+*python plot\_perturbed\_eigenfunctions.py*
+
+. As you will see, a plot of the various coefficients in the spectral decomposition of the concentration profile of the active component at time t=50 as a function of the hole radius will be generated (see the figure below). 
 
 ![Spectral decomposition of all simulations as a function of the hole radius](../Figures/eigenfunctions_vs_hole_radius_n_1.png)
+
 
 
 ## 4.2 The quantiative properties of the formed pattern in the concentration profile of the active component at time t=50
