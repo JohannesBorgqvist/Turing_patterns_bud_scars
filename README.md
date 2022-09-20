@@ -26,7 +26,7 @@ For the purpose of reproducibility, the project is entirely written in Python an
 
 In addition to these packages, there are numerous rather large platforms that are required, and these are installed using anaconda which will be described in the next section of this document. 
 
-This repositry is based on the idea of *reproducibility* which basically means that anyone should be able to generate the results presented in the article on their own. To promote this idea, several concrete steps have been taken:
+As I said before, this repositry is based on the idea of *reproducibility* which basically means that anyone should be able to generate the results presented in the article on their own. To promote this idea, several concrete steps have been taken:
 
 1. The project is completely open-source and written in open-source languages (mainly Python).
 2. The repositry has a clear folder structure where the folders are called Code, Figures, Meshes and Output.
