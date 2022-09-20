@@ -9,6 +9,13 @@ cd ./Code
 echo "Plot perturbed eigenvalues"
 python find_parameters_and_plot_perturbed_eigenvalues.py
 echo "Done"
+# Initiate conda
+echo "Initiate conda for you shell"
+source /home/johannes/anaconda3/etc/profile.d/conda.sh
+conda init bash
+echo "Done"
+# Reload the ./bashrc script
+#source ~/.bashrc
 # Generate meshes using Gmsh
 echo "Activate the conda-environment gmsh_latest_version"
 conda activate gmsh_latest_version
@@ -37,5 +44,7 @@ echo "Done"
 echo "Run the data analysis where we plot the quantitative properties as function of the hole radius"
 python data_analysis_of_spatial_patterns.py
 echo "Done"
+echo "Deactivate the conda environment fenicsproject"
+conda deactivate
 cd ..
 echo "Now, we are finished!"
