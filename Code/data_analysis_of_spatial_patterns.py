@@ -345,7 +345,7 @@ plt.ylabel("Quantitative metric")
 plt.title("Metrics of $u(\\mathbf{x},t=50)$ as functions of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
 # Save fig and show it
 plt.savefig("../Figures/patterns_are_preserved_growing_hole_radii_n_" + str(n) + ".png")
-plt.show()
+#plt.show()# Uncomment if you want a figure to pop-up
 
 
 

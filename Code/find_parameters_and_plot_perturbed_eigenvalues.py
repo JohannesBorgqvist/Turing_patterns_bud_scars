@@ -120,4 +120,4 @@ plt.ylabel("Eigenvalues, $\\lambda_{n,m}(\\varepsilon)$")
 # displaying the title
 plt.title("Perturbed eigenvalues $\\lambda_{n,m}(\\varepsilon)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
 plt.savefig("../Figures/perturbed_eigenvalues_n_" + str(n) + ".png")
-plt.show()
+#plt.show() # Uncomment if you want a figure to pop-up

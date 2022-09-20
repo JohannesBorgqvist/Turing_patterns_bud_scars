@@ -177,5 +177,5 @@ plt.ylabel('Coefficients $U_{n,m}$ in \\\\$u(\\mathbf{x},t=50)=\\sum_{n=0}^{5}\\
 plt.title("Spectral decomposition of $u(\\mathbf{x},t=50)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
 # Save fig and show it
 plt.savefig("../Figures/eigenfunctions_vs_hole_radius_n_" + str(n) + ".png")
-plt.show()
+#plt.show() # Uncomment if you want a figure to pop-up
 
