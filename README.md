@@ -109,7 +109,7 @@ and to exit this environment type
 
 * *conda deactivate*<br>
 
-. As we said previously, the environment "*gmsh\_latest\_version.yml*" is activated and deactivated in the same way.<br> 
+. On certain computers, you might have to replace the command "*conda activate <env\_name>*" with "*source activate <env\_name>*". As we said previously, the environment "*gmsh\_latest\_version.yml*" is activated and deactivated in the same way.<br> 
 
 
 If, God forbid, the installation from the yml-files fails for some reason, all involved libraries must be installed manually. Some guidance on how this can be done is presented in the file "*IF\_CONDA\_INSTALLATION\_FAILS.md*".<br>
