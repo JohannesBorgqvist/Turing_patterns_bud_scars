@@ -28,7 +28,7 @@ In addition to these packages, there are numerous rather large platforms that ar
 
 This repositry is based on the idea of *reproducibility* which basically means that anyone should be able to generate the results presented in the article on their own. To promote this idea, several concrete steps have been taken:
 
-1. The project is written is completely open source and written in open-source languages (mainly Python).
+1. The project is completely open-source and written in open-source languages (mainly Python).
 2. The repositry has a clear folder structure where the folders are called Code, Figures, Meshes and Output.
 3. The repositry is well-documented with numerous README.md files containing clear instructions regarding how to run the scripts as well as installing relevant packages.
 4. Installation of the numerous platforms required for generating the results is simplified by the usage of conda (see the next section for more details).
