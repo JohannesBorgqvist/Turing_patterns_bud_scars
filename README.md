@@ -112,7 +112,7 @@ and to exit this environment type
 . On certain computers, you might have to replace the command "*conda activate <env\_name>*" with "*source activate <env\_name>*". As we said previously, the environment "*gmsh\_latest\_version*" is activated and deactivated in the same way.<br> 
 
 
-If, God forbid, the installation from the yml-files fails for some reason, all involved libraries must be installed manually. Some guidance on how this can be done is presented in the file "*IF\_CONDA\_INSTALLATION\_FAILS.md*".<br>
+If, God forbid, the installation of all relevant platforms based on these yml-files fails for some reason, all involved libraries must be installed manually. Some guidance on how this can be done is presented in the file "*IF\_CONDA\_INSTALLATION\_FAILS.md*".<br>
 
 On the other hand, if you have managed to install the two conda environments "*fenicsproject*" and "*gmsh\_latest\_version*" you are now ready to start running simulations. To this end, let's navigate to the colder folder and follow the detailed instructions presented in the document called "*STEP\_BY\_STEP\_GUIDE.md*".<br>
 
