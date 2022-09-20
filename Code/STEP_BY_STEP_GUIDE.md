@@ -20,7 +20,7 @@ Interestingly, Bandle et al. [1] have derived a theoretical formula for how the 
 ![Perturbed eigenvalues](../Figures/perturbed_eigenvalues_n_1.png)
 What this figure tells us is there is always at least one eigenvalue corresponding to n=1 the intervall indicated by the dashed lines denoted by M and L. In turn, this leads to the following rather striking conclusion: *the patterns are unaffected by the introduction of hole in the sphere*. 
 
-Next, we wish to validate this theoretical prediction by running FEM simulations. In order to be able to run these simulations, we first need to generate some meshes of spheres which have a hole of varying size located at the south pole.
+Next, we wish to validate this theoretical prediction by running FEM simulations. In order to be able to run these simulations, we first need to generate some meshes of spheres which have a single hole of varying size located at the south pole.
  
 # 2. Generate meshes and convert their format
 If you look into the folder with path "../Meshes" you see that it is empty with the exception of the README.md file. To this end, we want to fill this folder with numerous meshes so that we can run FEM simulations on these meshes. Concretely, we want to do two things:
