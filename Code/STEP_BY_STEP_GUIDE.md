@@ -101,9 +101,9 @@ Anyhow, to run our 300 simulations, begin by activating the conda-environment *f
 
 *python launch\_simulations\_Schnakenberg\_sphere\_with\_holes.py*<br>
 
-. As you will see in the folder "../Output/" numerous subfolders are now created which contained datafiles which we will analyse next. Also, this launch script is written so that it runs multiple repititions on each mesh *in parallel*, or more specifically, it runs *one simulations per core*. This increases the performance substantially, and currently the script will occupy all of your cores except for one. In other words, on my computer which has 8 cores, it uses 7 of these to run 7 repititions out of 20 in parallel. In practice, this means that the computation time decreases from several days or even a week to around 8 hours. Therefore, it is highly recommended that you implement these parallelisation tricks before you launch all simulations . 
+. As you will see in the folder "../Output/" numerous subfolders are now created which contained datafiles which we will analyse next. Also, this launch script is written so that it runs multiple repititions on each mesh *in parallel*, or more specifically, it runs *one simulations per core*. This increases the performance substantially, and currently the script will occupy all of your cores except for one. In other words, on my computer which has 8 cores, it uses 7 of these to run 7 repititions out of 20 in parallel. In practice, this means that the computation time decreases from several days or even a week to around 8 hours. Therefore, it is highly recommended that you implement these parallelisation tricks before you launch all simulations. On ubuntu, you can use the command [*htop*](https://manpages.ubuntu.com/manpages/trusty/man1/htop.1.html) to check whether the parallelisation works or not. 
 
-We should say that all of the functions required for running the FEM-based simulations using FEniCS are stored in the script<br>
+Moreover, we should say that all of the functions required for running the FEM-based simulations using FEniCS are stored in the script<br>
 
 *toolbox\_FEM\_simulations\_Schnakenberg\_sphere\_with\_holes.py*<br>
 
