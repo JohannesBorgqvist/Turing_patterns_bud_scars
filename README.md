@@ -130,11 +130,11 @@ to the correct path where anaconda is installed on your computer. When you have 
 
 "*./run\_all.sh*"<br>
 
-and this will generate all meshes, run the FEM-simulations as well as analysing the generated data. 
+and this will generate all meshes, run the FEM-simulations as well as analyse the generated data. 
 
 
 
-If you are interested in all of the individual steps, you can navigate to the Code-folder and follow the detailed instructions presented in the document called "*STEP\_BY\_STEP\_GUIDE.md*".<br>
+If you are interested in the individual steps, you can navigate to the Code-folder and follow the detailed instructions presented in the document called "*STEP\_BY\_STEP\_GUIDE.md*".<br>
 
 Enjoy!
 
