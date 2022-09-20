@@ -154,7 +154,13 @@ We analyse four quantitative properties of the concentration profile of the acti
 3. The maximum concentration,
 4. The great-circle distance between the (centre of mass of the) closest pole and the hole located at (0,0,-1). 
 
-Points 1,2 and 4 are all calculated using various functionalities in FEniCS. Point 2 corresponding to the number of poles is calculated using the machine learning algorithm [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html). In general, we define a pole as a high concentration profile region, and in our particular implementation we define a pole as a cluster of nodes in the mesh where the concentration exceeds 95\% of the maximum concentration.
+All these properties are calculated using FEniCS combined with the machine algorithm [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html). The number of poles as well as the clustering of all nodes belonging to a pole is calculated using the machine learning algorithm DBSCAN which perform so called *Density-Based Spatial Clustering*. In general, we define a pole as a high concentration profile region, and in our particular implementation we define a pole as a cluster of nodes in the mesh where the concentration is larger or equal to 95\% of the maximum concentration. So at first we extract all nodes in the mesh that meet this criteria using FEniCS, and then we use DBSCAN to tell us the number of clusters as well as labeling all nodes belonging to a particular cluster. This allows us to calculate the number of poles as the number of clusters, the great circle distance between the centre of mass of the pole closest to hole and the hole, as well as the relative area of the poles as a percentage of the whole surface area.
+
+To conduct this quantitative analysis, run the script *data\_analysis\_of\_spatial\_patterns*:<br>
+
+*python data\_analysis\_of\_spatial\_patterns.py*<br>
+
+.
 
 
 ![Quantitative properties of all simulations as a function of the hole radius](../Figures/patterns_are_preserved_growing_hole_radii_n_1.png)
