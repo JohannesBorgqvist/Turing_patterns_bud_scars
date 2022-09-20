@@ -1,7 +1,7 @@
 # A hole in Turing’s theory: pattern formation on the sphere with budscars
 *Date:* 2021-09-18<br>
 *Written by:* Johannes Borgqvist<br>
-Welcome to the github repositry associated with the article "*A hole in Turing’s theory: pattern formation on the sphere with budscars*" (**Add link to the future article**). The starting point of this project is the Schnakenberg model which has previously been analysed on the sphere [1]. 
+Welcome to the github repositry associated with the article "*A hole in Turing’s theory: pattern formation on the sphere with budscars*" (**Add link to the future article**). The starting point of this project is the Schnakenberg model which has previously been analysed on the sphere [1]. If we set the initial conditions for both species of this model to small perturbations around the respective steady state concentrations, then patterns in the concentration profile will be formed according to the phenomena called *diffusion-driven instability* initially proposed by Alan M. Turing. In the case of the sphere, these patterns will correspond to the formation of *poles* which are defined as high-concentration regions of the active component (see the simulation below and the figure below).  
 
 
 
@@ -11,13 +11,33 @@ https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-
 ![Pattern of the Schnakenberg model](./Figures/Schnakenberg_pattern_formation.png)
 
 
+Now, in this project we are interested in adding a single hole in the spatial domain, i.e. the unit sphere, in order to see how this change in the domain affects the resulting patterns. To be able to generate all the relevant results of the article, you can follow the "*STEP\_BY\_STEP\_GUIDE.md*" in the Code folder. Before, you navigate to the code folder, you need to install all relevant packages, and how to achieve this is described in the section entitled "*Installation of the packages using anaconda*" in this document.<br> 
+
+Before this is described, I wish to mention my own philosophy regarding the notion of *reproducibility* which permeates this project.  
 
 
 
 
+# A note on reproducibility
+For the purpose of reproducibility, the project is entirely written in Python and the installation of all required packages is managed by [anaconda](https://docs.anaconda.com/anaconda/install/index.html). The version of Python that has been used is 3.8.3, and mainly two packages are frequently used:
 
-## A note on reproducibility
-For the purpose of reproducibility, the project is entirely written in Python and the installation of all required packages is managed by [anaconda](https://docs.anaconda.com/anaconda/install/index.html). Before presenting the instructions for installing all relevant packages using anaconda some information about the machine used to generate the results is presented. 
+1. *numpy*, version 1.18.5,
+2. *matplotlib*, version 3.2.2.
+
+In addition to these packages, there are numerous rather large platforms that are required, and these are installed using anaconda which will be described in the next section of this document. 
+
+This repositry is based on the idea of *reproducibility* which basically means that anyone should be able to generate the results presented in the article on their own. To promote this idea, several concrete steps have been taken:
+
+1. The project is written is completely open source and written in open-source languages (mainly Python).
+2. The repositry has a clear folder structure where the folders are called Code, Figures, Meshes and Output.
+3. The repositry is well-documented with numerous README.md files containing clear instructions regarding how to run the scripts as well as installing relevant packages.
+4. Installation of the numerous platforms required for generating the results is simplified by the usage of conda (see the next section for more details).
+5. The relevant functions carrying out specific tasks are divided into numerous scripts with clear names. For example, all scripts related to the *finite element method (FEM)* are stored in the script "*toolbox\_FEM\_simulations\_Schnakenberg\_sphere\_with\_holes.py*".
+6. The code itself contains a lot of comments to clarify what is being done in a specific part of any particular script. 
+
+
+
+Before presenting the instructions for installing all relevant packages using anaconda some information about the machine used to generate the results is presented. 
 
 ### Information about the laptop used to generate the results and write the code
 The code has been developed and tested on a computer laptop with the following cpu information:
@@ -55,7 +75,7 @@ Some information about the *OS* of the machine is the following:
 
 
 
-### Installation of the packages using anaconda
+# Installation of the packages using anaconda
 
 In order to make the project as reproducible as possible, the coding has been done entirely in Python and the installation of all necessary packages is made possible by the package [*conda*](https://anaconda.org/anaconda/conda) which is part of *anaconda*. The scripts associated with this project is enabled by four major platforms:
 	
