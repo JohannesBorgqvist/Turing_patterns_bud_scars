@@ -97,7 +97,7 @@ Provided that anaconda has been succesfully installed, the easiest way to instal
 and<br>
 *conda env create -f fenicsproject.yml*<br>
 
-respectively. The first environment must be activated in order to generate the meshes using the relevant Python scripts via Gmsh. The second environment must be activated in order to run the FEM based simulations using FEniCS. 
+respectively. The first environment must be activated in order to generate the meshes using the relevant Python scripts that depend on Gmsh. The second environment must be activated in order to run the FEM based simulations using FEniCS. 
 
 
 
