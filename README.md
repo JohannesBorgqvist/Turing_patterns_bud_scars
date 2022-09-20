@@ -114,7 +114,7 @@ and to exit this environment type
 
 If, God forbid, the installation of all relevant platforms based on these yml-files fails for some reason, all involved libraries must be installed manually. Some guidance on how this can be done is presented in the file "*IF\_CONDA\_INSTALLATION\_FAILS.md*".<br>
 
-On the other hand, if you have managed to install the two conda environments "*fenicsproject*" and "*gmsh\_latest\_version*" you are now ready to start running simulations. To this end, let's navigate to the colder folder and follow the detailed instructions presented in the document called "*STEP\_BY\_STEP\_GUIDE.md*".<br>
+On the other hand, if you have managed to install the two conda environments "*fenicsproject*" and "*gmsh\_latest\_version*" you are now ready to start running simulations. To this end, let's navigate to the Code-folder and follow the detailed instructions presented in the document called "*STEP\_BY\_STEP\_GUIDE.md*".<br>
 
 Enjoy!
 
