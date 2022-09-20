@@ -24,7 +24,7 @@ For the purpose of reproducibility, the project is entirely written in Python an
 1. *numpy*, version 1.18.5,
 2. *matplotlib*, version 3.2.2.
 
-	In addition to these packages, there are numerous rather large platforms that are required, and these are installed using anaconda which will be described in the next section of this document. 
+In addition to these packages, there are numerous rather large platforms that are required, and these are installed using anaconda which will be described in the next section of this document. 
 
 As I said before, this repositry is based on the idea of *reproducibility* which basically means that anyone should be able to generate the results presented in the article on their own. To promote this idea, several concrete steps have been taken:
 
