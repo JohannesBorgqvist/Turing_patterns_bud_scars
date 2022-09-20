@@ -23,6 +23,16 @@ What this figure tells us is there is always at least one eigenvalue correspondi
 Next, we wish to validate this theoretical prediction by running FEM simulations. In order to be able to run these simulations, we first need to generate some meshes of spheres which have a hole of varying size located at the south pole.
  
 # 2. Generate meshes and convert their format
+If you look into the folder with path "../Meshes" you see that it is empty with the exception of the README.md file. To this end, we want to fill this folder with numerous meshes so that we can run FEM simulations on these meshes. Concretely, we want to do two things:
+
+1. Generate meshes of numerous spheres with a single hole located at the south pole using Gmsh,
+2. Convert the format of these meshes so that they can be read by FEniCS.
+
+## 2.1 Generate meshes of numerous spheres with a single hole located at the south pole using Gmsh,
+
+
+
+## 2.2 Convert the format of these meshes so that they can be read by FEniCS.
 
 # 3. Run FEM simulations on the meshes
 
