@@ -295,7 +295,7 @@ plt.rc('ytick', labelsize=30)    # fontsize of the tick labels
 # add a big axis, hide frame
 fig.add_subplot(111, frameon=False)
 # Subplot 1 of 4
-axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(rel_pol_area[index],50) for index in range(len(rel_pol_area))]),'-',color=(0/256,68/256,27/256),label="Total pole area in %")
+axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(rel_pol_area[index],50) for index in range(len(rel_pol_area))]),'-',color=(0/256,68/256,27/256),label="Total pole area in \\%")
 axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(rel_pol_area[index],95) for index in range(len(rel_pol_area))]),'-',color=(0/256,68/256,27/256))
 axes[0][0].plot(hole_radius_array,np.asarray([np.percentile(rel_pol_area[index],5) for index in range(len(rel_pol_area))]),'-',color=(0/256,68/256,27/256))
 axes[0][0].fill_between(hole_radius_array,np.asarray([np.percentile(rel_pol_area[index],5) for index in range(len(rel_pol_area))]),np.asarray([np.percentile(rel_pol_area[index],95) for index in range(len(rel_pol_area))]), facecolor=(0/256,68/256,27/256),alpha=0.5,interpolate=True)
