@@ -1,4 +1,5 @@
-*Date:* 2021-09-18<br>
+# If the installation based on the yml-files fails
+*Date:* 2021-09-20<br>
 *Written by:* Johannes Borgqvist<br>
 
 If you cannot install the two relevant conda environments from the provided yml files, you can try to do it manually using the [*conda installation of FEniCS*](https://fenicsproject.org/download/). It is recommended to create and activate a conda environment in order to install and access all relevant parts of FEniCS. To create and activate a conda environment by the name of "*fenicsproject*", use the following two steps:
@@ -22,3 +23,6 @@ Unfortunately, step 3 listed above does not install the latest version of Gmsh w
 conda create -n gmsh\_latest\_version -c conda-forge python=3.9 gmsh=4.8 python-gmsh
 
 This environment is also activate and deactivated exactly in the same manner as the environment "fenicsproject". The environment "gmsh\_latest\_version" is activated when the meshes are created and "fenicsproject" is activated when we want to simulate the PDE system. 
+
+
+Alternatively, if you want to install all packages without anaconda, they are all listed in the document "VERSIONS\_OF\_PACKAGES.md".
