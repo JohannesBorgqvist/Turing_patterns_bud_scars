@@ -28,11 +28,18 @@ If you look into the folder with path "../Meshes" you see that it is empty with 
 1. Generate meshes of numerous spheres with a single hole located at the south pole using Gmsh,
 2. Convert the format of these meshes so that they can be read by FEniCS.
 
-## 2.1 Generate meshes of numerous spheres with a single hole located at the south pole using Gmsh,
+## 2.1 Generate meshes of numerous spheres with a single hole located at the south pole using Gmsh
+Begin by activating the conda environment "*gmsh\_latest\_version*":
 
+*conda activate gmsh\_latest\_version*<br>
 
+or alternatively (if this does not work)<br>
 
-## 2.2 Convert the format of these meshes so that they can be read by FEniCS.
+*source activate gmsh\_latest\_version*<br>
+
+. 
+
+## 2.2 Convert the format of these meshes so that they can be read by FEniCS
 
 # 3. Run FEM simulations on the meshes
 
