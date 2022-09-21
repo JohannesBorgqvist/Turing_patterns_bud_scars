@@ -34,7 +34,7 @@ As I said before, this repositry is based on the idea of *reproducibility* which
 4. The installation of the numerous platforms required for generating the results is simplified by the usage of conda (see the next section for more details).
 5. The relevant functions carrying out specific tasks are divided into numerous scripts with clear names. For example, all scripts related to the *finite element method (FEM)* are stored in the script "*toolbox\_FEM\_simulations\_Schnakenberg\_sphere\_with\_holes.py*".
 6. The code itself contains a lot of comments to clarify what is being done in a specific part of any particular script. 
-7. We wrote a bash-script called "*run\_all.sh*" which runs all important scripts in succession and generate all results.
+7. We wrote a bash-script called "*run\_all.sh*" which runs all important scripts in succession and generates all results.
 
 
 Before presenting the instructions for installing all relevant packages using anaconda, some information about the machine used to generate the results is presented. 
