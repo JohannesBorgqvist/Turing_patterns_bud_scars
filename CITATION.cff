@@ -4,7 +4,22 @@ authors:
   - family-names: Borgqvist, Lundholm
     given-names: Johannes Gabriel, Carl
     orcid:  https://orcid.org/0000-0001-6441-2942
-title: "A python implementation using FEniCS and Gmsh for simulating the Schnakenberg model on a sphere with a hole on it."
+title: "A Python implementation using FEniCS and Gmsh for simulating the Schnakenberg model on a sphere with a hole in it."
 version: 1.0
-doi: https://github.com/JohannesBorgqvist/Turing_patterns_bud_scars_and_growth
-date-released: 2022-03-21
+doi: https://github.com/JohannesBorgqvist/Turing_patterns_bud_scars
+date-released: 2022-09-21
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Borgqvist, Lundholm"
+    given-names: "Johannes G., Carl"
+    orcid: "https://orcid.org/0000-0001-6441-2942"
+  doi: "https://github.com/JohannesBorgqvist/Turing_patterns_bud_scars"
+  journal: "https://github.com/JohannesBorgqvist/Turing\_patterns\_bud\_scars"
+  month: 7
+  start: 1 # First page number
+  end: 10 # Last page number
+  title: "A Python implementation using FEniCS and Gmsh for simulating the Schnakenberg model on a sphere with a hole in it."
+  issue: 1
+  volume: 1
+  year: 2022
