@@ -11,7 +11,7 @@ https://user-images.githubusercontent.com/77111216/190901847-791e2401-197a-4cc3-
 ![Pattern of the Schnakenberg model](./Figures/Schnakenberg_pattern_formation.png)
 
 
-Now, in this project we are interested in adding a single hole in the spatial domain, i.e. the unit sphere, in order to see how this change in the domain affects the resulting patterns. To be able to generate all the relevant results of the article, you can run the bash-script called "*run\_all.sh*" (for instructions on how to do this, see the last section of this document). Alternatively, you can follow the "*STEP\_BY\_STEP\_GUIDE.md*" in the Code folder. Before you navigate to the code folder, you need to install all relevant packages, and how to achieve this is described in the section of this document that is entitled "*Installation of relevant packages and libraries using anaconda*".<br> 
+Now, in this project we are interested in adding a single hole in the spatial domain, i.e. the unit sphere, in order to see how this change in the domain affects the resulting patterns. To be able to generate all the relevant results of the article, you can run the bash-script called "*run\_all.sh*" (for instructions on how to do this, see the last section of this document). Alternatively, you can follow the "*STEP\_BY\_STEP\_GUIDE.md*" in the Code folder. Before you run the run\_all.sh bash-script or navigate to the code folder, you need to install all relevant packages, and how to achieve this is described in the section of this document that is entitled "*Installation of relevant packages and libraries using anaconda*".<br> 
 
 Before this is described, I wish to say a word or two about my own philosophy on the notion of *reproducibility* which permeates this project.  
 
