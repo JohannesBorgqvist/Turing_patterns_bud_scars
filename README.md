@@ -24,9 +24,9 @@ For the purpose of reproducibility, the project is entirely written in Python an
 1. *numpy*, version 1.18.5,
 2. *matplotlib*, version 3.2.2.
 
-Also, the legends in the plots require *LaTeX* be installed as well. On ubuntu, you can install *LaTeX* in the following way:<br>
+Also, the legends in the plots require *LaTeX* be installed as well. On Ubuntu 21.04, you can install *LaTeX* in the following way:<br>
 
-*sudo apt install texlive texlive-latex-extra texlive-fonts-recommended dvipng*<br>
+*sudo apt install texlive*<br>
 
 . In addition to these packages, there are numerous rather large platforms that are required, and these are installed using anaconda which will be described in the next section of this document. 
 
