@@ -124,8 +124,8 @@ hole_radius_array = np.arange(0,0.75,0.05)
 # Define a parameter epsilon for the clustering
 epsilon = 1
 # Define the location of the hole in the mesh
-# which is at the north pole
-hole = [0, 0, 1]
+# which is at the south pole
+hole = [0, 0, -1]
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------
