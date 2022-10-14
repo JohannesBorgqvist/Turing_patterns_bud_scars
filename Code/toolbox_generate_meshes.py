@@ -15,6 +15,7 @@
 import gmsh # For generating the meshes
 import sys  # Needed by gmsh to launch the GUI, i.e. open the window with the plot
 import math# For using mathematical functions
+import numpy as np # For numpy functionalities
 # =================================================================================
 # =================================================================================
 # Functions for generating the meshes
@@ -93,7 +94,7 @@ def generate_spherical_mesh_with_holes(c0_list,c1_list,hole_radii):
         mesh_name = "../Meshes/s_h_" + str(len(hole_radii)) + "_"
         # Loop over the hole radii and add these to the file names
         for hole_radius in hole_radii:
-            mesh_name += "r_" + str(round(hole_radius,3)).replace(".","p") + "_"
+            mesh_name += "r_" + str(round(np.arcsin(hole_radius),3)).replace(".","p") + "_"
         # Add the suffix
         mesh_name += ".msh"
     # Write the mesh to our file
