@@ -171,7 +171,7 @@ for index in range(21):
     axes[row][col].legend(bbox_to_anchor=(0.50,0.5), loc="center left", borderaxespad=0)
 # hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
-plt.xlabel("Cylindrical hole radius, $\\varepsilon$")
+plt.xlabel("Geodesic hole radius, $\\varepsilon$")
 plt.ylabel('Coefficients $U_{n,m}$ in \\\\$u(\\mathbf{x},t=50)=\\sum_{n=0}^{5}\\sum_{m=0}^{n}U_{n,m}Y_{n}^{m}(\\mathbf{x}),\\quad\\mathbf{x}\\in S^2$')
 # displaying the title
 plt.title("Spectral decomposition of $u(\\mathbf{x},t=50)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')

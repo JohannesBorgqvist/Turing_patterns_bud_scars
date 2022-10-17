@@ -114,8 +114,7 @@ axes.plot(epsilon_vector,lower_bound,'*k',label="$\\gamma\\;L$")
 axes.legend()
 #hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
-#plt.xlabel("Geodesic hole radius, $\\varepsilon$")
-plt.xlabel("Cylindrical hole radius, $\\varepsilon$")
+plt.xlabel("Geodesic hole radius, $\\varepsilon$")
 plt.ylabel("Eigenvalues, $\\lambda_{n,m}(\\varepsilon)$")
 # displaying the title
 plt.title("Perturbed eigenvalues $\\lambda_{n,m}(\\varepsilon)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')

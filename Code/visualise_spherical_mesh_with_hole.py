@@ -20,6 +20,7 @@
 import gmsh # For generating the meshes
 import sys  # Needed by gmsh to launch the GUI, i.e. open the window with the plot
 import math# For using mathematical functions
+import numpy as np # We need the sine function to convert from cylindrical to geodesic radius
 # =================================================================================
 # =================================================================================
 # Creating the mesh
@@ -45,7 +46,7 @@ gmsh.model.occ.remove([(3, v0)])
 c0 = (0,0,0) # Cylinder starting point
 c1 = (-1,1,0) # First cylinder end point
 # Add the radius of the cylinder used to generate the hole
-hole_radius = 0.3
+hole_radius = np.sin(0.3)
 # Generate the hole by removing the intersection between the cylinder and the sphere
 if hole_radius == 0:
     rest = [s0]

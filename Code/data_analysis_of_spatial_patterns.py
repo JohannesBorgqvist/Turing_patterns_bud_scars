@@ -340,7 +340,7 @@ axes[1][1].tick_params(axis='both', which='minor', labelsize=15)
 # displaying the title
 # hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
-plt.xlabel("Cylindrical hole radius, $\\varepsilon$")
+plt.xlabel("Geodesic hole radius, $\\varepsilon$")
 plt.ylabel("Quantitative metric")
 # displaying the title
 plt.title("Metrics of $u(\\mathbf{x},t=50)$ as functions of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
