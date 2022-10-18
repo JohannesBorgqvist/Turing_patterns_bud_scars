@@ -57,7 +57,7 @@ def generate_spherical_mesh_with_holes(c0_list,c1_list,hole_radii):
         hole_radius = hole_radii[hole_index]
         if hole_radius > 0:
             # Create the cylinder
-            v1 = gmsh.model.occ.addCylinder(c0[0],c0[1],c0[2], c1[0],c1[1],c1[2], hole_radius)
+            v1 = gmsh.model.occ.addCylinder(c0[0],c0[1],c0[2], c1[0],c1[1],c1[2], np.sin(hole_radius))
             # Create the hole being the intersection between the unit sphere and the cylinder
             the_hole = gmsh.model.occ.intersect(rest[0], [(3, v1)], removeObject=False)
             # Remove the hole
@@ -94,7 +94,7 @@ def generate_spherical_mesh_with_holes(c0_list,c1_list,hole_radii):
         mesh_name = "../Meshes/s_h_" + str(len(hole_radii)) + "_"
         # Loop over the hole radii and add these to the file names
         for hole_radius in hole_radii:
-            mesh_name += "r_" + str(round(np.arcsin(hole_radius),3)).replace(".","p") + "_"
+            mesh_name += "r_" + str(round(hole_radius,3)).replace(".","p") + "_"
         # Add the suffix
         mesh_name += ".msh"
     # Write the mesh to our file

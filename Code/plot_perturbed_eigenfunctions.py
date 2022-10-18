@@ -160,13 +160,13 @@ for index in range(21):
         row=1
         col=2                
     # Plot the 90 percentile
-    axes[row][col].plot(np.sin(hole_radius_array),np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),'--',color=colour_list_for_plotting[index])
+    axes[row][col].plot(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),'--',color=colour_list_for_plotting[index])
     # Plot the 50 percentile
-    axes[row][col].plot(np.sin(hole_radius_array),np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),'-',color=colour_list_for_plotting[index],label=legend_strings[index])
+    axes[row][col].plot(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),'-',color=colour_list_for_plotting[index],label=legend_strings[index])
     # Plot the 5 percentile
-    axes[row][col].plot(np.sin(hole_radius_array),np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),'--',color=colour_list_for_plotting[index])
+    axes[row][col].plot(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),'--',color=colour_list_for_plotting[index])
     # See if we can fill between
-    axes[row][col].fill_between(np.sin(hole_radius_array),np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]), np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]), facecolor=colour_list_for_plotting[index],alpha=0.5,interpolate=True)
+    axes[row][col].fill_between(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]), np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]), facecolor=colour_list_for_plotting[index],alpha=0.5,interpolate=True)
     # Add the legend in the end
     axes[row][col].legend(bbox_to_anchor=(0.50,0.5), loc="center left", borderaxespad=0)
 # hide tick and tick label of the big axis
