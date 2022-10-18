@@ -108,7 +108,7 @@ for hole_index in range(len(hole_radius_array)):
             del legend_strings[0]
             # Rename the legends
             for index,legend in enumerate(legend_strings):
-                legend_strings[index] = legend_strings[index].replace("\\gamma","U")
+                legend_strings[index] = legend_strings[index].replace("\\gamma","U").replace(",","}^{")
             # Increment the legend string so that we do not save it anymore
             help_variable += 1
         # Loop through our data frame and save each value (we need to cast it as a double first)
@@ -160,19 +160,19 @@ for index in range(21):
         row=1
         col=2                
     # Plot the 90 percentile
-    axes[row][col].plot(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),'--',color=colour_list_for_plotting[index])
+    axes[row][col].plot(np.sin(hole_radius_array),np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]),'--',color=colour_list_for_plotting[index])
     # Plot the 50 percentile
-    axes[row][col].plot(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),'-',color=colour_list_for_plotting[index],label=legend_strings[index])
+    axes[row][col].plot(np.sin(hole_radius_array),np.array([np.percentile(basis_functions[index][sub_index],50) for sub_index in range(len(hole_radius_array))]),'-',color=colour_list_for_plotting[index],label=legend_strings[index])
     # Plot the 5 percentile
-    axes[row][col].plot(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),'--',color=colour_list_for_plotting[index])
+    axes[row][col].plot(np.sin(hole_radius_array),np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]),'--',color=colour_list_for_plotting[index])
     # See if we can fill between
-    axes[row][col].fill_between(hole_radius_array,np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]), np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]), facecolor=colour_list_for_plotting[index],alpha=0.5,interpolate=True)
+    axes[row][col].fill_between(np.sin(hole_radius_array),np.array([np.percentile(basis_functions[index][sub_index],5) for sub_index in range(len(hole_radius_array))]), np.array([np.percentile(basis_functions[index][sub_index],95) for sub_index in range(len(hole_radius_array))]), facecolor=colour_list_for_plotting[index],alpha=0.5,interpolate=True)
     # Add the legend in the end
     axes[row][col].legend(bbox_to_anchor=(0.50,0.5), loc="center left", borderaxespad=0)
 # hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
 plt.xlabel("Geodesic hole radius, $\\varepsilon$")
-plt.ylabel('Coefficients $U_{n,m}$ in \\\\$u(\\mathbf{x},t=50)=\\sum_{n=0}^{5}\\sum_{m=0}^{n}U_{n,m}Y_{n}^{m}(\\mathbf{x}),\\quad\\mathbf{x}\\in S^2$')
+plt.ylabel('Spectral coefficients $U_{n}^{m}$')
 # displaying the title
 plt.title("Spectral decomposition of $u(\\mathbf{x},t=50)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
 # Save fig and show it

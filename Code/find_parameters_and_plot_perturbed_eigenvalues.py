@@ -107,16 +107,16 @@ plt.rc('ytick', labelsize=20)    # fontsize of the tick labels
 fig.add_subplot(111, frameon=False)
 # Plot the eigenvalues
 for index in index_list:
-    axes.plot(epsilon_vector,lambda_vec[index],'-',color=colour_list_for_plotting[index],label=label_strings[index])
+    axes.plot(np.sin(epsilon_vector),lambda_vec[index],'-',color=colour_list_for_plotting[index],label=label_strings[index])
 # Plot the upper bound
-axes.plot(epsilon_vector,upper_bound,'--k',label="$\\gamma\\;M$")
-axes.plot(epsilon_vector,lower_bound,'*k',label="$\\gamma\\;L$")
+axes.plot(np.sin(epsilon_vector),upper_bound,'--k',label="$\\gamma\\;M$")
+axes.plot(np.sin(epsilon_vector),lower_bound,'*k',label="$\\gamma\\;L$")
 axes.legend()
 #hide tick and tick label of the big axis
 plt.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
 plt.xlabel("Geodesic hole radius, $\\varepsilon$")
-plt.ylabel("Eigenvalues, $\\lambda_{n,m}(\\varepsilon)$")
+plt.ylabel("Eigenvalues, $\\lambda_{n}^{m}(\\varepsilon)$")
 # displaying the title
-plt.title("Perturbed eigenvalues $\\lambda_{n,m}(\\varepsilon)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
+plt.title("Perturbed eigenvalues $\\lambda_{n}^{m}(\\varepsilon)$ as a function of the hole radius $\\varepsilon$",fontsize=30, fontweight='bold')
 plt.savefig("../Figures/perturbed_eigenvalues_n_" + str(n) + ".png")
 #plt.show() # Uncomment if you want a figure to pop-up
