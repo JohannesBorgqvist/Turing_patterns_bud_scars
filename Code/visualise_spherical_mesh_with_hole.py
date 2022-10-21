@@ -44,7 +44,7 @@ gmsh.model.occ.remove([(3, v0)])
 # Cut with a cylinder to generate first spherical patch
 # Add start and end points to the cylinder
 c0 = (0,0,0) # Cylinder starting point
-c1 = (-1,1,0) # First cylinder end point
+c1 = (0,0,-1) # First cylinder end point at the south pole
 # Add the radius of the cylinder used to generate the hole
 hole_radius = np.sin(0.3)
 # Generate the hole by removing the intersection between the cylinder and the sphere
