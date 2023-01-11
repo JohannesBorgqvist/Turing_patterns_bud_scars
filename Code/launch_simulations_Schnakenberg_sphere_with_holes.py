@@ -34,7 +34,8 @@ radii_holes = []
 # Define the perturbation in the initial conditions
 sigma = 1e-4
 # Define the end time for the simulations
-T = 50
+#T = 50
+T = 500
 # Collect these latter two parameters in a list as well
 numerical_parameters = [sigma, T]
 # Looping over the varius radii and run all simulations there!
@@ -73,7 +74,8 @@ for n_index,n in enumerate(n_vec):
         else:
             experimental_design.append((1,parameters,steady_states,numerical_parameters,[hole_radius],True,False))
 # Here, we define the start repititions and the number of repititions
-number_of_repititions = 20 # For the full experimental design
+#number_of_repititions = 20 # For the full experimental design
+number_of_repititions = 1
 start_repitition = 0 # This value we can tweek if we want to add extra simulations afterwards
 # Loop over the experiments in the experimental design and run them all (with the appropriate number of repititions)
 for experiment in experimental_design:
