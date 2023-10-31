@@ -44,6 +44,9 @@ echo "Done"
 echo "Run the data analysis where we plot the quantitative properties as function of the hole radius"
 python data_analysis_of_spatial_patterns.py
 echo "Done"
+echo "Run the data analysis of the noise"
+python slope_test.py
+echo "Done"
 echo "Deactivate the conda environment fenicsproject"
 conda deactivate
 cd ..
