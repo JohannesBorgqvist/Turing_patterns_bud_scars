@@ -30,4 +30,5 @@ Moreover, within these folders, there are subfolders for all the repeated runs t
 The vtu- and pvd-files can be opened and visualised in ParaView. The xml-files can be read by FEniCS which is necessary in order to access and analyse the data  of the corresponding simulation. Lastly, the csv-file containing the spectral decomposition can be read by [Pandas](https://pandas.pydata.org/) which is used to generate the plot of the spectral decomposition of the active component u at time t=50 as a function of the hole radius.  
 
 
-
+# Analysing the noise in the outputs that are presented in the manuscript
+We have also provided excel files of all the data that are presented in the figures in the article. These can be found in the folder "data\_analysis\_variance". These files are accessed by the script "../Code/slope\_test.py", and for more information about the analysis that this script conducts, see "../Code/STEP\_BY\_STEP\_GUIDE.md". 
