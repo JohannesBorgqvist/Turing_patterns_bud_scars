@@ -178,6 +178,11 @@ After this, we finish by deactivating the conda environment "*fenicsproject*":<b
 
 . This concludes the step by step guide. We will finish by mentioning some extra functionalities that are available. 
 
+
+## 4.3 Analyse the noise in the outputs from the FEM simulations
+Given all the outputs presented in the figures in the manuscript, we are interested in determining whether the spread of the observed quantities are solely explained by noise in the initial conditions. To this end, we do a linear regression on all of our data, and if the slope is close to zero we conclude that the spread in the initial conditions is explained by stochasticity in the initial conditions/All data files corresponding to these figures are stored in xlsx files that can be found in the folder "../Output/data\_analysis\_variance". The data analysis of the variance is conducted in the script called "slope\_test.py".
+
+
 # Extra functionalities
 All the properties of the Schnakenberg model can be found in the script *Schnakenberg\_properties.py*. 
 
